@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <span style="margin-left: 10px">
         <el-popover
             placement="bottom" width="320"
             v-model="visible.addPrivateDirVisible">
@@ -8,9 +8,16 @@
                 <el-button size="mini" type="text" @click="visible.addPrivateDirVisible = false">取消</el-button>
                 <el-button type="primary" size="mini" @click="handleAddPrivateDir">确定</el-button>
             </div>
-            <el-button slot="reference"
-                       class="search-button" size="small">
-                新建目录
+            <el-button
+                style="border-radius: 3px"
+                slot="reference"
+                class="search-button btn-icon-class" size="small">
+                <span>
+                    <img
+                        style="width: 16px; height: 16px; margin-right: 5px"
+                        src="../assets/icon_add_directory.svg"/>
+                    新建目录
+                </span>
             </el-button>
         </el-popover>
     </span>
@@ -59,5 +66,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

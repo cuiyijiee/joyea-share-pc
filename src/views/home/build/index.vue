@@ -48,8 +48,14 @@
                     </el-button>
                     <el-button v-if="hasBtnShowPermission(null,'WORD_MANAGER')"
                                size="mini" type="primary"
+                               class="btn-icon-class"
                                @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
-                        管理小白板
+                        <span>
+                            <img
+                                style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                src="../../../assets/icon_manage_next.svg"/>
+                            管理小白板
+                        </span>
                     </el-button>
                     <add-src-to-private-dir v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')" :curDirNeid="curDirNeid"
                                             @onAddSuccess="handleRefreshDir" @preview="handleClickDirItem"/>
@@ -58,13 +64,17 @@
                 </div>
                 <!--文件路径显示-->
                 <el-row class="adminContentHead">
-                    <el-col :span="15" style="color:#000000;font-size: 15px;">
+                    <el-col :span="15" style="color:#000000;font-size: 15px;" class="flex aic">
                         <span style="cursor:pointer;"
-                              @click="handleBackMenuPath"><b>返回</b></span>
-                        <span
+                              class="common-btn-style color_back"
+                              @click="handleBackMenuPath">
+                            <img src="../../../assets/icon_back.svg"/>
+                            返回上一层级</span>
+                        <!--<span
                             style="cursor:pointer;margin: 0 8px;position: relative;top: -0.1em;"
-                            @click="handleGoRootPath">|</span>
+                            @click="handleGoRootPath">|</span>-->
                         <span style="cursor:pointer;"
+                              :class="{'color_back': dir.currentPath.length}"
                               @click="handleGoRootPath">{{
                                 directoryType === 'SELF' ? '细分市场素材库' : '基础素材库'
                             }}</span>
@@ -72,16 +82,50 @@
                               style="display: inline">
                             <span style="position: relative;top: -0.025em;margin: 0 4px;font-size: 15px;">/</span>
                             <span style="cursor:pointer;"
+                                  :class="{'color_back': index !== dir.currentPath.length-1}"
                                   @click="handleClickDirPath(item,index)">{{ item }}</span>
                         </span>
                     </el-col>
-                    <el-col :span="9" style="text-align: right">
-                        <span>
+                    <el-col :span="9" style="text-align: right" class="flex aic">
+                        <span style="margin-right: 20px">
                             共{{ dir.tableData.length }}个资源
                         </span>
                         <span>
-                            <el-button size="small" type="primary"
-                                       @click="handleGetCurRedirectPath">获取短链</el-button>
+                            <span class="common-btn-style">
+                                <img
+                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                    src="../../../assets/icon_Filter.svg"/>
+                                排序
+                            </span>
+                        </span>
+                        <span
+                            @click="isListMode = !isListMode"
+                            v-if="isListMode">
+                            <span
+                                class="common-btn-style">
+                                <img
+                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                    src="../../../assets/icon_list_mode.svg"/>
+                                列表模式
+                            </span>
+                        </span>
+                        <span
+                            @click="isListMode = !isListMode"
+                            v-if="!isListMode">
+                            <span class="common-btn-style">
+                                <img
+                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                    src="../../../assets/icon_large_img_mode.svg"/>
+                                大图模式
+                            </span>
+                        </span>
+                        <span>
+                            <span class="common-btn-style">
+                                <img
+                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                    src="../../../assets/icon_Filter.svg"/>
+                                筛选
+                            </span>
                         </span>
                     </el-col>
                 </el-row>
@@ -467,7 +511,8 @@ export default {
             curDirNeid: "",
             curDirAdminUser: [],
             videoPreviewPromise: Object,
-            videoPreviewAbort: Object
+            videoPreviewAbort: Object,
+            isListMode: true,
         }
     },
     computed: {
@@ -1397,6 +1442,26 @@ export default {
     line-height: 30px;
 }
 
+.common-btn-style {
+    background-color: rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 15px;
+    line-height: 30px;
+}
+
+.common-btn-style {
+    background-color: rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    margin-right: 10px;
+    border-radius: 15px;
+    line-height: 30px;
+}
+
 .box-card {
     width: 220px;
     height: 220px;
@@ -1422,5 +1487,22 @@ export default {
 .main-tools {
     padding: 10px $--main-padding 0 $--main-padding;
     background: #E9E9E9;
+}
+
+.directory-tools {
+    display: flex;
+}
+
+.flex {
+    display: flex;
+}
+.aic {
+    align-items: center;
+}
+.jcc {
+    justify-content: center;
+}
+.color_back {
+    color: #eb7708;
 }
 </style>

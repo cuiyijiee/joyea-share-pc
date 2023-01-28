@@ -1,9 +1,16 @@
 <template>
-    <span style="text-align: left">
-        <el-button class="search-button" size="small"
-                   @click="visible.addSrcVisible = !visible.addSrcVisible">
-                        从素材库添加文件
-                    </el-button>
+    <span style="text-align: left; margin-left: 10px;">
+        <el-button
+            style="border-radius: 3px"
+            class="search-button btn-icon-class" size="small"
+            @click="visible.addSrcVisible = !visible.addSrcVisible">
+            <span>
+                <img
+                    style="width: 16px; height: 16px; margin-right: 5px"
+                    src="../assets/icon_add_file.svg"/>
+                从素材库添加文件
+            </span>
+        </el-button>
         <el-dialog :modal-append-to-body="true" :visible="visible.addSrcVisible" title="请选择目录" @close="handleClickClose"
                    @opened="handleDialogOpened">
           <div>
