@@ -217,14 +217,17 @@
             </el-col>
             <!--右边清单操作-->
             <el-col :span="4" class="bg-purple">
-                <div class="content_div">
-                    <div class="center_vertical" style="width: 100%">
-                        <h1>清单编辑列表（{{ toCreateAlbum.list.length }}）</h1>
+                <div class="content_div flex">
+                    <div class="qdbj_list_tit" style="width: 100%">
+                        <span>清单编辑列表（{{ toCreateAlbum.list.length }}）</span>
                     </div>
                     <el-table id="toSortTable" ref="table"
+                              class="qingdan_table"
                               :data="toCreateAlbum.list" empty-text="清单内还没有内容" row-key="neid"
                               stripe style="width: 100%">
-                        <el-table-column label="预览">
+                        <el-table-column
+                            class-name="preview_cell"
+                            label="预览">
                             <template slot-scope="scope">
                                 <el-tooltip :content="scope.row.path.substr(scope.row.path.lastIndexOf('/')+1)"
                                             class="item"
@@ -244,32 +247,32 @@
                                 </el-tooltip>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" width="150">
+                        <el-table-column align="center" label="操作" width="150">
                             <template slot-scope="scope">
-                                <el-button v-if="!scope.row.isModify"
-                                           plain
-                                           size="mini" type="" @click.stop="handleDelete(scope.$index, scope.row)">删除
-                                </el-button>
-                                <el-button v-else plain size="mini"
-                                           type="" @click.stop="handleModify(scope.$index,scope.row,false)">取消
-                                </el-button>
+                                <div v-if="!scope.row.isModify"
+                                     class="color_back"
+                                     @click.stop="handleDelete(scope.$index, scope.row)">删除
+                                </div>
+                                <div v-else
+                                     @click.stop="handleModify(scope.$index,scope.row,false)">取消
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table>
                     <el-row :class="{no_display:toCreateAlbum.list.length === 0}" :gutter="5" class="load_more_bt">
-                        <el-col :span="8">
+                        <el-col :span="9">
                             <el-button :loading="loading.saveList" class="load_more_bt" icon="el-icon-folder-add"
                                        size="mini"
-                                       type="info" @click.stop="handleSaveList">保存清单
+                                       type="primary" @click.stop="handleSaveList">保存清单
                             </el-button>
                         </el-col>
-                        <el-col :span="8">
+                        <el-col :span="9">
                             <el-button v-loading="loading.downloadLoading" class="load_more_bt" icon="el-icon-suitcase"
                                        size="mini" type="info"
                                        @click.stop="handleDownloadSrc(true)">下载准备
                             </el-button>
                         </el-col>
-                        <el-col :span="8">
+                        <el-col :span="6">
                             <el-button class="load_more_bt" icon="el-icon-delete" size="mini" type="info"
                                        @click.stop="handleClearList">清空
                             </el-button>
@@ -1424,15 +1427,21 @@ export default {
     display: none;
 }
 
-.center_vertical {
+.qdbj_list_tit {
     padding: 1px;
-    background: #d3dce6;
-    text-align: center;
+    background-color: rgba(0,0,0,0.3);
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    padding: 0 20px;
+    line-height: 40px;
 }
 
 .load_more_bt {
     margin-top: 5px;
     width: 100%;
+    .el-button {
+        padding: 7px;
+    }
 }
 
 .adminContentHead {
@@ -1452,14 +1461,26 @@ export default {
     line-height: 30px;
 }
 
-.common-btn-style {
-    background-color: rgba(0,0,0,0.1);
-    display: inline-flex;
-    align-items: center;
-    padding: 0 10px;
-    margin-right: 10px;
-    border-radius: 15px;
-    line-height: 30px;
+.content_div {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    .qingdan_table {
+        flex: 1;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            opacity: 0.2;
+        }
+        &::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 0;
+        }
+    }
 }
 
 .box-card {
