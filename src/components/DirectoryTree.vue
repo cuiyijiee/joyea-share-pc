@@ -1,6 +1,8 @@
 <template>
     <div class="directory-tree">
-        <el-tree :data="treeData" :props="defaultProps" lazy indent="8"
+        <el-tree ref="directoryTree" :data="treeData" :props="defaultProps" lazy :indent="8"
+                 node-key="id"
+                 :default-checked-keys="treeExpandData"
                  :load="handleLoadChild"
                  @node-click="handleNodeClick">
             <template slot-scope="scope">
@@ -25,6 +27,7 @@ export default {
     data() {
         return {
             treeData: [],
+            treeExpandData:[],
             defaultProps: {
                 label: 'dirName',
                 children: 'children',
@@ -41,8 +44,6 @@ export default {
                     })
                     resolve(data.list);
                 }
-            }).finally(() => {
-
             })
         },
         handleNodeClick(data) {
@@ -54,8 +55,12 @@ export default {
             if (data.code === "0") {
                 this.treeData = data.list;
             }
-        }).finally(() => {
-
+        }).finally(()=>{
+            //默认加载第一级菜单
+            this.treeData.forEach(firstNode => {
+                let currentNode = this.$refs.directoryTree.getNode(firstNode.id);
+                currentNode.expand();
+            })
         })
     }
 }
@@ -71,7 +76,7 @@ export default {
     font-size: 14px;
 }
 
-.directory-tree{
+.directory-tree {
 
 }
 
