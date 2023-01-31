@@ -9,7 +9,6 @@
                 <el-button type="primary" size="mini" @click="handleAddPrivateDir">确定</el-button>
             </div>
             <el-button
-                style="border-radius: 3px"
                 slot="reference"
                 class="search-button btn-icon-class" size="small">
                 <span>
@@ -65,5 +64,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.el-button {
+    padding: 2px 4px;
+}
 </style>

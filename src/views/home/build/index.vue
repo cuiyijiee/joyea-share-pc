@@ -50,7 +50,7 @@
                                size="mini" type="primary"
                                class="btn-icon-class"
                                @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
-                        <span>
+                        <span class="flex aic">
                             <img
                                 style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                 src="../../../assets/icon_manage_next.svg"/>
@@ -64,7 +64,7 @@
                 </div>
                 <!--文件路径显示-->
                 <el-row class="adminContentHead">
-                    <el-col :span="15" style="color:#000000;font-size: 15px;" class="flex aic">
+                    <el-col :span="15" style="color:#000000;font-size: 15px;">
                         <span style="cursor:pointer;"
                               class="common-btn-style color_back"
                               @click="handleBackMenuPath">
@@ -86,17 +86,32 @@
                                   @click="handleClickDirPath(item,index)">{{ item }}</span>
                         </span>
                     </el-col>
-                    <el-col :span="9" style="text-align: right" class="flex aic">
+                    <el-col :span="9" style="text-align: right" class="">
                         <span style="margin-right: 20px">
                             共{{ dir.tableData.length }}个资源
                         </span>
-                        <span>
-                            <span class="common-btn-style">
+                        <span class="pointer">
+                            <el-dropdown trigger="click" @command="sortFilter" :hide-on-click="false">
+                                <span class="common-btn-style">
                                 <img
-                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                                    src="../../../assets/icon_Filter.svg"/>
+                                        style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                        src="../../../assets/icon_Filter.svg"/>
                                 排序
-                            </span>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item :icon="sortRegular.regular.icon3" disabled :command="{regularName: 'name', icon3: 'el-icon-check', type: 'regular'}">名称排序</el-dropdown-item>
+                                    <el-dropdown-item
+                                            divided
+                                            :class="{'ml19': !sortRegular.sort.icon1}"
+                                            :icon="sortRegular.sort.icon1"
+                                            :command="{sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}">升序</el-dropdown-item>
+                                    <el-dropdown-item
+                                            :class="{'ml19': !sortRegular.sort.icon2}"
+                                            :icon="sortRegular.sort.icon2"
+                                            :command="{sortName: 'desc', icon2: 'el-icon-check', type: 'sort'}">降序</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+
                         </span>
                         <span
                             @click="isListMode = !isListMode"
@@ -111,7 +126,8 @@
                         </span>
                         <span
                             @click="isListMode = !isListMode"
-                            v-if="!isListMode">
+                            v-if="!isListMode"
+                            class="pointer">
                             <span class="common-btn-style">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
@@ -119,13 +135,37 @@
                                 大图模式
                             </span>
                         </span>
-                        <span>
-                            <span class="common-btn-style">
+                        <span class="pointer">
+                            <el-dropdown trigger="click" @command="filterTerm" :hide-on-click="false">
+                                <span class="common-btn-style">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                     src="../../../assets/icon_Filter.svg"/>
                                 筛选
-                            </span>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item
+                                        :class="{'ml19': !filterRegular.icon1}"
+                                        :icon="filterRegular.icon1"
+                                        :command="{filterName: 'all', icon1: 'el-icon-check'}">全部</el-dropdown-item>
+                                    <el-dropdown-item
+                                        :class="{'ml19': !filterRegular.icon2}"
+                                        :icon="filterRegular.icon2"
+                                        :command="{filterName: 'dir', icon2: 'el-icon-check'}">文件夹</el-dropdown-item>
+                                    <el-dropdown-item
+                                        :class="{'ml19': !filterRegular.icon3}"
+                                        :icon="filterRegular.icon3"
+                                        :command="{filterName: 'doc', icon3: 'el-icon-check'}">文档</el-dropdown-item>
+                                    <el-dropdown-item
+                                        :class="{'ml19': !filterRegular.icon4}"
+                                        :icon="filterRegular.icon4"
+                                        :command="{filterName: 'image', icon4: 'el-icon-check'}">图片</el-dropdown-item>
+                                    <el-dropdown-item
+                                        :class="{'ml19': !filterRegular.icon5}"
+                                        :icon="filterRegular.icon5"
+                                        :command="{filterName: 'video', icon5: 'el-icon-check'}">视频</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </span>
                     </el-col>
                 </el-row>
@@ -135,7 +175,8 @@
                 </div>
                 <el-table ref="fileTable" v-loading="dir.loadingDir || loading.search" :data="dir.tableData"
                           empty-text="文件夹为空" style="width: 100%;" tooltip-effect="dark"
-                          @row-click="handleClickDirItem">
+                          @row-click="handleClickDirItem"
+                          @cell-click="handleAddAdmin">
                     <el-table-column label="文件名" show-overflow-tooltip>
                         <template slot-scope="scope">
                             <div style="">
@@ -173,6 +214,8 @@
                     <el-table-column v-if="directoryType === 'SELF'" align="center" label="管理员">
                         <template slot-scope="scope">
                             <PrivateDirectoryAdminManager
+                                ref="adminManage"
+                                :editable="scope.row.neid === curNeid"
                                 v-if="scope.row.is_dir && curDirNeid === '0'"
                                 :enabled="userInfo.isAdmin && directoryType === 'SELF'"
                                 :file-item="scope.row"/>
@@ -259,25 +302,25 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    <el-row :class="{no_display:toCreateAlbum.list.length === 0}" :gutter="5" class="load_more_bt">
-                        <el-col :span="9">
+                    <div :class="{no_display:toCreateAlbum.list.length === 0}" class="load_more_bt qd_list_btns">
+                        <!--<el-col :span="9">-->
                             <el-button :loading="loading.saveList" class="load_more_bt" icon="el-icon-folder-add"
                                        size="mini"
                                        type="primary" @click.stop="handleSaveList">保存清单
                             </el-button>
-                        </el-col>
-                        <el-col :span="9">
+                        <!--</el-col>
+                        <el-col :span="9">-->
                             <el-button v-loading="loading.downloadLoading" class="load_more_bt" icon="el-icon-suitcase"
                                        size="mini" type="info"
                                        @click.stop="handleDownloadSrc(true)">下载准备
                             </el-button>
-                        </el-col>
-                        <el-col :span="6">
+                        <!--</el-col>
+                        <el-col :span="6">-->
                             <el-button class="load_more_bt" icon="el-icon-delete" size="mini" type="info"
                                        @click.stop="handleClearList">清空
                             </el-button>
-                        </el-col>
-                    </el-row>
+                        <!--</el-col>-->
+                    </div>
                 </div>
             </el-col>
         </el-row>
@@ -439,6 +482,7 @@ export default {
     },
     data() {
         return {
+            curNeid: '',
             directoryType: "",
             newPrivateDirName: "",
             parentDirId: "",
@@ -516,6 +560,12 @@ export default {
             videoPreviewPromise: Object,
             videoPreviewAbort: Object,
             isListMode: true,
+            sortRegular: {
+                regular: {regularName: 'name', icon3: 'el-icon-check',type: 'regular'},
+                sort: {sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}
+            }, //默认升序
+            filterRegular: {filterName: 'all',icon1: 'el-icon-check'}, //默认筛选全部
+            toReachPath: '', //记录面包屑目录
         }
     },
     computed: {
@@ -1134,12 +1184,51 @@ export default {
                 })
             })
         },
+        sortFilter(value) {
+            if(value.type === 'sort') {
+                // if(this.sortRegular.sort.sortName === value.sortName) {
+                //     this.sortRegular.sort = {}
+                // }else {
+                    this.sortRegular.sort = value
+                // }
+            }else {
+                // if(this.sortRegular.regular === value.regularName) {
+                //     this.sortRegular.regular = {}
+                // }else {
+                    this.sortRegular.regular = value
+                // }
+            }
+            this.handleListLenovoDir(this.toReachPath,{
+                orderBy: 'name',
+                sort: this.sortRegular.sort.sortName,
+                filter: this.filterRegular.filterName
+            })
+        },
+        filterTerm(value) {
+            // if(this.filterRegular.filterName === value.name) {
+            //     this.filterRegular = {}
+            // }else {
+                this.filterRegular = value
+            // }
+            this.handleListLenovoDir(this.toReachPath,{
+                orderBy: 'name',
+                sort: this.sortRegular.sort.sortName,
+                filter: this.filterRegular.filterName
+            })
+        },
         handleClickDirPath(item, index) {
             let toReachPath = "";
             for (let i = 0; i <= index; i++) {
                 toReachPath = toReachPath + "/" + this.dir.currentPath[i]
             }
-            this.handleListLenovoDir(toReachPath === '' ? "/" : toReachPath);
+            this.toReachPath = toReachPath === '' ? "/" : toReachPath
+            let filterParams = {
+                orderBy: 'name',
+                sort: this.sortRegular.sort.sortName,
+                filter: this.filterRegular.filterName
+            }
+            this.handleListLenovoDir(toReachPath === '' ? "/" : toReachPath,filterParams);
+
         },
         handleDirectoryTypeSelected(type) {
             this.directoryType = type;
@@ -1155,12 +1244,21 @@ export default {
                 });
             }
         },
-        handleListLenovoDir(path) {
+        handleListLenovoDir(path,filterParams) {
             this.dir.loadingDir = true;
             if (this.directoryType.length === 0) {
                 return;
             }
-            getFileMetadata(this.directoryType, path, "").then(response => {
+            if(!filterParams) {
+                filterParams = {
+                    orderBy: 'name',
+                    sort: this.sortRegular.sort.sortName,
+                    filter: this.filterRegular.filterName
+                }
+            }
+            const {orderBy, sort,filter} = filterParams
+            this.toReachPath = path
+            getFileMetadata(this.directoryType, path, "", orderBy, sort,filter).then(response => {
                 if (response.code === "0") {
                     this.curDirNeid = response.obj.neid;
                     this.curDirAdminUser = response.obj.adminUser;
@@ -1197,10 +1295,26 @@ export default {
                 document.getElementById("build").scrollTop = 0;
             });
         },
-        handleClickDirItem(row) {
+
+        handleAddAdmin(row, column, cell) {
+            if(this.curNeid !== row.neid) {
+                this.curNeid = row.neid
+            }else {
+                this.curNeid = ''
+            }
+        },
+
+        handleClickDirItem(row, column, cell) {
+            if(column.label === '管理员') return;
             this.visible.searchDialogVisible = false;
             if (row.is_dir) {
-                this.handleListLenovoDir(row.path)
+                let filterParams = {
+                    orderBy: 'name',
+                    sort: this.sortRegular.sort.sortName,
+                    filter: this.filterRegular.filterName
+                }
+                this.toReachPath = row.path
+                this.handleListLenovoDir(row.path,filterParams)
             } else {
                 this.handleGoToPreview(row);
             }
@@ -1273,10 +1387,15 @@ export default {
             })
         },
         handleGoRootPath() {
+            let filterParams = {
+                orderBy: 'name',
+                sort: this.sortRegular.sort.sortName,
+                filter: this.filterRegular.filterName
+            }
             if (this.directoryType === "SELF") {
-                this.handleListLenovoDir("/");
+                this.handleListLenovoDir("/",filterParams);
             } else {
-                this.handleListLenovoDir("/营销素材展示");
+                this.handleListLenovoDir("/营销素材展示",filterParams);
             }
         },
         handleBackMenuPath() {
@@ -1340,7 +1459,11 @@ export default {
         if (redirectPath) {
             let redirectObj = JSON.parse(redirectPath);
             this.directoryType = redirectObj['type'];
-            this.handleListLenovoDir(redirectObj['path']);
+            this.handleListLenovoDir(redirectObj['path'],{
+                orderBy: 'name',
+                sort: this.sortRegular.sort.sortName,
+                filter: this.filterRegular.filterName
+            });
             setTimeout(() => {
                 window.localStorage.removeItem("redirectPath")
             }, 5000)
@@ -1434,13 +1557,21 @@ export default {
     border-radius: 8px 8px 0 0;
     padding: 0 20px;
     line-height: 40px;
+    box-sizing: border-box;
 }
 
 .load_more_bt {
     margin-top: 5px;
-    width: 100%;
+    /*width: 100%;*/
     .el-button {
-        padding: 7px;
+        padding: 2px 4px;
+    }
+}
+.qd_list_btns {
+    display: flex;
+    flex-wrap: wrap;
+    .el-button {
+        margin: 5px 5px 0 0;
     }
 }
 
@@ -1525,5 +1656,18 @@ export default {
 }
 .color_back {
     color: #eb7708;
+}
+.ml19 {
+    margin-left: 19px;
+}
+::v-deep.el-dropdown-menu__item {
+    background-color: white!important;
+    color: #606266!important;
+}
+.el-button {
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 0;
 }
 </style>

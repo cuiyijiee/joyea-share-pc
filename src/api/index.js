@@ -168,9 +168,9 @@ export function listTranscodeVideo(fileName, pageNum, pageSize) {
     })
 }
 
-export function getFileMetadata(directoryType, path, parentDirId) {
+export function getFileMetadata(directoryType, path, parentDirId,orderBy, sort,filter) {
     return service.post("apiv2/lenovo/fileMetadata", {
-        directoryType: directoryType, path: path, parentDirId: parentDirId,
+        directoryType: directoryType, path: path, parentDirId: parentDirId,orderBy, sort,filter
     }).then(resp => {
         return resp.data;
     })

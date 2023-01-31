@@ -1,7 +1,6 @@
 <template>
     <span style="text-align: left; margin-left: 10px;">
         <el-button
-            style="border-radius: 3px"
             class="search-button btn-icon-class" size="small"
             @click="visible.addSrcVisible = !visible.addSrcVisible">
             <span>
@@ -177,6 +176,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.el-button {
+    padding: 2px 4px;
+}
 </style>
