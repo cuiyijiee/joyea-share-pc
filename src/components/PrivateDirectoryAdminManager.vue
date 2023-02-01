@@ -18,16 +18,29 @@ import {listJoyeaUser, updatePrivateDirectoryAdmin} from "@/api";
 
 export default {
     name: "PrivateDirectoryAdminManager",
-    props: ['fileItem','enabled'],
+    props: ['fileItem','enabled','editable'],
     data() {
         return {
             value: [],
             options: [],
-            editable: false
+            // editable: false
+        }
+    },
+    watch: {
+        editable: {
+            handler(val) {
+                if(val) {
+
+                }
+            }
         }
     },
     methods: {
         handleSave() {
+            console.log('1112')
+            // this.editable = true;
+            console.log('editable',this.editable)
+            return
             if (!this.editable) {
                 this.editable = true;
             } else {

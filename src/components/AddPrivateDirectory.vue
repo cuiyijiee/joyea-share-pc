@@ -66,6 +66,6 @@ export default {
 
 <style scoped lang="scss">
 .el-button {
-    padding: 2px 4px;
+    border-radius: 0;
 }
 </style>

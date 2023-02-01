@@ -61,6 +61,9 @@
                                             @onAddSuccess="handleRefreshDir" @preview="handleClickDirItem"/>
                     <add-private-directory v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')"
                                            :curDirNeid="curDirNeid" @onAddSuccess="handleRefreshDir"/>
+                    <el-button icon="iconfont el-icon-a-icon_addtolist" size="mini" type="primary"
+                               @click="handleBatchAddToList">加入清单
+                    </el-button>
                 </div>
                 <!--文件路径显示-->
                 <el-row class="adminContentHead">
@@ -115,7 +118,8 @@
                         </span>
                         <span
                             @click="isListMode = !isListMode"
-                            v-if="isListMode">
+                            v-if="isListMode"
+                            class="pointer">
                             <span
                                 class="common-btn-style">
                                 <img
@@ -169,25 +173,31 @@
                         </span>
                     </el-col>
                 </el-row>
-                <div class="adminContentHead"
+                <!--<div class="adminContentHead"
                      style="text-align: right">
 
-                </div>
-                <el-table ref="fileTable" v-loading="dir.loadingDir || loading.search" :data="dir.tableData"
-                          empty-text="文件夹为空" style="width: 100%;" tooltip-effect="dark"
-                          @row-click="handleClickDirItem"
-                          @cell-click="handleAddAdmin">
+                </div>-->
+                <el-table v-if="isListMode"
+                      ref="fileTable" v-loading="dir.loadingDir || loading.search" :data="dir.tableData"
+                      empty-text="文件夹为空" style="width: 100%;" tooltip-effect="dark"
+                      @row-click="handleClickDirItem"
+                      @cell-click="handleAddAdmin"
+                      @selection-change="handleSelectionChange">
+                    <!--多选框，屏蔽文件夹，使其不可选中-->
+                    <el-table-column
+                        type="selection" width="55"
+                        :selectable="(row) => {return !row.is_dir}"></el-table-column>
                     <el-table-column label="文件名" show-overflow-tooltip>
                         <template slot-scope="scope">
                             <div style="">
                                 <i v-if="scope.row.is_dir" class="el-icon-folder-opened"></i>
                                 <i v-else-if="scope.row.mime_type.startsWith('video')" class="el-icon-video-camera"></i>
-                                <img v-else-if="scope.row.mime_type.startsWith('image')"
+                                <!--<img v-else-if="scope.row.mime_type.startsWith('image')"
                                      :onerror="defaultImg"
                                      :preview-text="scope.row.path"
                                      :src="genPreviewUrl(scope.row.neid)"
                                      fit="contain" preview="dir_image_list"
-                                     style="width: 120px; height: 90px; line-height: 30px; background-color:#DCDCDC"/>
+                                     style="width: 120px; height: 90px; line-height: 30px; background-color:#DCDCDC"/>-->
                                 <i v-else-if="scope.row.mime_type.startsWith('doc')" class="el-icon-tickets"></i>
                                 <i v-else-if="scope.row.mime_type.startsWith('word')" class="el-icon-link"></i>
                                 <i v-else class="el-icon-question"></i>
@@ -209,6 +219,17 @@
                                     </el-tag>
                                 </div>
                             </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="预览" width="150">
+                        <template slot-scope="scope">
+                            <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
+                                      :onerror="defaultImg"
+                                      :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
+                                      :src="genPreviewUrl(scope.row.neid)"
+                                      class="preview_img"
+                                      style="height: 90px;width: 120px">
+                            </el-image>
                         </template>
                     </el-table-column>
                     <el-table-column v-if="directoryType === 'SELF'" align="center" label="管理员">
@@ -257,6 +278,23 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div v-else>
+                    <div v-if="dir.largeImgModeData.length" class="large-img-mode-box">
+                        <div class="large-img-item" v-for="(item,index) in dir.largeImgModeData" :key="item.neid">
+                            <el-checkbox
+                                    @change="handleSelectedLargeImg(item)"
+                                    :value="largeImgSelected.includes(item.neid)"/>
+                            <i @click="handleAdd(item,true)" class="el-icon-circle-plus"/>
+                            <el-image
+                                :onerror="defaultImg"
+                                :preview-src-list="[].concat(genPreviewUrl(item.neid))"
+                                :src="genPreviewUrl(item.neid)">
+                            </el-image>
+                            <div style="font-size: 12px">{{ item.file_name }}</div>
+                        </div>
+                    </div>
+                    <el-empty  v-else description="暂无数据"></el-empty>
+                </div>
             </el-col>
             <!--右边清单操作-->
             <el-col :span="4" class="bg-purple">
@@ -490,6 +528,7 @@ export default {
             dir: {
                 currentPath: [],
                 tableData: [],
+                largeImgModeData: [],
                 loadingDir: false
             },
             markReg: /<mark>|<\/mark>/g,
@@ -566,6 +605,9 @@ export default {
             }, //默认升序
             filterRegular: {filterName: 'all',icon1: 'el-icon-check'}, //默认筛选全部
             toReachPath: '', //记录面包屑目录
+            multipleSelection: [],
+            largeImgSelected: [],
+            largeImgs: []
         }
     },
     computed: {
@@ -962,6 +1004,21 @@ export default {
                 });
             }
         },
+        handleBatchAddToList() {
+            let params = this.isListMode ? this.multipleSelection : this.largeImgs
+            this.handleBatchAdd(params);
+            // this.multipleSelection = this.largeImgs = this.largeImgSelected = []
+        },
+        handleSelectedLargeImg(data) {
+            if(!this.largeImgSelected.includes(data.neid)) {
+                this.largeImgSelected.push(data.neid)
+                this.largeImgs.push(data)
+            }else {
+                let index = this.largeImgSelected.indexOf(data.neid)
+                this.largeImgSelected.splice(index,1)
+                this.largeImgs.splice(index,1)
+            }
+        },
         handleBatchAdd(multiRow) {
             if (this.directoryType === '') {
                 this.$refs.searchDialog.close();
@@ -1264,6 +1321,7 @@ export default {
                     this.curDirAdminUser = response.obj.adminUser;
                     console.log("current dir neid:" + this.curDirNeid);
                     this.dir.tableData = [];
+                    this.dir.largeImgModeData = []
                     this.wordListSelected = [];
                     this.parentDirId = response.obj.neid;
                     if (response.obj.content) {
@@ -1273,7 +1331,11 @@ export default {
                             if (item.mime_type && item.mime_type === 'word' && !this.userInfo.isAdmin) {
                             } else {
                                 this.dir.tableData.push(item)
+                                if(item.mime_type && item.mime_type.startsWith('image')) {
+                                    this.dir.largeImgModeData.push(item)
+                                }
                             }
+
                         });
                         this.dir.currentPath = [];
                         response.obj.path.split('/').forEach(item => {
@@ -1302,6 +1364,10 @@ export default {
             }else {
                 this.curNeid = ''
             }
+        },
+
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
         },
 
         handleClickDirItem(row, column, cell) {
@@ -1582,6 +1648,34 @@ export default {
     line-height: 30px;
 }
 
+.large-img-mode-box {
+    display: flex;
+    flex-wrap: wrap;
+    .large-img-item {
+        position: relative;
+        width: calc(20% - 10px);
+        flex-shrink: 0;
+        padding: 30px 10px 10px 10px;
+        background-color: rgba(0,0,0,0.1);
+        margin: 0 10px 10px 0;
+        border-radius: 5px;
+        box-sizing: border-box;
+        /*flex: 1;*/
+        &::after {}
+        .el-checkbox {
+            position: absolute;
+            top: 5px;
+            left: 10px
+        }
+        .el-icon-circle-plus {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #eb7708;
+        }
+    }
+}
+
 .common-btn-style {
     background-color: rgba(0,0,0,0.1);
     display: inline-flex;
@@ -1665,7 +1759,6 @@ export default {
     color: #606266!important;
 }
 .el-button {
-    padding: 2px 4px;
     display: flex;
     align-items: center;
     border-radius: 0;
