@@ -221,7 +221,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="预览" width="150">
+                    <el-table-column label="预览">
                         <template slot-scope="scope">
                             <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
                                       :onerror="defaultImg"
@@ -252,29 +252,31 @@
                             <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="操作" width="160">
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')">
+                            <div class="flex jcc">
+                                <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')">
                                 <el-button circle icon="el-icon-plus" type=""
                                            @click.stop="handleAdd(scope.row)"/>
                             </span>
-                            <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')">
+                                <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')">
                                 <el-button circle icon="el-icon-link"
                                            @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
                             </span>
-                            <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
-                                                    :file-item="scope.row"
-                                                    @onModifySuccess="handleRefreshDir"/>
-                            <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')">
+                                <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
+                                                        :file-item="scope.row"
+                                                        @onModifySuccess="handleRefreshDir"/>
+                                <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')">
                                 <el-button circle icon="el-icon-edit"
                                            @click.stop="handleUpdateAlias(scope.$index, scope.row)">
                                 </el-button>
                             </span>
-                            <el-button
-                                v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
-                                circle
-                                icon="el-icon-delete" @click.stop="handleRemoveSrc(scope.$index, scope.row)">
-                            </el-button>
+                                <el-button
+                                        v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
+                                        circle
+                                        icon="el-icon-delete" @click.stop="handleRemoveSrc(scope.$index, scope.row)">
+                                </el-button>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -1766,5 +1768,8 @@ export default {
     display: flex;
     align-items: center;
     border-radius: 0;
+}
+.search-button {
+    border-radius: 3px;
 }
 </style>
