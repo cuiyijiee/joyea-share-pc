@@ -190,17 +190,16 @@
                     <el-table-column label="文件名" show-overflow-tooltip>
                         <template slot-scope="scope">
                             <div style="">
-                                <i v-if="scope.row.is_dir" class="el-icon-folder-opened"></i>
-                                <i v-else-if="scope.row.mime_type.startsWith('video')" class="el-icon-video-camera"></i>
-                                <!--<img v-else-if="scope.row.mime_type.startsWith('image')"
-                                     :onerror="defaultImg"
-                                     :preview-text="scope.row.path"
-                                     :src="genPreviewUrl(scope.row.neid)"
-                                     fit="contain" preview="dir_image_list"
-                                     style="width: 120px; height: 90px; line-height: 30px; background-color:#DCDCDC"/>-->
-                                <i v-else-if="scope.row.mime_type.startsWith('doc')" class="el-icon-tickets"></i>
-                                <i v-else-if="scope.row.mime_type.startsWith('word')" class="el-icon-link"></i>
-                                <i v-else class="el-icon-question"></i>
+                                <span class="file-icon">
+                                    <i v-if="scope.row.is_dir" class="iconfont-color icon-icon_folder"></i>
+                                    <i v-else-if="scope.row.mime_type.startsWith('doc')"
+                                       class="iconfont-color icon-icon_file"></i>
+                                    <i v-else-if="scope.row.mime_type.startsWith('image')"
+                                       class="iconfont-color icon-icon_pic"></i>
+                                    <i v-else-if="scope.row.mime_type.startsWith('video')"
+                                       class="iconfont-color icon-icon_vedio"></i>
+                                    <i v-else class="el-icon-question"></i>
+                                  </span>
                                 <span v-if="scope.row.mime_type && scope.row.mime_type.startsWith('word')"
                                       style="vertical-align:center;color: #333333">
                                     {{ ' ' + scope.row.path }}</span>
@@ -221,7 +220,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="预览">
+                    <el-table-column label="预览" width="150">
                         <template slot-scope="scope">
                             <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
                                       :onerror="defaultImg"
@@ -326,7 +325,7 @@
                                              :preview-text="scope.row.path"
                                              :src="genPreviewUrl(scope.row.neid)" class="preview_img"
                                              preview="build_image_list">
-                                        <img v-else class="preview_img" src="unknown.png"
+                                        <img v-else class="preview_img" :src="unknown.png"
                                              @click="handleGoToPreview(scope.row)">
                                     </el-tooltip>
                                 </template>
@@ -1771,5 +1770,11 @@ export default {
 }
 .search-button {
     border-radius: 3px;
+}
+
+.file-icon {
+    .iconfont-color {
+        font-size: 30px;
+    }
 }
 </style>
