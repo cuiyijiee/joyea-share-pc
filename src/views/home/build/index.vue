@@ -259,11 +259,10 @@
                                         <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle
                                                    type="primary"></el-button>
                                     </span>
-                                    <span v-else>
+                                    <span v-else-if="scope.row.is_dir && curDirNeid === '0'">
                                         <el-button icon="el-icon-edit" circle @click.stop="curNeid = scope.row.neid"
                                                    type="primary"></el-button>
                                     </span>
-
                                     <span v-if="scope.row.neid === curNeid">
                                         <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''"
                                                     type="danger"></el-button>
