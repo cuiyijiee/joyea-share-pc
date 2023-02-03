@@ -254,7 +254,7 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div class="flex jcc">
-                                <span v-if="directoryType === 'SELF'" class="flex">
+                                <span v-if="directoryType === 'SELF' && scope.row.adminUser" class="flex">
                                     <span v-if="scope.row.neid === curNeid">
                                         <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle
                                                    type="primary"></el-button>
