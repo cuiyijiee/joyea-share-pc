@@ -227,14 +227,14 @@
                                       :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
                                       :src="genPreviewUrl(scope.row.neid)"
                                       class="preview_img"
-                                      style="height: 90px;width: 120px">
+                                      :style="{'height: 90px;width: 120px': scope.row.mime_type && scope.row.mime_type.startsWith('image')}">
                             </el-image>
                         </template>
                     </el-table-column>
                     <el-table-column v-if="directoryType === 'SELF'" align="center" label="管理员">
                         <template slot-scope="scope">
                             <PrivateDirectoryAdminManager
-                                ref="adminManage"
+                                :ref="`adminManage${scope.row.neid}`"
                                 :editable="scope.row.neid === curNeid"
                                 v-if="scope.row.is_dir && curDirNeid === '0'"
                                 :enabled="userInfo.isAdmin && directoryType === 'SELF'"
@@ -254,14 +254,29 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div class="flex jcc">
+                                <span v-if="directoryType === 'SELF'" class="flex">
+                                    <span v-if="scope.row.neid === curNeid">
+                                        <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle
+                                                   type="primary"></el-button>
+                                    </span>
+                                    <span v-else>
+                                        <el-button icon="el-icon-edit" circle @click.stop="curNeid = scope.row.neid"
+                                                   type="primary"></el-button>
+                                    </span>
+
+                                    <span v-if="scope.row.neid === curNeid">
+                                        <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''"
+                                                    type="danger"></el-button>
+                                    </span>
+                                </span>
                                 <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')">
                                 <el-button circle icon="el-icon-plus" type=""
                                            @click.stop="handleAdd(scope.row)"/>
-                            </span>
+                                </span>
                                 <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')">
                                 <el-button circle icon="el-icon-link"
                                            @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
-                            </span>
+                                </span>
                                 <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
                                                         :file-item="scope.row"
                                                         @onModifySuccess="handleRefreshDir"/>
@@ -269,7 +284,7 @@
                                 <el-button circle icon="el-icon-edit"
                                            @click.stop="handleUpdateAlias(scope.$index, scope.row)">
                                 </el-button>
-                            </span>
+                                </span>
                                 <el-button
                                         v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
                                         circle
@@ -1035,6 +1050,11 @@ export default {
                 this.$message.success("成功添加【" + multiRow.length + "】条数据到清单！")
             }
         },
+        handleSave(neid) {
+            this.$refs[`adminManage${neid}`].handleSave()
+            console.log('this.$refs[`adminManage${neid}`]',this.$refs[`adminManage${neid}`])
+            this.curNeid = ''
+        },
         handleAdd(row, needFilter) {
             let isIn = false;
             this.toCreateAlbum.list.forEach(item => {
@@ -1362,11 +1382,11 @@ export default {
             });
         },
 
-        handleAddAdmin(row, column, cell) {
+        handleAddAdmin(row) {
             if(this.curNeid !== row.neid) {
                 this.curNeid = row.neid
             }else {
-                this.curNeid = ''
+                return
             }
         },
 
