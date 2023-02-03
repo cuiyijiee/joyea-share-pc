@@ -345,7 +345,7 @@
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
-                            <el-table-column align="center" label="操作" width="150">
+                            <el-table-column align="center" label="操作" width="100">
                                 <template slot-scope="scope">
                                     <div v-if="!scope.row.isModify"
                                          class="color_back"
@@ -1654,7 +1654,7 @@ export default {
     margin-top: 5px;
     /*width: 100%;*/
     .el-button {
-        padding: 2px 4px;
+        padding: 5px 5px;
     }
 }
 .qd_list_btns {
