@@ -96,10 +96,10 @@
                         <span class="pointer">
                             <el-dropdown trigger="click" @command="sortFilter" :hide-on-click="false">
                                 <span class="common-btn-style">
-                                <img
+                                    <img
                                         style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                         src="../../../assets/icon_Filter.svg"/>
-                                排序
+                                    排序
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item :icon="sortRegular.regular.icon3" disabled :command="{regularName: 'name', icon3: 'el-icon-check', type: 'regular'}">名称排序</el-dropdown-item>
@@ -121,7 +121,8 @@
                             v-if="isListMode"
                             class="pointer">
                             <span
-                                class="common-btn-style">
+                                class="common-btn-style"
+                                style="font-size: 14px">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                     src="../../../assets/icon_list_mode.svg"/>
@@ -132,7 +133,9 @@
                             @click="isListMode = !isListMode"
                             v-if="!isListMode"
                             class="pointer">
-                            <span class="common-btn-style">
+                            <span
+                                class="common-btn-style"
+                                style="font-size: 14px">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                     src="../../../assets/icon_large_img_mode.svg"/>
@@ -1297,6 +1300,7 @@ export default {
             })
         },
         handleClickDirPath(item, index) {
+            this.isListMode = true
             let toReachPath = "";
             for (let i = 0; i <= index; i++) {
                 toReachPath = toReachPath + "/" + this.dir.currentPath[i]
@@ -1476,6 +1480,7 @@ export default {
             })
         },
         handleGoRootPath() {
+            this.isListMode = true
             let filterParams = {
                 orderBy: 'name',
                 sort: this.sortRegular.sort.sortName,
@@ -1488,6 +1493,7 @@ export default {
             }
         },
         handleBackMenuPath() {
+            this.isListMode = true
             if (this.dir.currentPath.length === 0) {
                 this.directoryType = ""
             } else if (this.dir.currentPath.length === 1) {
@@ -1659,6 +1665,7 @@ export default {
 .qd_list_btns {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     .el-button {
         margin: 5px 5px 0 0;
     }
