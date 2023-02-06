@@ -1,6 +1,6 @@
 <template>
     <span>
-        <el-popover placement="top" width="320" v-model="visible">
+        <el-popover placement="top" width="320" v-model="visible" style="margin-right: 5px">
             <div>重命名文件夹【 {{ fileItem.file_name }} 】</div>
             <el-input v-model="newPrivateDirName"></el-input>
               <div style="text-align: right; margin: 0">
@@ -8,8 +8,8 @@
                 <el-button type="primary" size="mini" @click.stop="handleRenamePrivateDir">确定</el-button>
               </div>
             <el-button slot="reference"
-                       @click.stop=""
-                       icon="el-icon-edit-outline" circle/>
+                       @click.stop="" size="small"
+                       icon="el-icon-edit" circle/>
         </el-popover>
     </span>
 </template>

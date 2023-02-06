@@ -231,7 +231,7 @@
                             </el-image>
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="directoryType === 'SELF'" align="center" label="管理员">
+                    <el-table-column v-if="directoryType === 'SELF' && curDirNeid === '0'" align="center" label="管理员">
                         <template slot-scope="scope">
                             <PrivateDirectoryAdminManager
                                 :ref="`adminManage${scope.row.neid}`"
@@ -254,41 +254,41 @@
                     <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <div class="flex jcc">
-                                <span v-if="directoryType === 'SELF' && scope.row.adminUser" class="flex">
-                                    <span v-if="scope.row.neid === curNeid">
-                                        <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle
-                                                   type="primary"></el-button>
-                                    </span>
-                                    <span v-else-if="scope.row.is_dir && curDirNeid === '0'">
-                                        <el-button icon="el-icon-edit" circle @click.stop="curNeid = scope.row.neid"
-                                                   type="primary"></el-button>
-                                    </span>
-                                    <span v-if="scope.row.neid === curNeid">
-                                        <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''"
-                                                    type="danger"></el-button>
-                                    </span>
-                                </span>
-                                <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')">
-                                <el-button circle icon="el-icon-plus" type=""
-                                           @click.stop="handleAdd(scope.row)"/>
-                                </span>
-                                <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')">
-                                <el-button circle icon="el-icon-link"
-                                           @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
-                                </span>
                                 <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
                                                         :file-item="scope.row"
                                                         @onModifySuccess="handleRefreshDir"/>
-                                <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')">
-                                <el-button circle icon="el-icon-edit"
-                                           @click.stop="handleUpdateAlias(scope.$index, scope.row)">
-                                </el-button>
+                                <span v-if="directoryType === 'SELF' && scope.row.adminUser" class="flex">
+                                    <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
+                                        <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle size="small"
+                                                   type="primary"></el-button>
+                                    </span>
+                                    <span v-else-if="scope.row.is_dir && curDirNeid === '0'" style="margin-right: 5px">
+                                        <el-button icon="el-icon-user" circle @click.stop="curNeid = scope.row.neid" size="small"></el-button>
+                                    </span>
+                                    <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
+                                        <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''" size="small"></el-button>
+                                    </span>
                                 </span>
-                                <el-button
+                                <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')" style="margin-right: 5px">
+                                    <el-button circle icon="el-icon-plus" type="primary" size="small"
+                                               @click.stop="handleAdd(scope.row)"/>
+                                </span>
+                                <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')" style="margin-right: 5px">
+                                    <el-button circle icon="el-icon-link" size="small"
+                                               @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
+                                </span>
+                                <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')" style="margin-right: 5px">
+                                    <el-button circle icon="el-icon-edit" size="small"
+                                               @click.stop="handleUpdateAlias(scope.$index, scope.row)">
+                                    </el-button>
+                                </span>
+                                <span style="margin-right: 5px">
+                                    <el-button
                                         v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
-                                        circle
+                                        circle type="info" size="small"
                                         icon="el-icon-delete" @click.stop="handleRemoveSrc(scope.$index, scope.row)">
-                                </el-button>
+                                    </el-button>
+                                </span>
                             </div>
                         </template>
                     </el-table-column>
@@ -1394,7 +1394,7 @@ export default {
         },
 
         handleClickDirItem(row, column, cell) {
-            if(column.label === '管理员') return;
+            if(column && column.label === '管理员') return;
             this.visible.searchDialogVisible = false;
             if (row.is_dir) {
                 let filterParams = {
