@@ -10,7 +10,7 @@
             </div>
             <el-button
                 slot="reference"
-                style="margin-right: 10px"
+                style="margin-right: 10px;border: 1px solid #eb7708;"
                 class="search-button btn-icon-class" size="small">
                 <span>
                     <img
