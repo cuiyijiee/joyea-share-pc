@@ -1,16 +1,19 @@
 <template>
     <section id="build">
         <!--工具条-->
-        <div class="main-tools">
-            <el-input v-model="search.key" class="my-input" placeholder="请输入关键字"
-                      @keyup.enter.native="handleSearch">
-                <el-button slot="append" class="search-button"
-                           icon="el-icon-search" style=""
-                           v-on:click="handleSearch"/>
-            </el-input>
-            <div style="padding:15px 0;color: #808080">热门搜索:
-                <span v-for="key in topSearchKey" style="padding: 15px;cursor: pointer"
-                      @click="handleClickTopSearchKey(key)"><u><b>{{ key }}</b></u></span>
+        <!--header-->
+        <div>
+            <div class="main-tools">
+                <el-input v-model="search.key" class="my-input" placeholder="请输入关键字"
+                          @keyup.enter.native="handleSearch">
+                    <el-button slot="append" class="search-button"
+                               icon="el-icon-search" style=""
+                               v-on:click="handleSearch"/>
+                </el-input>
+                <div style="padding:15px 0;color: #808080">热门搜索:
+                    <span v-for="key in topSearchKey" style="padding: 15px;cursor: pointer"
+                          @click="handleClickTopSearchKey(key)"><u><b>{{ key }}</b></u></span>
+                </div>
             </div>
         </div>
         <el-drawer ref="drawer" :visible.sync="menuDrawerVisible" custom-class="demo-drawer"
@@ -37,162 +40,167 @@
                 </el-row>
             </div>
         </div>
-        <el-row v-else :gutter="20" style="margin:0 40px;padding: 10px 0 0 0;height:1080px;">
-            <el-col :span="4" class="bg-purple">
-                <directory-tree @handleClickItem="handleOpenDir"></directory-tree>
-            </el-col>
-            <el-col :span="16" class="bg-purple">
-                <div class="directory-tools">
-                    <el-button icon="iconfont el-icon-a-icon_getshortchain" size="mini" type="primary"
-                               @click="handleGetCurRedirectPath">获取短链
-                    </el-button>
-                    <el-button v-if="hasBtnShowPermission(null,'WORD_MANAGER')"
-                               size="mini" type="primary"
-                               class="btn-icon-class"
-                               @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
+
+        <!--main-->
+        <div v-else class="content_main">
+<!--            <el-row :gutter="20" style="margin:0 40px;padding: 10px 0 0 0;height:1080px;" class="flex">-->
+
+                <!--左侧和中间区域-->
+<!--                    <el-col :span="5">-->
+                        <div class="left-area">
+                            <directory-tree class="better-scroll" @handleClickItem="handleOpenDir"></directory-tree>
+                        </div>
+                        <div class="center-area">
+                            <!--表格上的操作区-->
+                            <div class="tools-operate-area">
+                                <div class="directory-tools">
+                                    <el-button icon="iconfont el-icon-a-icon_getshortchain" size="mini" type="primary"
+                                               @click="handleGetCurRedirectPath">获取短链
+                                    </el-button>
+                                    <el-button v-if="hasBtnShowPermission(null,'WORD_MANAGER')"
+                                               size="mini" type="primary"
+                                               class="btn-icon-class"
+                                               @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
                         <span class="flex aic">
                             <img
-                                style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                                src="../../../assets/icon_manage_next.svg"/>
+                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                    src="../../../assets/icon_manage_next.svg"/>
                             管理小白板
                         </span>
-                    </el-button>
-                    <add-src-to-private-dir v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')" :curDirNeid="curDirNeid"
-                                            @onAddSuccess="handleRefreshDir" @preview="handleClickDirItem"/>
-                    <add-private-directory v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')"
-                                           :curDirNeid="curDirNeid" @onAddSuccess="handleRefreshDir"/>
-                    <el-button icon="iconfont el-icon-a-icon_addtolist" size="mini" type="primary"
-                               @click="handleBatchAddToList">加入清单
-                    </el-button>
-                </div>
-                <!--文件路径显示-->
-                <el-row class="adminContentHead">
-                    <el-col :span="15" style="color:#000000;font-size: 15px;">
-                        <span style="cursor:pointer;"
+                                    </el-button>
+                                    <add-src-to-private-dir v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')" :curDirNeid="curDirNeid"
+                                                            @onAddSuccess="handleRefreshDir" @preview="handleClickDirItem"/>
+                                    <add-private-directory v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')"
+                                                           :curDirNeid="curDirNeid" @onAddSuccess="handleRefreshDir"/>
+                                    <el-button icon="iconfont el-icon-a-icon_addtolist" size="mini" type="primary"
+                                               @click="handleBatchAddToList">加入清单
+                                    </el-button>
+                                </div>
+                                <!--文件路径显示-->
+                                <el-row class="adminContentHead">
+                                    <el-col :span="15" style="color:#000000;font-size: 15px;">
+                                        <span style="cursor:pointer;"
                               class="common-btn-style color_back"
                               @click="handleBackMenuPath">
                             <img src="../../../assets/icon_back.svg"/>
                             返回上一层级</span>
-                        <!--<span
-                            style="cursor:pointer;margin: 0 8px;position: relative;top: -0.1em;"
-                            @click="handleGoRootPath">|</span>-->
-                        <span style="cursor:pointer;"
-                              :class="{'color_back': dir.currentPath.length}"
-                              @click="handleGoRootPath">{{
-                                directoryType === 'SELF' ? '细分市场素材库' : '基础素材库'
-                            }}</span>
-                        <span v-for="(item,index) in dir.currentPath" v-if="item !== '营销素材展示'"
-                              style="display: inline">
-                            <span style="position: relative;top: -0.025em;margin: 0 4px;font-size: 15px;">/</span>
-                            <span style="cursor:pointer;"
-                                  :class="{'color_back': index !== dir.currentPath.length-1}"
-                                  @click="handleClickDirPath(item,index)">{{ item }}</span>
-                        </span>
-                    </el-col>
-                    <el-col :span="9" style="text-align: right" class="">
-                        <span style="margin-right: 20px">
-                            共{{ dir.tableData.length }}个资源
-                        </span>
-                        <span class="pointer">
+                                        <!--<span
+                                            style="cursor:pointer;margin: 0 8px;position: relative;top: -0.1em;"
+                                            @click="handleGoRootPath">|</span>-->
+                                        <span style="cursor:pointer;"
+                                              :class="{'color_back': dir.currentPath.length}"
+                                              @click="handleGoRootPath">{{ directoryType === 'SELF' ? '细分市场素材库' : '基础素材库'}}</span>
+                                        <span v-for="(item,index) in dir.currentPath" v-if="item !== '营销素材展示'"
+                                              style="display: inline">
+                                        <span style="position: relative;top: -0.025em;margin: 0 4px;font-size: 15px;">/</span>
+                                        <span style="cursor:pointer;"
+                                              :class="{'color_back': index !== dir.currentPath.length-1}"
+                                              @click="handleClickDirPath(item,index)">{{ item }}</span>
+                                        </span>
+                                    </el-col>
+                                    <el-col :span="9" style="text-align: right" class="">
+                                        <span style="margin-right: 20px">
+                                            共{{ dir.tableData.length }}个资源
+                                        </span>
+                                        <span class="pointer">
                             <el-dropdown trigger="click" @command="sortFilter" :hide-on-click="false">
                                 <span class="common-btn-style">
                                     <img
                                         style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                         src="../../../assets/icon_Filter.svg"/>
-                                    排序
+                                        排序
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item :icon="sortRegular.regular.icon3" disabled :command="{regularName: 'name', icon3: 'el-icon-check', type: 'regular'}">名称排序</el-dropdown-item>
                                     <el-dropdown-item
-                                            divided
-                                            :class="{'ml19': !sortRegular.sort.icon1}"
-                                            :icon="sortRegular.sort.icon1"
-                                            :command="{sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}">升序</el-dropdown-item>
+                                        divided
+                                        :class="{'ml19': !sortRegular.sort.icon1}"
+                                        :icon="sortRegular.sort.icon1"
+                                        :command="{sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}">升序</el-dropdown-item>
                                     <el-dropdown-item
-                                            :class="{'ml19': !sortRegular.sort.icon2}"
-                                            :icon="sortRegular.sort.icon2"
-                                            :command="{sortName: 'desc', icon2: 'el-icon-check', type: 'sort'}">降序</el-dropdown-item>
+                                        :class="{'ml19': !sortRegular.sort.icon2}"
+                                        :icon="sortRegular.sort.icon2"
+                                        :command="{sortName: 'desc', icon2: 'el-icon-check', type: 'sort'}">降序</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
 
                         </span>
-                        <span
+                                        <span
                             @click="isListMode = !isListMode"
                             v-if="isListMode"
                             class="pointer">
                             <span
                                 class="common-btn-style"
-                                style="font-size: 14px">
+                                style="font-size: 14px;color: #606266">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                     src="../../../assets/icon_list_mode.svg"/>
-                                列表模式
+                                    列表模式
                             </span>
                         </span>
-                        <span
+                                        <span
                             @click="isListMode = !isListMode"
                             v-if="!isListMode"
                             class="pointer">
                             <span
                                 class="common-btn-style"
-                                style="font-size: 14px">
+                                style="font-size: 14px; color: #606266">
                                 <img
                                     style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                     src="../../../assets/icon_large_img_mode.svg"/>
                                 大图模式
                             </span>
                         </span>
-                        <span class="pointer">
-                            <el-dropdown trigger="click" @command="filterTerm" :hide-on-click="false">
+                                        <span class="pointer">
+                                            <el-dropdown trigger="click" @command="filterTerm" :hide-on-click="false">
                                 <span class="common-btn-style">
-                                <img
-                                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                                    src="../../../assets/icon_Filter.svg"/>
-                                筛选
+                                    <img
+                                        style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                                        src="../../../assets/icon_Filter.svg"/>
+                                        筛选
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <el-dropdown-item
-                                        :class="{'ml19': !filterRegular.icon1}"
-                                        :icon="filterRegular.icon1"
-                                        :command="{filterName: 'all', icon1: 'el-icon-check'}">全部</el-dropdown-item>
+                                            :class="{'ml19': !filterRegular.icon1}"
+                                            :icon="filterRegular.icon1"
+                                            :command="{filterName: 'all', icon1: 'el-icon-check'}">全部</el-dropdown-item>
                                     <el-dropdown-item
-                                        :class="{'ml19': !filterRegular.icon2}"
-                                        :icon="filterRegular.icon2"
-                                        :command="{filterName: 'dir', icon2: 'el-icon-check'}">文件夹</el-dropdown-item>
+                                            :class="{'ml19': !filterRegular.icon2}"
+                                            :icon="filterRegular.icon2"
+                                            :command="{filterName: 'dir', icon2: 'el-icon-check'}">文件夹</el-dropdown-item>
                                     <el-dropdown-item
-                                        :class="{'ml19': !filterRegular.icon3}"
-                                        :icon="filterRegular.icon3"
-                                        :command="{filterName: 'doc', icon3: 'el-icon-check'}">文档</el-dropdown-item>
+                                            :class="{'ml19': !filterRegular.icon3}"
+                                            :icon="filterRegular.icon3"
+                                            :command="{filterName: 'doc', icon3: 'el-icon-check'}">文档</el-dropdown-item>
                                     <el-dropdown-item
-                                        :class="{'ml19': !filterRegular.icon4}"
-                                        :icon="filterRegular.icon4"
-                                        :command="{filterName: 'image', icon4: 'el-icon-check'}">图片</el-dropdown-item>
+                                            :class="{'ml19': !filterRegular.icon4}"
+                                            :icon="filterRegular.icon4"
+                                            :command="{filterName: 'image', icon4: 'el-icon-check'}">图片</el-dropdown-item>
                                     <el-dropdown-item
-                                        :class="{'ml19': !filterRegular.icon5}"
-                                        :icon="filterRegular.icon5"
-                                        :command="{filterName: 'video', icon5: 'el-icon-check'}">视频</el-dropdown-item>
+                                            :class="{'ml19': !filterRegular.icon5}"
+                                            :icon="filterRegular.icon5"
+                                            :command="{filterName: 'video', icon5: 'el-icon-check'}">视频</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
-                        </span>
-                    </el-col>
-                </el-row>
-                <!--<div class="adminContentHead"
-                     style="text-align: right">
+                                        </span>
+                                    </el-col>
+                                </el-row>
+                            </div>
 
-                </div>-->
-                <el-table v-if="isListMode"
-                      ref="fileTable" v-loading="dir.loadingDir || loading.search" :data="dir.tableData"
-                      empty-text="文件夹为空" style="width: 100%;" tooltip-effect="dark"
-                      @row-click="handleClickDirItem"
-                      @cell-click="handleAddAdmin"
-                      @selection-change="handleSelectionChange">
-                    <!--多选框，屏蔽文件夹，使其不可选中-->
-                    <el-table-column
-                        type="selection" width="55"
-                        :selectable="(row) => {return !row.is_dir}"></el-table-column>
-                    <el-table-column label="文件名" show-overflow-tooltip>
-                        <template slot-scope="scope">
-                            <div style="">
+                            <el-table v-if="isListMode"
+                                      class="better-scroll"
+                                      ref="fileTable" v-loading="dir.loadingDir || loading.search" :data="dir.tableData"
+                                      empty-text="文件夹为空" style="width: 100%;" tooltip-effect="dark"
+                                      @row-click="handleClickDirItem"
+                                      @cell-click="handleAddAdmin"
+                                      @selection-change="handleSelectionChange">
+                                <!--多选框，屏蔽文件夹，使其不可选中-->
+                                <el-table-column
+                                        type="selection" width="55"
+                                        :selectable="(row) => {return !row.is_dir}"></el-table-column>
+                                <el-table-column label="文件名" show-overflow-tooltip>
+                                    <template slot-scope="scope">
+                                        <div style="">
                                 <span class="file-icon">
                                     <i v-if="scope.row.is_dir" class="iconfont-color icon-icon_folder"></i>
                                     <i v-else-if="scope.row.mime_type.startsWith('doc')"
@@ -203,186 +211,197 @@
                                        class="iconfont-color icon-icon_vedio"></i>
                                     <i v-else class="el-icon-question"></i>
                                   </span>
-                                <span v-if="scope.row.mime_type && scope.row.mime_type.startsWith('word')"
-                                      style="vertical-align:center;color: #333333">
+                                            <span v-if="scope.row.mime_type && scope.row.mime_type.startsWith('word')"
+                                                  style="vertical-align:center;color: #333333">
                                     {{ ' ' + scope.row.path }}</span>
-                                <span v-else style="vertical-align:center;color: #333333">
+                                            <span v-else style="vertical-align:center;color: #333333">
                                     {{ ' ' + scope.row.file_name }}</span>
-                                <div v-if="scope.row.desc">
-                                    <el-tag v-for="(tag,index) in scope.row.desc.split(' ')" size="mini"
-                                            style="margin-right: 2px" :key="index"
-                                            type="info">{{ tag.replace(markReg, "") }}
-                                    </el-tag>
-                                </div>
-                                <div v-else-if="scope.row.tags">
-                                    <el-tag v-for="(tag,index) in scope.row.tags" size="mini"
-                                            style="margin-right: 2px" :key="index"
-                                            type="info">{{ tag.name.replace(markReg, "") }}
-                                    </el-tag>
-                                </div>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="预览" width="150">
-                        <template slot-scope="scope">
-                            <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
-                                      :onerror="defaultImg"
-                                      :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
-                                      :src="genPreviewUrl(scope.row.neid)"
-                                      class="preview_img"
-                                      :style="{'height: 90px;width: 120px': scope.row.mime_type && scope.row.mime_type.startsWith('image')}">
-                            </el-image>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="directoryType === 'SELF' && curDirNeid === '0'" align="center" label="管理员">
-                        <template slot-scope="scope">
-                            <PrivateDirectoryAdminManager
-                                :ref="`adminManage${scope.row.neid}`"
-                                :editable="scope.row.neid === curNeid"
-                                v-if="scope.row.is_dir && curDirNeid === '0'"
-                                :enabled="userInfo.isAdmin && directoryType === 'SELF'"
-                                :file-item="scope.row"/>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="引用次数" width="80">
-                        <template slot-scope="scope">
-                            <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="下载次数" width="80">
-                        <template slot-scope="scope">
-                            <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="操作">
-                        <template slot-scope="scope">
-                            <div class="flex jcc">
-                                <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
-                                                        :file-item="scope.row"
-                                                        @onModifySuccess="handleRefreshDir"/>
-                                <span v-if="directoryType === 'SELF' && scope.row.adminUser" class="flex">
-                                    <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
-                                        <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle size="small"
-                                                   type="primary"></el-button>
-                                    </span>
-                                    <span v-else-if="scope.row.is_dir && curDirNeid === '0'" style="margin-right: 5px">
-                                        <el-button icon="el-icon-user" circle @click.stop="curNeid = scope.row.neid" size="small"></el-button>
-                                    </span>
-                                    <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
-                                        <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''" size="small"></el-button>
-                                    </span>
-                                </span>
-                                <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')" style="margin-right: 5px">
-                                    <el-button circle icon="el-icon-plus" type="primary" size="small"
-                                               @click.stop="handleAdd(scope.row)"/>
-                                </span>
-                                <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')" style="margin-right: 5px">
-                                    <el-button circle icon="el-icon-link" size="small"
-                                               @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
-                                </span>
-                                <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')" style="margin-right: 5px">
-                                    <el-button circle icon="el-icon-edit" size="small"
-                                               @click.stop="handleUpdateAlias(scope.$index, scope.row)">
-                                    </el-button>
-                                </span>
-                                <span style="margin-right: 5px">
-                                    <el-button
-                                        v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
-                                        circle type="info" size="small"
-                                        icon="el-icon-delete" @click.stop="handleRemoveSrc(scope.$index, scope.row)">
-                                    </el-button>
-                                </span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div v-else>
-                    <div v-if="dir.largeImgModeData.length" class="large-img-mode-box">
-                        <div class="large-img-item" v-for="(item,index) in dir.largeImgModeData" :key="item.neid">
-                            <el-checkbox
-                                    @change="handleSelectedLargeImg(item)"
-                                    :value="largeImgSelected.includes(item.neid)"/>
-                            <i @click="handleAdd(item,true)" class="el-icon-circle-plus"/>
-                            <el-image
-                                :onerror="defaultImg"
-                                :preview-src-list="[].concat(genPreviewUrl(item.neid))"
-                                :src="genPreviewUrl(item.neid)">
-                            </el-image>
-                            <div style="font-size: 12px">{{ item.file_name }}</div>
-                        </div>
-                    </div>
-                    <el-empty  v-else description="暂无数据"></el-empty>
-                </div>
-            </el-col>
-            <!--右边清单操作-->
-            <el-col :span="4" class="bg-purple">
-                <div class="content_div flex">
-                    <div class="qdbj_list_tit" style="width: 100%">
-                        <span>清单编辑列表（{{ toCreateAlbum.list.length }}）</span>
-                    </div>
-                    <div>
-                        <el-table id="toSortTable" ref="table"
-                                  class="qingdan_table"
-                                  :data="toCreateAlbum.list" empty-text="清单内还没有内容" row-key="neid"
-                                  stripe style="width: 100%">
-                            <el-table-column
-                                    class-name="preview_cell"
-                                    label="预览">
-                                <template slot-scope="scope">
-                                    <el-tooltip :content="scope.row.path.substr(scope.row.path.lastIndexOf('/')+1)"
-                                                class="item"
-                                                effect="dark"
-                                                placement="top">
-                                        <img v-if="scope.row.mime_type.startsWith('video')" class="preview_img"
-                                             src="video.png" @click="handleGoToPreview(scope.row)">
-                                        <img v-else-if="scope.row.mime_type.startsWith('doc')"
-                                             :src="handleGetDocumentImage(scope.row.mime_type)"
-                                             class="preview_img" @click="handleGoToPreview(scope.row)">
-                                        <img v-else-if="scope.row.mime_type.startsWith('image')" :onerror="defaultImg"
-                                             :preview-text="scope.row.path"
-                                             :src="genPreviewUrl(scope.row.neid)" class="preview_img"
-                                             preview="build_image_list">
-                                        <img v-else class="preview_img" :src="unknown.png"
-                                             @click="handleGoToPreview(scope.row)">
-                                    </el-tooltip>
-                                </template>
-                            </el-table-column>
-                            <el-table-column align="center" label="操作" width="100">
-                                <template slot-scope="scope">
-                                    <div v-if="!scope.row.isModify"
-                                         class="color_back"
-                                         @click.stop="handleDelete(scope.$index, scope.row)">删除
+                                            <div v-if="scope.row.desc">
+                                                <el-tag v-for="(tag,index) in scope.row.desc.split(' ')" size="mini"
+                                                        style="margin-right: 2px" :key="index"
+                                                        type="info">{{ tag.replace(markReg, "") }}
+                                                </el-tag>
+                                            </div>
+                                            <div v-else-if="scope.row.tags">
+                                                <el-tag v-for="(tag,index) in scope.row.tags" size="mini"
+                                                        style="margin-right: 2px" :key="index"
+                                                        type="info">{{ tag.name.replace(markReg, "") }}
+                                                </el-tag>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="预览">
+                                    <template slot-scope="scope">
+                                        <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
+                                                  :onerror="defaultImg"
+                                                  :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
+                                                  :src="genPreviewUrl(scope.row.neid)"
+                                                  class="preview_img"
+                                                  :style="{'height: 90px;width: 120px': scope.row.mime_type && scope.row.mime_type.startsWith('image')}">
+                                        </el-image>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column v-if="directoryType === 'SELF' && curDirNeid === '0'" align="center" label="管理员">
+                                    <template slot-scope="scope">
+                                        <PrivateDirectoryAdminManager
+                                                :ref="`adminManage${scope.row.neid}`"
+                                                :editable="scope.row.neid === curNeid"
+                                                v-if="scope.row.is_dir && curDirNeid === '0'"
+                                                :enabled="userInfo.isAdmin && directoryType === 'SELF'"
+                                                :file-item="scope.row"/>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="引用次数">
+                                    <template slot-scope="scope">
+                                        <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="下载次数">
+                                    <template slot-scope="scope">
+                                        <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column align="center" label="操作" width="160px">
+                                    <template slot-scope="scope">
+                                        <div class="flex jcc">
+                                            <RenamePrivateDirectory v-if="hasBtnShowPermission(scope.row,'RENAME')"
+                                                                    :file-item="scope.row"
+                                                                    @onModifySuccess="handleRefreshDir"/>
+                                            <span v-if="directoryType === 'SELF' && scope.row.adminUser" class="flex">
+                                                <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
+                                                    <el-button @click.stop="handleSave(scope.row.neid)" icon="el-icon-check" circle size="small"
+                                                               type="primary"></el-button>
+                                                </span>
+                                                <span v-else-if="scope.row.is_dir && curDirNeid === '0'" style="margin-right: 5px">
+                                                    <el-button icon="el-icon-user" circle @click.stop="curNeid = scope.row.neid" size="small"></el-button>
+                                                </span>
+                                                <span v-if="scope.row.neid === curNeid" style="margin-right: 5px">
+                                                    <el-button  icon="el-icon-close" circle @click.stop="curNeid = ''" size="small"></el-button>
+                                                </span>
+                                            </span>
+                                            <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')" style="margin-right: 5px">
+                                                <el-button circle icon="el-icon-plus" type="primary" size="small"
+                                                           @click.stop="handleAdd(scope.row)"/>
+                                            </span>
+                                            <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')" style="margin-right: 5px">
+                                                <el-button circle icon="el-icon-link" size="small"
+                                                           @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
+                                            </span>
+                                            <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')" style="margin-right: 5px">
+                                                <el-button circle icon="el-icon-edit" size="small"
+                                                           @click.stop="handleUpdateAlias(scope.$index, scope.row)">
+                                                </el-button>
+                                            </span>
+                                            <span style="margin-right: 5px">
+                                                <el-button
+                                                    v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
+                                                    circle type="info" size="small"
+                                                    icon="el-icon-delete" @click.stop="handleRemoveSrc(scope.$index, scope.row)">
+                                                </el-button>
+                                            </span>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <div v-else>
+                                <div v-if="dir.largeImgModeData.length" class="large-img-mode-box">
+                                    <div class="large-img-item" v-for="(item,index) in dir.largeImgModeData" :key="item.neid">
+                                        <el-checkbox
+                                                @change="handleSelectedLargeImg(item)"
+                                                :value="largeImgSelected.includes(item.neid)"/>
+                                        <i @click="handleAdd(item,true)" class="el-icon-circle-plus"/>
+                                        <el-image
+                                                :onerror="defaultImg"
+                                                :preview-src-list="[].concat(genPreviewUrl(item.neid))"
+                                                :src="genPreviewUrl(item.neid)">
+                                        </el-image>
+                                        <div style="font-size: 12px">{{ item.file_name }}</div>
                                     </div>
-                                    <div v-else
-                                         @click.stop="handleModify(scope.$index,scope.row,false)">取消
-                                    </div>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <div :class="{no_display:toCreateAlbum.list.length === 0}" class="load_more_bt qd_list_btns">
-                            <!--<el-col :span="9">-->
-                            <el-button :loading="loading.saveList" class="load_more_bt" icon="el-icon-folder-add"
-                                       size="mini"
-                                       type="primary" @click.stop="handleSaveList">保存清单
-                            </el-button>
-                            <!--</el-col>
-                            <el-col :span="9">-->
-                            <el-button v-loading="loading.downloadLoading" class="load_more_bt" icon="el-icon-suitcase"
-                                       size="mini" type="info"
-                                       @click.stop="handleDownloadSrc(true)">下载准备
-                            </el-button>
-                            <!--</el-col>
-                            <el-col :span="6">-->
-                            <el-button class="load_more_bt" icon="el-icon-delete" size="mini" type="info"
-                                       @click.stop="handleClearList">清空
-                            </el-button>
-                            <!--</el-col>-->
+                                </div>
+                                <el-empty  v-else description="暂无数据"></el-empty>
+                            </div>
                         </div>
-                    </div>
 
-                </div>
-            </el-col>
-        </el-row>
+<!--                    </el-col>-->
+<!--                    <el-col :span="15" class="bg-purple">-->
+
+
+<!--                    </el-col>-->
+
+                    <div class="right-area">
+                        <div class="content_div flex">
+                            <div class="qdbj_list_tit" style="width: 100%">
+                                <span>清单编辑列表（{{ toCreateAlbum.list.length }}）</span>
+                            </div>
+                            <div class="right-table-btn">
+                                <el-table id="toSortTable" ref="table"
+                                          class="qingdan_table better-scroll"
+                                          :data="toCreateAlbum.list" empty-text="清单内还没有内容" row-key="neid"
+                                          stripe style="width: 100%">
+                                    <el-table-column
+                                            class-name="preview_cell"
+                                            label="预览">
+                                        <template slot-scope="scope">
+                                            <el-tooltip :content="scope.row.path.substr(scope.row.path.lastIndexOf('/')+1)"
+                                                        class="item"
+                                                        effect="dark"
+                                                        placement="top">
+                                                <img v-if="scope.row.mime_type.startsWith('video')" class="preview_img"
+                                                     src="video.png" @click="handleGoToPreview(scope.row)">
+                                                <img v-else-if="scope.row.mime_type.startsWith('doc')"
+                                                     :src="handleGetDocumentImage(scope.row.mime_type)"
+                                                     class="preview_img" @click="handleGoToPreview(scope.row)">
+                                                <img v-else-if="scope.row.mime_type.startsWith('image')" :onerror="defaultImg"
+                                                     :preview-text="scope.row.path"
+                                                     :src="genPreviewUrl(scope.row.neid)" class="preview_img"
+                                                     preview="build_image_list">
+                                                <img v-else class="preview_img" :src="unknown.png"
+                                                     @click="handleGoToPreview(scope.row)">
+                                            </el-tooltip>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column align="center" label="操作" width="100">
+                                        <template slot-scope="scope">
+                                            <div v-if="!scope.row.isModify"
+                                                 class="color_back"
+                                                 @click.stop="handleDelete(scope.$index, scope.row)">删除
+                                            </div>
+                                            <div v-else
+                                                 @click.stop="handleModify(scope.$index,scope.row,false)">取消
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <div :class="{no_display:toCreateAlbum.list.length === 0}" class="load_more_bt qd_list_btns">
+                                    <!--<el-col :span="9">-->
+                                    <el-button :loading="loading.saveList" class="load_more_bt" icon="el-icon-folder-add"
+                                               size="mini"
+                                               type="primary" @click.stop="handleSaveList">保存清单
+                                    </el-button>
+                                    <!--</el-col>
+                                    <el-col :span="9">-->
+                                    <el-button v-loading="loading.downloadLoading" class="load_more_bt" icon="el-icon-suitcase"
+                                               size="mini" type="info"
+                                               @click.stop="handleDownloadSrc(true)">下载准备
+                                    </el-button>
+                                    <!--</el-col>
+                                    <el-col :span="6">-->
+                                    <el-button class="load_more_bt" icon="el-icon-delete" size="mini" type="info"
+                                               @click.stop="handleClearList">清空
+                                    </el-button>
+                                    <!--</el-col>-->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                <!--右边清单操作-->
+<!--                <el-col :span="4" class="bg-purple">-->
+<!--                </el-col>-->
+<!--            </el-row>-->
+        </div>
+
         <el-dialog ref="addDialog" :visible.sync="toCreateAlbum.descSelectDialogVisible" center title="选择已有解说词">
             <span class="dialog-footer">
                 <img :src="toCreateAlbum.previewUrl" class="preview_img" style="margin: 0 auto">
@@ -1676,6 +1695,19 @@ export default {
     color: gray;
     margin: 10px auto;
     line-height: 30px;
+    background-color: #ffffff;
+    .el-col {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        align-self: flex-end;
+        span {
+            flex: none;
+        }
+    }
+    .el-col:nth-of-type(2) {
+        justify-content: flex-end;
+    }
 }
 
 .large-img-mode-box {
@@ -1690,7 +1722,6 @@ export default {
         margin: 0 10px 10px 0;
         border-radius: 5px;
         box-sizing: border-box;
-        /*flex: 1;*/
         &::after {}
         .el-checkbox {
             position: absolute;
@@ -1724,18 +1755,6 @@ export default {
         /*flex: 1;*/
         /*overflow: auto;*/
         /*max-height: calc(100% - 200px);*/
-        &::-webkit-scrollbar {
-            width: 8px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            opacity: 0.2;
-        }
-        &::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-            border-radius: 0;
-        }
     }
 }
 
@@ -1768,6 +1787,7 @@ export default {
 
 .directory-tools {
     display: flex;
+    background-color: #ffffff;
 }
 
 .flex {
@@ -1779,11 +1799,17 @@ export default {
 .jcc {
     justify-content: center;
 }
+.jcb {
+    justify-content: space-between;
+}
 .color_back {
     color: #eb7708;
 }
 .ml19 {
     margin-left: 19px;
+}
+::v-deep.el-button .el-icon-plus {
+    font-weight: bold!important;
 }
 ::v-deep.el-dropdown-menu__item {
     background-color: white!important;
@@ -1801,6 +1827,99 @@ export default {
 .file-icon {
     .iconfont-color {
         font-size: 30px;
+    }
+}
+
+.content_main {
+    box-sizing: border-box;
+    background-color: #eeeeee;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 160px);
+    overflow: hidden;
+    .left-area {
+        width: 20%;
+        float: left;
+        padding: 10px;
+        background-color: #ffffff;
+        border-radius: 8px 0 0 0;
+        height: calc(100% - 20px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        .directory-tree {
+            overflow: auto;
+        }
+    }
+    .center-area {
+        float: left;
+        width: calc(60% - 30px);
+        padding: 10px;
+        margin-right: 16px;
+        border-left: 1px solid #e6e6e6;
+        background-color: #ffffff;
+        border-radius: 0 8px 0 0;
+
+        height: calc(100% - 20px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        .el-table {
+            overflow: auto;
+            &:before {
+                display: none;
+            }
+        }
+
+        ::v-deep thead tr th{
+            border-top: 1px solid #EBEEF5;
+            padding: 4px 0;
+            position: relative;
+            .cell {
+                border-right: 1px solid #EBEEF5;
+            }
+        }
+        ::v-deep thead tr th:nth-last-of-type(2) {
+            .cell {
+                border-right: none!important;
+            }
+        }
+
+    }
+    .right-area {
+        float: right;
+        width: 20%;
+        .right-table-btn {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 242px);
+            padding-bottom: 10px;
+            overflow: hidden;
+            .el-table {
+                flex: 1;
+                overflow: auto;
+                &::before {
+                    display: none;
+                }
+            }
+        }
+    }
+    /*}*/
+
+    .better-scroll {
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            -webkit-box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        &::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0);
+            border-radius: 8px;
+        }
     }
 }
 </style>
