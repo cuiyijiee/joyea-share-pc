@@ -304,7 +304,7 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
-                            <div v-else>
+                            <div v-else class="better-scroll" style="overflow: auto">
                                 <div v-if="dir.largeImgModeData.length" class="large-img-mode-box">
                                     <div class="large-img-item" v-for="(item,index) in dir.largeImgModeData" :key="item.neid">
                                         <el-checkbox
