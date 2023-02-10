@@ -61,12 +61,12 @@
                                                size="mini" type="primary"
                                                class="btn-icon-class"
                                                @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
-                                    <span class="flex aic">
-                                        <img
+                                        <span class="flex aic">
+                                            <img
                                                 style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
                                                 src="../../../assets/icon_manage_next.svg"/>
-                                        管理小白板
-                                    </span>
+                                            管理小白板
+                                        </span>
                                     </el-button>
                                     <add-src-to-private-dir v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')" :curDirNeid="curDirNeid"
                                                             @onAddSuccess="handleRefreshDir" @preview="handleClickDirItem"/>
@@ -1677,16 +1677,14 @@ export default {
 .load_more_bt {
     margin-top: 5px;
     /*width: 100%;*/
-    .el-button {
-        padding: 5px 5px;
-    }
 }
 .qd_list_btns {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     .el-button {
-        margin: 5px 5px 0 0;
+        font-size: 12px;
+        padding: 8px 16px;
     }
 }
 
