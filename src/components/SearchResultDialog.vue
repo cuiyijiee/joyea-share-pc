@@ -1,29 +1,29 @@
 <template>
-    <div>
-        <el-dialog :close-on-click-modal="false"
-                   :close-on-press-escape="false"
-                   :title="'【' + search.keyword + '】的搜索结果'"
-                   v-model:visible="visible.searchDialogVisible"
-                   class="search-dialog"
-                   @close="">
-            <el-tabs v-model="search.resultShowType" class="search-result-type-switch"
-                     tab-position="top" @tab-click="handleFilterSearchResult">
-                <el-tab-pane key="0" label="全部"></el-tab-pane>
-                <el-tab-pane key="1" label="文件夹"></el-tab-pane>
-                <el-tab-pane key="2" label="文档"></el-tab-pane>
-                <el-tab-pane key="3" label="图片"></el-tab-pane>
-                <el-tab-pane key="4" label="视频"></el-tab-pane>
-            </el-tabs>
-            <!--            <div v-loading="loading.searchMore" class="search-result-content">-->
-            <div class="search-result-content">
-                <div class="function-block">
-                    <el-button icon="iconfont el-icon-a-icon_addtolist" size="mini" type="primary"
-                               @click="handleBatchAddToList">加入清单
-                    </el-button>
-                    <el-button icon="iconfont el-icon-a-icon_addtomarketsegments" :disabled="directoryType!=='SELF'"
-                               size="mini" type="primary" @click="handleBatchAddToPrivate">加入细分市场
-                    </el-button>
-                    <span>
+  <div>
+    <el-dialog :close-on-click-modal="false"
+               :close-on-press-escape="false"
+               :title="'【' + search.keyword + '】的搜索结果'"
+               :visible.sync="visible.searchDialogVisible"
+               class="search-dialog"
+               @close="">
+      <el-tabs v-model="search.resultShowType" class="search-result-type-switch"
+               tab-position="top" @tab-click="handleFilterSearchResult">
+        <el-tab-pane key="0" label="全部"></el-tab-pane>
+        <el-tab-pane key="1" label="文件夹"></el-tab-pane>
+        <el-tab-pane key="2" label="文档"></el-tab-pane>
+        <el-tab-pane key="3" label="图片"></el-tab-pane>
+        <el-tab-pane key="4" label="视频"></el-tab-pane>
+      </el-tabs>
+      <!--            <div v-loading="loading.searchMore" class="search-result-content">-->
+      <div class="search-result-content">
+        <div class="function-block">
+          <el-button icon="iconfont el-icon-a-icon_addtolist" size="mini" type="primary"
+                     @click="handleBatchAddToList">加入清单
+          </el-button>
+          <el-button icon="iconfont el-icon-a-icon_addtomarketsegments" :disabled="directoryType!=='SELF'"
+                     size="mini" type="primary" @click="handleBatchAddToPrivate">加入细分市场
+          </el-button>
+          <span>
             <el-popover
                 placement="bottom-end"
                 trigger="click">
@@ -46,16 +46,16 @@
                          icon="iconfont el-icon-icon_sort">排序</el-button>
             </el-popover>
           </span>
-                </div>
-                <el-table v-loading="loading.search" :data="searchResult" @selection-change="handleSelectionChange"
-                          empty-text="暂没有搜索数据" height="500" style="width: 100%" ref="multipleTable">
-                    <!--多选框，屏蔽文件夹，使其不可选中-->
-                    <el-table-column type="selection" width="55"
-                                     :selectable="(row) => {return !row.is_dir}"></el-table-column>
-                    <el-table-column label="文件名" show-overflow-tooltip>
-                        <template v-slot="scope">
-                            <div>
-                                <div class="file-name-block">
+        </div>
+        <el-table v-loading="loading.search" :data="searchResult" @selection-change="handleSelectionChange"
+                  empty-text="暂没有搜索数据" height="500" style="width: 100%" ref="multipleTable">
+          <!--多选框，屏蔽文件夹，使其不可选中-->
+          <el-table-column type="selection" width="55"
+                           :selectable="(row) => {return !row.is_dir}"></el-table-column>
+          <el-table-column label="文件名" show-overflow-tooltip>
+            <template v-slot="scope">
+              <div>
+                <div class="file-name-block">
                   <span class="file-icon">
                     <i v-if="scope.row.is_dir" class="iconfont-color icon-icon_folder"></i>
                     <i v-else-if="scope.row.mime_type.startsWith('doc')"
@@ -66,37 +66,37 @@
                        class="iconfont-color icon-icon_vedio"></i>
                     <i v-else class="el-icon-question"></i>
                   </span>
-                                    <span class="file-name" @click="handleGoToPreview(scope.row)">
+                  <span class="file-name" @click="handleGoToPreview(scope.row)">
                                         <b>{{ scope.row.path.substr(scope.row.path.lastIndexOf("/") + 1) }}</b>
                                     </span>
-                                    <div v-if="scope.row.desc" class="file-desc">
-                                        <el-tag v-for="(tag,index) in scope.row.desc.split(' ')" size="mini"
-                                                style="margin-right: 2px" :key="index"
-                                                type="info">{{ tag.replace(markReg, "") }}
-                                        </el-tag>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="预览" width="150">
-                        <template v-slot="scope">
-                            <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
-                                      :onerror="defaultImg"
-                                      :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
-                                      :src="genPreviewUrl(scope.row.neid)"
-                                      class="preview_img"
-                                      style="height: 90px;width: 120px">
-                            </el-image>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="文件类型" width="220">
-                        <template v-slot="scope">
-                            <div>
+                  <div v-if="scope.row.desc" class="file-desc">
+                    <el-tag v-for="(tag,index) in scope.row.desc.split(' ')" size="mini"
+                            style="margin-right: 2px" :key="index"
+                            type="info">{{ tag.replace(markReg, "") }}
+                    </el-tag>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="预览" width="150">
+            <template v-slot="scope">
+              <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
+                        :onerror="defaultImg"
+                        @click="handleGoToPreview(scope.row)"
+                        :src="genPreviewUrl(scope.row.neid)"
+                        class="preview_img"
+                        style="height: 90px;width: 120px">
+              </el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="文件类型" width="220">
+            <template v-slot="scope">
+              <div>
                 <span class="file-type-show">
                     {{ formatFileShowType(scope.row) }}
                 </span>
-                                <span class="file-type-hide">
+                <span class="file-type-hide">
                   <el-tooltip v-if="scope.row.is_dir" :open-delay="defaultOpenDelay" placement="top">
                     <div slot="content">跳转至文件所在位置</div>
                     <el-icon
@@ -126,40 +126,40 @@
                              @click.native="handleAddSrcToPrivateDir(scope.row)"></el-icon>
                   </el-tooltip>
                 </span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="引用次数" width="100">
-                        <template v-slot="scope">
-                            <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="下载次数" width="100">
-                        <template v-slot="scope">
-                            <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-button type="primary" size="small" plain :disabled="!search.hasNext"
-                           class="search-result-page-switch" @click="handleStartSearch">
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="引用次数" width="100">
+            <template v-slot="scope">
+              <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="下载次数" width="100">
+            <template v-slot="scope">
+              <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button type="primary" size="small" plain :disabled="!search.hasNext"
+                   class="search-result-page-switch" @click="handleStartSearch">
                     <span v-show="loading.searchMore" class="rotate_bg">
                         <i class="iconfont el-icon-icon_loading rotateImages"></i></span>
-                    <span style="font-size: 16px;line-height: 1">{{ loading.searchMore ? "加载中" : "加载更多" }}</span>
-                </el-button>
-            </div>
-        </el-dialog>
-        <el-image-viewer
-            v-if="imageViewVisible"
-            :on-close="()=>{imageViewVisible = false}"
-            :url-list="imageViewUrl" :z-index=9999></el-image-viewer>
-        <video-preview-dialog ref="VideoPreviewDialog"></video-preview-dialog>
-    </div>
+          <span style="font-size: 16px;line-height: 1">{{ loading.searchMore ? "加载中" : "加载更多" }}</span>
+        </el-button>
+      </div>
+    </el-dialog>
+    <el-image-viewer
+        v-if="imageViewVisible" :initial-index="imageIndex"
+        :on-close="()=>{imageViewVisible = false}"
+        :url-list="imageViewUrl" :z-index=9999></el-image-viewer>
+    <video-preview-dialog ref="VideoPreviewDialog"></video-preview-dialog>
+  </div>
 </template>
 
 <script>
 
-import { addRedirectPath, ftsSearch } from '@/api'
-import genSrcPreviewSrc, { formatFileShowType } from '@/utils'
+import {addRedirectPath, ftsSearch} from '@/api'
+import genSrcPreviewSrc, {formatFileShowType} from '@/utils'
 import VideoPreviewDialog from '@/components/VideoPreviewDialog'
 import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 
@@ -175,10 +175,11 @@ export default {
       type: String
     }
   },
-  data () {
+  data() {
     return {
       defaultOpenDelay: 1000,
       imageViewVisible: false,
+      imageIndex: 0,
       imageViewUrl: [],
       markReg: /<mark>|<\/mark>/g,
       search: {
@@ -193,7 +194,6 @@ export default {
         resultShowType: '0'
       },
       searchResult: [],
-      searchShowResult: [],
       visible: {
         searchDialogVisible: false
       },
@@ -208,13 +208,22 @@ export default {
   },
   methods: {
     formatFileShowType,
-    handleGoToPreview (fileItem) {
+    handleGoToPreview(fileItem) {
       if (fileItem.is_dir) {
         this.handleGotoDir(fileItem)
       } else if (fileItem.mime_type && fileItem.mime_type.startsWith('video')) {
         this.$refs.VideoPreviewDialog.playVideo(fileItem)
       } else if (fileItem.mime_type && fileItem.mime_type.startsWith('image')) {
-        this.imageViewUrl = [genSrcPreviewSrc(fileItem.neid)]
+        let imageFileItemNeid = this.searchResult.filter(fileItem => {
+          return !fileItem.is_dir && fileItem.mime_type.startsWith('image')
+        }).map(fileItem => {
+          return fileItem.neid;
+        });
+        let currentClickItemIndex = imageFileItemNeid.indexOf(fileItem.neid);
+        this.imageViewUrl = imageFileItemNeid.map(fileItemNeid => {
+          return genSrcPreviewSrc(fileItemNeid);
+        })
+        this.imageIndex = currentClickItemIndex;
         this.imageViewVisible = true
       } else if (fileItem.mime_type.startsWith('doc')) {
         window.open(genSrcPreviewSrc(fileItem.neid))
@@ -222,11 +231,11 @@ export default {
         this.$message.error('暂不支持的预览类型！')
       }
     },
-    handleGotoDir (fileItem) {
+    handleGotoDir(fileItem) {
       this.visible.searchDialogVisible = false
       this.$emit('goToDir', fileItem)
     },
-    handleGetCurRedirectPath (fileItem) {
+    handleGetCurRedirectPath(fileItem) {
       const _this = this
       let currentFullPath = fileItem.path
       if (currentFullPath.length === 0 && this.directoryType === 'SELF') {
@@ -234,7 +243,7 @@ export default {
       }
       addRedirectPath(currentFullPath, this.directoryType).then(resp => {
         const redirectPath = window.location.protocol + '//' +
-                    window.location.host + '/api/redirectPath?id=' + resp.id
+            window.location.host + '/api/redirectPath?id=' + resp.id
         const input = document.createElement('input')
         input.value = redirectPath
         document.body.appendChild(input)
@@ -245,16 +254,16 @@ export default {
         _this.$message.success('获取成功，已复制到剪贴板！')
       })
     },
-    genPreviewUrl (neid) {
+    genPreviewUrl(neid) {
       return genSrcPreviewSrc(neid)
     },
-    handleAdd (fileItem) {
+    handleAdd(fileItem) {
       this.$emit('handleAdd', fileItem)
     },
-    handleAddSrcToPrivateDir (fileItem) {
+    handleAddSrcToPrivateDir(fileItem) {
       this.$emit('addSrcToPrivateDir', fileItem)
     },
-    handleStartSearch () {
+    handleStartSearch() {
       this.loading.searchMore = true
 
       if (this.sortType === 0) {
@@ -268,7 +277,7 @@ export default {
       }
       // console.log("sort type: " + this.sortType + ", sort order: " + this.sortOrder + ",real sort " + this.search.realOrderType);
       ftsSearch(this.search.keyword, this.search.nextOffset, this.search.defaultLimit,
-        this.search.resultShowType, this.search.realOrderType).then(response => {
+          this.search.resultShowType, this.search.realOrderType).then(response => {
         if (response.code === '0') {
           this.search.hasNext = response.obj.has_more
           this.search.nextOffset = response.obj.next_offset
@@ -287,53 +296,51 @@ export default {
         this.loading.searchMore = false
       })
     },
-    handleFilterSearchResult () {
+    handleFilterSearchResult() {
       this.search.nextOffset = 0
       this.searchResult = []
       this.handleStartSearch()
     },
-    handleSearch (searchKey) {
+    handleSearch(searchKey) {
       this.search.keyword = searchKey
       this.search.nextOffset = 0
       this.search.resultShowType = '0'
       this.searchResult = []
-      this.searchShowResult = []
       this.visible.searchDialogVisible = true
       this.handleStartSearch()
     },
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleBatchAddToList () {
+    handleBatchAddToList() {
       this.$emit('handleBatchAdd', this.multipleSelection)
     },
-    handleBatchAddToPrivate () {
+    handleBatchAddToPrivate() {
       this.$emit('batchAddSrcToPrivateDir', this.multipleSelection)
     },
-    handleSortTypeSelected (val) {
+    handleSortTypeSelected(val) {
       this.sortType = val
       this.search.nextOffset = 0
       this.searchResult = []
       this.handleStartSearch()
     },
-    handleSortOrderSelected (val) {
+    handleSortOrderSelected(val) {
       this.sortOrder = val
       this.search.nextOffset = 0
       this.searchResult = []
       this.handleStartSearch()
     },
-    close () {
+    close() {
       this.visible.searchDialogVisible = false
     }
   },
   watch: {
     'search.keyword': {
       immediate: true,
-      handler (v1, v2) {
+      handler(v1, v2) {
         if (v1 !== '' || v1 !== v2) {
           this.$nextTick(() => {
             this.searchResult = []
-            this.searchShowResult = []
           })
         }
       }
@@ -346,142 +353,142 @@ export default {
 
 :deep(.el-dialog) {
 
-    margin-top: 8vh !important;
-    width: 75% !important;
+  margin-top: 8vh !important;
+  width: 75% !important;
 
-    .el-dialog__header {
-        background-color: #EAE8EB;
-    }
+  .el-dialog__header {
+    background-color: #EAE8EB;
+  }
 
-    .el-dialog__body {
-        padding: 0 0 10px 0;
-        text-align: center;
-    }
+  .el-dialog__body {
+    padding: 0 0 10px 0;
+    text-align: center;
+  }
 }
 
 :deep(.el-tabs) {
-    background-color: #EAE8EB;
-    padding: 0 20px 0px 20px;
+  background-color: #EAE8EB;
+  padding: 0 20px 0px 20px;
 }
 
 .function-block {
-    text-align: left;
-    margin: 10px 0;
+  text-align: left;
+  margin: 10px 0;
 
-    .el-button {
-        border-radius: 0px;
-        font-size: 14px;
-    }
+  .el-button {
+    border-radius: 0px;
+    font-size: 14px;
+  }
 }
 
 .function-block-sort {
-    position: absolute;
-    right: 30px;
-    margin-top: 8px;
+  position: absolute;
+  right: 30px;
+  margin-top: 8px;
 }
 
 .search-result-content {
-    margin: 0 20px 0 20px;
+  margin: 0 20px 0 20px;
 }
 
 .search-result-type-switch {
-    height: 40px;
+  height: 40px;
 }
 
 :deep(.el-table-column--selection) {
-    .cell {
-        padding: 0 14px !important;
-    }
+  .cell {
+    padding: 0 14px !important;
+  }
 }
 
 .search-result-page-switch {
-    margin-top: 20px;
-    width: 300px;
+  margin-top: 20px;
+  width: 300px;
 }
 
 .file-icon {
-    .iconfont-color {
-        font-size: 30px;
-    }
+  .iconfont-color {
+    font-size: 30px;
+  }
 }
 
 .file-name {
-    margin-left: 30px;
-    font-size: 15px;
+  margin-left: 30px;
+  font-size: 15px;
 }
 
 .file-desc {
-    margin-top: 5px;
-    margin-left: 60px;
+  margin-top: 5px;
+  margin-left: 60px;
 }
 
 .file-type-icon {
-    margin: 0 5px;
-    font-size: 20px;
+  margin: 0 5px;
+  font-size: 20px;
 }
 
 .file-type-icon:hover {
-    color: #F6891F;
+  color: #F6891F;
 }
 
 .file-type-hide {
-    display: none;
+  display: none;
 }
 
 .el-table__body tr:hover > td .file-type-hide {
-    display: block;
+  display: block;
 }
 
 .file-type-show {
-    display: block;
+  display: block;
 }
 
 .el-table__body tr:hover > td .file-type-show {
-    display: none;
+  display: none;
 }
 
 .el-table__body tr:hover > td .file-name {
-    color: #F6891F;
+  color: #F6891F;
 }
 
 .sort-icon {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 .sort-item {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 .rotate_bg {
 }
 
 .rotate_bg i.rotateImages {
-    -webkit-animation: myRotate 1s linear infinite;
-    animation: myRotate 1s linear infinite;
-    padding: 0 15px;
+  -webkit-animation: myRotate 1s linear infinite;
+  animation: myRotate 1s linear infinite;
+  padding: 0 15px;
 }
 
 @-webkit-keyframes myRotate {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        -webkit-transform: rotate(180deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes myRotate {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        -webkit-transform: rotate(180deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 </style>

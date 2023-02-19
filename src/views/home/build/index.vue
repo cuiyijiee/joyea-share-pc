@@ -59,14 +59,9 @@
         </el-row>
       </div>
     </div>
-
     <!--main-->
-    <div v-else
-         class="content_main">
-      <!--            <el-row :gutter="20" style="margin:0 40px;padding: 10px 0 0 0;height:1080px;" class="flex">-->
-
-      <!--左侧和中间区域-->
-      <!--                    <el-col :span="5">-->
+    <div v-else class="content_main">
+      <!--左边目录树-->
       <div class="left-area">
         <directory-tree class="better-scroll"
                         @handleClickItem="handleOpenDir"></directory-tree>
@@ -86,9 +81,8 @@
                        class="btn-icon-class"
                        @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
               <span class="flex aic">
-                <img
-                  style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                  src="../../../assets/icon_manage_next.svg"/>
+                <img style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                     src="../../../assets/icon_manage_next.svg"/>
                 管理小白板
               </span>
             </el-button>
@@ -120,7 +114,7 @@
                         @click="handleGoRootPath">|</span>-->
               <span style="cursor:pointer;"
                     :class="{'color_back': dir.currentPath.length}"
-                    @click="handleGoRootPath">{{ directoryType === 'SELF' ? '细分市场素材库' : '基础素材库'}}</span>
+                    @click="handleGoRootPath">{{ directoryType === 'SELF' ? '细分市场素材库' : '基础素材库' }}</span>
               <span v-for="(item,index) in dir.currentPath"
                     v-if="item !== '营销素材展示'"
                     style="display: inline">
@@ -142,8 +136,8 @@
                              :hide-on-click="false">
                   <span class="common-btn-style">
                     <img
-                      style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                      src="../../../assets/icon_Filter.svg"/>
+                        style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                        src="../../../assets/icon_Filter.svg"/>
                     排序
                   </span>
                   <el-dropdown-menu slot="dropdown">
@@ -151,41 +145,40 @@
                                       disabled
                                       :command="{regularName: 'name', icon3: 'el-icon-check', type: 'regular'}">名称排序</el-dropdown-item>
                     <el-dropdown-item
-                      divided
-                      :class="{'ml19': !sortRegular.sort.icon1}"
-                      :icon="sortRegular.sort.icon1"
-                      :command="{sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}">升序</el-dropdown-item>
+                        divided
+                        :class="{'ml19': !sortRegular.sort.icon1}"
+                        :icon="sortRegular.sort.icon1"
+                        :command="{sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}">升序</el-dropdown-item>
                     <el-dropdown-item
-                      :class="{'ml19': !sortRegular.sort.icon2}"
-                      :icon="sortRegular.sort.icon2"
-                      :command="{sortName: 'desc', icon2: 'el-icon-check', type: 'sort'}">降序</el-dropdown-item>
+                        :class="{'ml19': !sortRegular.sort.icon2}"
+                        :icon="sortRegular.sort.icon2"
+                        :command="{sortName: 'desc', icon2: 'el-icon-check', type: 'sort'}">降序</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-
               </span>
               <span
-                @click="isListMode = !isListMode"
-                v-if="isListMode"
-                class="pointer">
+                  @click="isListMode = !isListMode"
+                  v-if="isListMode"
+                  class="pointer">
                 <span
-                  class="common-btn-style"
-                  style="font-size: 14px;color: #606266">
+                    class="common-btn-style"
+                    style="font-size: 14px;color: #606266">
                   <img
-                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                    src="../../../assets/icon_list_mode.svg"/>
+                      style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                      src="../../../assets/icon_list_mode.svg"/>
                   列表模式
                 </span>
               </span>
               <span
-                @click="isListMode = !isListMode"
-                v-if="!isListMode"
-                class="pointer">
+                  @click="isListMode = !isListMode"
+                  v-if="!isListMode"
+                  class="pointer">
                 <span
-                  class="common-btn-style"
-                  style="font-size: 14px; color: #606266">
+                    class="common-btn-style"
+                    style="font-size: 14px; color: #606266">
                   <img
-                    style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                    src="../../../assets/icon_large_img_mode.svg"/>
+                      style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                      src="../../../assets/icon_large_img_mode.svg"/>
                   大图模式
                 </span>
               </span>
@@ -195,38 +188,37 @@
                              :hide-on-click="false">
                   <span class="common-btn-style">
                     <img
-                      style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                      src="../../../assets/icon_Filter.svg"/>
+                        style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
+                        src="../../../assets/icon_Filter.svg"/>
                     筛选
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      :class="{'ml19': !filterRegular.icon1}"
-                      :icon="filterRegular.icon1"
-                      :command="{filterName: 'all', icon1: 'el-icon-check'}">全部</el-dropdown-item>
+                        :class="{'ml19': !filterRegular.icon1}"
+                        :icon="filterRegular.icon1"
+                        :command="{filterName: 'all', icon1: 'el-icon-check'}">全部</el-dropdown-item>
                     <el-dropdown-item
-                      :class="{'ml19': !filterRegular.icon2}"
-                      :icon="filterRegular.icon2"
-                      :command="{filterName: 'dir', icon2: 'el-icon-check'}">文件夹</el-dropdown-item>
+                        :class="{'ml19': !filterRegular.icon2}"
+                        :icon="filterRegular.icon2"
+                        :command="{filterName: 'dir', icon2: 'el-icon-check'}">文件夹</el-dropdown-item>
                     <el-dropdown-item
-                      :class="{'ml19': !filterRegular.icon3}"
-                      :icon="filterRegular.icon3"
-                      :command="{filterName: 'doc', icon3: 'el-icon-check'}">文档</el-dropdown-item>
+                        :class="{'ml19': !filterRegular.icon3}"
+                        :icon="filterRegular.icon3"
+                        :command="{filterName: 'doc', icon3: 'el-icon-check'}">文档</el-dropdown-item>
                     <el-dropdown-item
-                      :class="{'ml19': !filterRegular.icon4}"
-                      :icon="filterRegular.icon4"
-                      :command="{filterName: 'image', icon4: 'el-icon-check'}">图片</el-dropdown-item>
+                        :class="{'ml19': !filterRegular.icon4}"
+                        :icon="filterRegular.icon4"
+                        :command="{filterName: 'image', icon4: 'el-icon-check'}">图片</el-dropdown-item>
                     <el-dropdown-item
-                      :class="{'ml19': !filterRegular.icon5}"
-                      :icon="filterRegular.icon5"
-                      :command="{filterName: 'video', icon5: 'el-icon-check'}">视频</el-dropdown-item>
+                        :class="{'ml19': !filterRegular.icon5}"
+                        :icon="filterRegular.icon5"
+                        :command="{filterName: 'video', icon5: 'el-icon-check'}">视频</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </span>
             </el-col>
           </el-row>
         </div>
-
         <el-table v-if="isListMode"
                   class="better-scroll"
                   ref="fileTable"
@@ -240,10 +232,10 @@
                   @selection-change="handleSelectionChange">
           <!--多选框，屏蔽文件夹，使其不可选中-->
           <el-table-column
-            type="selection"
-            align="center"
-            width="55"
-            :selectable="(row) => {return !row.is_dir}"></el-table-column>
+              type="selection"
+              align="center"
+              width="55"
+              :selectable="(row) => {return !row.is_dir}"></el-table-column>
           <el-table-column label="文件名"
                            show-overflow-tooltip>
             <template v-slot="scope">
@@ -292,7 +284,7 @@
             <template v-slot="scope">
               <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
                         :onerror="defaultImg"
-                        :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
+                        @click="handleGoToPreview(scope.row)"
                         :src="genPreviewUrl(scope.row.neid)"
                         class="preview_img"
                         :style="{'height: 90px;width: 120px': scope.row.mime_type && scope.row.mime_type.startsWith('image')}">
@@ -305,11 +297,11 @@
                            label="管理员">
             <template v-slot="scope">
               <PrivateDirectoryAdminManager
-                :ref="`adminManage${scope.row.neid}`"
-                :editable="scope.row.neid === curNeid"
-                v-if="scope.row.is_dir && curDirNeid === '0'"
-                :enabled="userInfo.isAdmin && directoryType === 'SELF'"
-                :file-item="scope.row"/>
+                  :ref="`adminManage${scope.row.neid}`"
+                  :editable="scope.row.neid === curNeid"
+                  v-if="scope.row.is_dir && curDirNeid === '0'"
+                  :enabled="userInfo.isAdmin && directoryType === 'SELF'"
+                  :file-item="scope.row"/>
             </template>
           </el-table-column>
           <el-table-column align="left"
@@ -354,9 +346,9 @@
                                @click.stop="curNeid = scope.row.neid"
                                size="small"></el-button>-->
                     <img
-                      src="../../../assets/icon_user_hover.svg"
-                      style="width: 32px; height: 32px"
-                      @click.stop="curNeid = scope.row.neid"/>
+                        src="../../../assets/icon_user_hover.svg"
+                        style="width: 32px; height: 32px"
+                        @click.stop="curNeid = scope.row.neid"/>
                   </span>
                   <span v-if="scope.row.neid === curNeid"
                         style="margin-right: 5px">
@@ -382,9 +374,9 @@
                              size="small"
                              @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>-->
                   <img
-                    src="../../../assets/icon_link_hover.svg"
-                    style="width: 32px; height: 32px"
-                    @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
+                      src="../../../assets/icon_link_hover.svg"
+                      style="width: 32px; height: 32px"
+                      @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>
                 </span>
                 <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')"
                       style="margin-right: 5px">
@@ -394,9 +386,9 @@
                              @click.stop="handleUpdateAlias(scope.$index, scope.row)">
                   </el-button>-->
                   <img
-                    src="../../../assets/el-icon-edit.svg"
-                    style="width: 32px; height: 32px"
-                    @click.stop="handleUpdateAlias(scope.$index, scope.row)"/>
+                      src="../../../assets/el-icon-edit.svg"
+                      style="width: 32px; height: 32px"
+                      @click.stop="handleUpdateAlias(scope.$index, scope.row)"/>
                 </span>
                 <span style="margin-right: 5px">
                   <!--<el-button
@@ -408,10 +400,10 @@
                     @click.stop="handleRemoveSrc(scope.$index, scope.row)">
                   </el-button>-->
                   <img
-                    v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
-                    src="../../../assets/icon_delete_hover.svg"
-                    style="width: 32px; height: 32px"
-                    @click.stop="handleRemoveSrc(scope.$index, scope.row)"/>
+                      v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
+                      src="../../../assets/icon_delete_hover.svg"
+                      style="width: 32px; height: 32px"
+                      @click.stop="handleRemoveSrc(scope.$index, scope.row)"/>
                 </span>
               </div>
             </template>
@@ -426,20 +418,20 @@
                  v-for="(item,index) in dir.largeImgModeData"
                  :key="item.neid">
               <el-checkbox
-                @change="handleSelectedLargeImg(item)"
-                :value="largeImgSelected.includes(item.neid)"/>
+                  @change="handleSelectedLargeImg(item)"
+                  :value="largeImgSelected.includes(item.neid)"/>
               <i @click="handleAdd(item,true)"
                  class="el-icon-circle-plus"/>
               <el-image
-                :onerror="defaultImg"
-                :preview-src-list="[].concat(genPreviewUrl(item.neid))"
-                :src="genPreviewUrl(item.neid)">
+                  :onerror="defaultImg"
+                  :preview-src-list="[].concat(genPreviewUrl(item.neid))"
+                  :src="genPreviewUrl(item.neid)">
               </el-image>
               <div style="font-size: 12px">{{ item.file_name }}</div>
             </div>
           </div>
-          <el-empty  v-else
-                     description="暂无数据"></el-empty>
+          <el-empty v-else
+                    description="暂无数据"></el-empty>
         </div>
       </div>
 
@@ -465,32 +457,32 @@
                       stripe
                       style="width: 100%">
               <el-table-column
-                class-name="preview_cell"
-                label="预览">
+                  class-name="preview_cell"
+                  label="预览">
                 <template v-slot="scope">
                   <!--<el-tooltip :content="scope.row.path.substr(scope.row.path.lastIndexOf('/')+1)"
                               class="item"
                               effect="dark"
                               placement="top">-->
-                    <img v-if="scope.row.mime_type.startsWith('video')"
-                         class="preview_img"
-                         src="video.png"
-                         @click="handleGoToPreview(scope.row)">
-                    <img v-else-if="scope.row.mime_type.startsWith('doc')"
-                         :src="handleGetDocumentImage(scope.row.mime_type)"
-                         class="preview_img"
-                         @click="handleGoToPreview(scope.row)">
-                    <img v-else-if="scope.row.mime_type.startsWith('image')"
-                         :onerror="defaultImg"
-                         :preview-text="scope.row.path"
-                         :src="genPreviewUrl(scope.row.neid)"
-                         class="preview_img"
-                         preview="build_image_list">
-                    <img v-else
-                         class="preview_img"
-                         :src="unknown.png"
-                         @click="handleGoToPreview(scope.row)">
-                    <div style="width: 150px">{{ scope.row.path.substr(scope.row.path.lastIndexOf('/')+1) }}</div>
+                  <img v-if="scope.row.mime_type.startsWith('video')"
+                       class="preview_img"
+                       src="video.png"
+                       @click="handleGoToPreview(scope.row)">
+                  <img v-else-if="scope.row.mime_type.startsWith('doc')"
+                       :src="handleGetDocumentImage(scope.row.mime_type)"
+                       class="preview_img"
+                       @click="handleGoToPreview(scope.row)">
+                  <img v-else-if="scope.row.mime_type.startsWith('image')"
+                       :onerror="defaultImg"
+                       :preview-text="scope.row.path"
+                       :src="genPreviewUrl(scope.row.neid)"
+                       class="preview_img"
+                       preview="build_image_list">
+                  <img v-else
+                       class="preview_img"
+                       :src="unknown.png"
+                       @click="handleGoToPreview(scope.row)">
+                  <div style="width: 150px">{{ scope.row.path.substr(scope.row.path.lastIndexOf('/') + 1) }}</div>
                   <!--</el-tooltip>-->
                 </template>
               </el-table-column>
@@ -576,8 +568,8 @@
                 :data="listDetail"
                 @selection-change="handleSelectListItem">
         <el-table-column
-          type="selection"
-          width="55">
+            type="selection"
+            width="55">
         </el-table-column>
         <el-table-column label="预览">
           <template v-slot="scope">
@@ -618,24 +610,14 @@
         </p>
       </video>
     </el-dialog>
-    <el-dialog :title="toPlayImage.title"
-               v-model:visible="visible.imageDialogVisible"
-               @close="handleCloseImage">
-      <el-image :src="toPlayImage.url">
-        <div slot="error"
-             class="image-slot">
-          <i class="el-icon-picture-outline"></i>
-        </div>
-      </el-image>
-    </el-dialog>
     <search-result-dialog
-      ref="searchDialog"
-      :directoryType="directoryType"
-      @addSrcToPrivateDir="handleAddSrcToPrivateDir"
-      @batchAddSrcToPrivateDir="batchAddSrcToPrivateDir"
-      @goToDir="handleClickSearch"
-      @handleAdd="handleAdd"
-      @handleBatchAdd="handleBatchAdd"
+        ref="searchDialog"
+        :directoryType="directoryType"
+        @addSrcToPrivateDir="handleAddSrcToPrivateDir"
+        @batchAddSrcToPrivateDir="batchAddSrcToPrivateDir"
+        @goToDir="handleClickSearch"
+        @handleAdd="handleAdd"
+        @handleBatchAdd="handleBatchAdd"
     >
     </search-result-dialog>
     <el-dialog :close-on-click-modal="false"
@@ -645,7 +627,8 @@
       <div style="text-align: right">
         <el-button class="search-button"
                    size="small"
-                   @click="handleSaveWordToDir">&nbsp;&nbsp;&nbsp;保 存&nbsp;&nbsp;&nbsp;</el-button>
+                   @click="handleSaveWordToDir">&nbsp;&nbsp;&nbsp;保 存&nbsp;&nbsp;&nbsp;
+        </el-button>
       </div>
       <el-row>
         <el-col :span="12">
@@ -700,6 +683,10 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <el-image-viewer
+        v-if="imageViewVisible" :initial-index="imageIndex"
+        :on-close="()=>{imageViewVisible = false}"
+        :url-list="imageViewUrl" :z-index=9999></el-image-viewer>
   </section>
 </template>
 
@@ -720,11 +707,11 @@ import api, {
   removePrivateDirSrc,
   updateSrcAlias
 } from '../../../api'
-import genSrcPreviewSrc, { getVideoPreviewUrl } from '../../../utils'
+import genSrcPreviewSrc, {getVideoPreviewUrl} from '../../../utils'
 import Sortable from 'sortablejs'
 import videojs from 'video.js'
-import { getDocumentImage, getFileNameWithoutExtension, getQueryParam, joyeaMenuPath } from '@/utils/JoyeaUtil'
-import { mapGetters } from 'vuex'
+import {getDocumentImage, getFileNameWithoutExtension, getQueryParam, joyeaMenuPath} from '@/utils/JoyeaUtil'
+import {mapGetters} from 'vuex'
 import LenovoDirSelector from '@/components/LenovoDirSelector'
 import LenovoDirDrawer from '@/components/LenovoDirDrawer'
 import AddPrivateDirectory from '@/components/AddPrivateDirectory'
@@ -734,6 +721,7 @@ import PrivateDirectoryAdminManager from '@/components/PrivateDirectoryAdminMana
 import SpaceSelector from '@/components/SpaceSelector'
 import SearchResultDialog from '@/components/SearchResultDialog'
 import DirectoryTree from '@/components/DirectoryTree.vue'
+import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 const videoLoading = require('@/assets/video-loading.jpg')
 
@@ -748,9 +736,10 @@ export default {
     PrivateDirectoryAdminManager,
     SpaceSelector,
     SearchResultDialog,
-    DirectoryTree
+    DirectoryTree,
+    ElImageViewer
   },
-  data () {
+  data() {
     return {
       curNeid: '',
       directoryType: '',
@@ -815,10 +804,6 @@ export default {
         title: '',
         url: ''
       },
-      toPlayImage: {
-        title: '',
-        url: ''
-      },
       wordListLoading: false,
       wordListOption: [],
       wordListTotal: 0,
@@ -832,14 +817,17 @@ export default {
       videoPreviewAbort: Object,
       isListMode: true,
       sortRegular: {
-        regular: { regularName: 'name', icon3: 'el-icon-check', type: 'regular' },
-        sort: { sortName: 'asc', icon1: 'el-icon-check', type: 'sort' }
+        regular: {regularName: 'name', icon3: 'el-icon-check', type: 'regular'},
+        sort: {sortName: 'asc', icon1: 'el-icon-check', type: 'sort'}
       }, // 默认升序
-      filterRegular: { filterName: 'all', icon1: 'el-icon-check' }, // 默认筛选全部
+      filterRegular: {filterName: 'all', icon1: 'el-icon-check'}, // 默认筛选全部
       toReachPath: '', // 记录面包屑目录
       multipleSelection: [],
       largeImgSelected: [],
-      largeImgs: []
+      largeImgs: [],
+      imageViewVisible: false,
+      imageIndex: 0,
+      imageViewUrl: [],
     }
   },
   computed: {
@@ -848,49 +836,49 @@ export default {
     })
   },
   watch: {
-    directoryType () {
+    directoryType() {
       this.$EventBus.$emit('directoryTypeChanged', this.directoryType)
     }
   },
   methods: {
-    hasBtnShowPermission (fileItem, mode) {
+    hasBtnShowPermission(fileItem, mode) {
       let hasPermission = false
       try {
         switch (mode) {
           case 'PRIVATE_DIR_REMOVE_SRC':
             hasPermission = this.directoryType === 'SELF' &&
-                            (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0) &&
-                            !fileItem.mime_type.startsWith('word')
+                (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0) &&
+                !fileItem.mime_type.startsWith('word')
             break
             // case "PRIVATE_DIR_DOWNLOAD":
             //     hasPermission = this.directoryType === "SELF" && fileItem.is_dir
             //     break;
           case 'NEW_PRIVATE_DIR':
             hasPermission = this.directoryType === 'SELF' &&
-                            (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
+                (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
             break
           case 'WORD_MANAGER':
             hasPermission = (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
             break
           case 'MANAGER':
             hasPermission = this.directoryType === 'SELF' && fileItem.path === '/' + fileItem.file_name &&
-                            fileItem.is_dir &&
-                            (this.userInfo.isAdmin || fileItem.adminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
+                fileItem.is_dir &&
+                (this.userInfo.isAdmin || fileItem.adminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
             break
           case 'RENAME':
             hasPermission =
-                            this.directoryType === 'SELF' && fileItem.is_dir &&
-                            (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
+                this.directoryType === 'SELF' && fileItem.is_dir &&
+                (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
             break
           case 'RENAME_SRC':
             hasPermission =
-                            this.directoryType === 'SELF' && !fileItem.is_dir && fileItem.mime_type !== 'word' &&
-                            (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
+                this.directoryType === 'SELF' && !fileItem.is_dir && fileItem.mime_type !== 'word' &&
+                (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0)
             break
           case 'TRANSCODE':
             hasPermission = this.userInfo.isAdmin &&
-                            !fileItem.is_dir &&
-                            (fileItem.mime_type && fileItem.mime_type.startsWith('video'))
+                !fileItem.is_dir &&
+                (fileItem.mime_type && fileItem.mime_type.startsWith('video'))
             break
           default:
             break
@@ -901,7 +889,7 @@ export default {
       // console.log(mode + " - " + hasPermission + " - " + JSON.stringify(fileItem));
       return hasPermission
     },
-    handleGetCurRedirectPath () {
+    handleGetCurRedirectPath() {
       const _this = this
       let currentFullPath = ''
       this.dir.currentPath.forEach(tmp => {
@@ -912,7 +900,7 @@ export default {
       }
       addRedirectPath(currentFullPath, this.directoryType).then(resp => {
         const redirectPath = window.location.protocol + '//' +
-                    window.location.host + '/api/redirectPath?id=' + resp.id
+            window.location.host + '/api/redirectPath?id=' + resp.id
         const input = document.createElement('input')
         input.value = redirectPath
         document.body.appendChild(input)
@@ -923,7 +911,7 @@ export default {
         _this.$message.success('获取成功，已复制到剪贴板！')
       })
     },
-    handleGoToPreview (row) {
+    handleGoToPreview(row) {
       if (row.mime_type.startsWith('video')) {
         this.handlePlayVideo(row)
         return
@@ -936,17 +924,28 @@ export default {
       const url = genSrcPreviewSrc(row.neid)
       if (row.mime_type.startsWith('video')) {
       } else if (row.mime_type.startsWith('image')) {
+        let imageFileItemNeid = this.dir.tableData.filter(fileItem => {
+          return !fileItem.is_dir && fileItem.mime_type.startsWith('image')
+        }).map(fileItem => {
+          return fileItem.neid;
+        });
+        let currentClickItemIndex = imageFileItemNeid.indexOf(row.neid);
+        this.imageViewUrl = imageFileItemNeid.map(fileItemNeid => {
+          return genSrcPreviewSrc(fileItemNeid);
+        })
+        this.imageIndex = currentClickItemIndex;
+        this.imageViewVisible = true
       } else if (row.mime_type.startsWith('doc')) {
         window.open(url)
       } else {
         this.$message.error('暂不支持的预览类型！')
       }
     },
-    handlePlayVideo (row) {
+    handlePlayVideo(row) {
       this.visible.videoDialogVisible = true
       this.visible.videoPrepared = false
       const title = row.path.substr(row.path.lastIndexOf('/') + 1)
-      const { promise, abort } = getVideoPreviewUrl(row.neid, 30)
+      const {promise, abort} = getVideoPreviewUrl(row.neid, 30)
       this.videoPreviewPromise = promise
       this.videoPreviewAbort = abort
       const _this = this
@@ -959,13 +958,13 @@ export default {
         }
       })
     },
-    handleClickTopSearchKey (key) {
+    handleClickTopSearchKey(key) {
       this.handleSearch(key)
     },
-    handleGetDocumentImage (mimeType) {
+    handleGetDocumentImage(mimeType) {
       return getDocumentImage(mimeType)
     },
-    initVideoPlayer () {
+    initVideoPlayer() {
       const _this = this
       if (this.player == null) {
         videojs(document.getElementById('myVideo'), {
@@ -979,15 +978,15 @@ export default {
           poster: videoLoading,
           controlBar: { // 设置控制条组件
             children: [
-              { name: 'playToggle' }, // 播放按钮
-              { name: 'currentTimeDisplay' }, // 当前已播放时间
-              { name: 'progressControl' }, // 播放进度条
-              { name: 'durationDisplay' }, // 总时间
+              {name: 'playToggle'}, // 播放按钮
+              {name: 'currentTimeDisplay'}, // 当前已播放时间
+              {name: 'progressControl'}, // 播放进度条
+              {name: 'durationDisplay'}, // 总时间
               {
                 name: 'volumePanel', // 音量控制
                 inline: false // 不使用水平方式
               },
-              { name: 'FullscreenToggle' } // 全屏
+              {name: 'FullscreenToggle'} // 全屏
             ]
           },
           sources: []
@@ -998,7 +997,7 @@ export default {
         _this.player.poster(videoLoading)
       }
     },
-    playVideo (videoUrl) {
+    playVideo(videoUrl) {
       const data = {
         src: videoUrl,
         type: 'video/mp4'
@@ -1008,7 +1007,7 @@ export default {
       this.player.load(data)
       this.player.play()
     },
-    handleCloseVideo () {
+    handleCloseVideo() {
       if (this.videoPreviewAbort) {
         this.videoPreviewAbort()
       }
@@ -1016,13 +1015,10 @@ export default {
         this.player.reset()
       }
     },
-    handleCloseImage () {
-      this.toPlayImage.url = ''
-    },
-    handleSelectListItem (val) {
+    handleSelectListItem(val) {
       this.selectListItem = val
     },
-    handleAddListDetailToBuild () {
+    handleAddListDetailToBuild() {
       this.selectListItem.forEach(item => {
         this.toCreateAlbum.list.push({
           joyeaDesc: item.desc,
@@ -1047,7 +1043,7 @@ export default {
       })
       this.visible.listDetailDialogVisible = false
     },
-    handleSeeListDetail (row) {
+    handleSeeListDetail(row) {
       this.visible.listDetailDialogVisible = true
       this.loading.listDetailLoading = true
       this.listDetail = []
@@ -1073,7 +1069,7 @@ export default {
         this.loading.listDetailLoading = false
       })
     },
-    handleSearch (searchKey) {
+    handleSearch(searchKey) {
       if (searchKey !== undefined && typeof (searchKey) === 'string') {
         this.search.key = searchKey
       }
@@ -1081,9 +1077,9 @@ export default {
         this.$message.warning('请输入搜索的关键字！')
         return
       }
-      this.$refs.searchDialog.handleSearch(this.search.key)
+      this.$refs.searchDialog.handleSearch(this.search.key);
     },
-    handleLoadMore () {
+    handleLoadMore() {
       const _this = this
       if (_this.loadMoreForm.key.trim().length !== 0) {
         _this.loading.searchMore = true
@@ -1112,7 +1108,7 @@ export default {
         })
       }
     },
-    handleAddTranscodeVideo (index, row) {
+    handleAddTranscodeVideo(index, row) {
       addTranscodeVideo(row.neid).then(resp => {
         if (resp.code === '0') {
           this.$message.success('添加成功！')
@@ -1121,7 +1117,7 @@ export default {
         }
       })
     },
-    handleDownloadPrivateDir (index, row) {
+    handleDownloadPrivateDir(index, row) {
       getFileMetadata(this.directoryType, row.path, '').then(response => {
         if (!response.obj.content) {
           this.$message.error('当前文件夹可供下载文件为空！')
@@ -1148,15 +1144,15 @@ export default {
           const totalMb = totalKb / 1024
           const warnMb = 300
           this.$confirm(
-            '您已选中【 ' + toDownloadList.length + ' 】个文件，' + (totalMb > warnMb
-              ? ('待准备文件列表大小为【 ' + totalMb.toFixed(2) + 'MB 】,文件较大，建议您分批次准备。')
-              : ('待准备文件列表大小为【 ' + (totalMb > 1 ? totalMb.toFixed(2) + 'MB' : totalKb.toFixed(2) + 'KB') + ' 】。')) + '准备完成后会在右上角提示您下载!',
-            '提示',
-            {
-              confirmButtonText: '准备',
-              cancelButtonText: '取消',
-              type: totalMb > warnMb ? 'danger' : 'primary'
-            }).then(() => {
+              '您已选中【 ' + toDownloadList.length + ' 】个文件，' + (totalMb > warnMb
+                  ? ('待准备文件列表大小为【 ' + totalMb.toFixed(2) + 'MB 】,文件较大，建议您分批次准备。')
+                  : ('待准备文件列表大小为【 ' + (totalMb > 1 ? totalMb.toFixed(2) + 'MB' : totalKb.toFixed(2) + 'KB') + ' 】。')) + '准备完成后会在右上角提示您下载!',
+              '提示',
+              {
+                confirmButtonText: '准备',
+                cancelButtonText: '取消',
+                type: totalMb > warnMb ? 'danger' : 'primary'
+              }).then(() => {
             this.loading.downloadLoading = true
             prepareDownloadFile(toDownloadList).then(resp => {
               const taskId = resp.data
@@ -1192,7 +1188,7 @@ export default {
         }
       })
     },
-    handleRemoveSrc (index, row) {
+    handleRemoveSrc(index, row) {
       if (row.is_dir) {
         this.$confirm('即将删除文件夹【' + row.file_name + '】', '提示', {
           confirmButtonText: '确定',
@@ -1235,12 +1231,12 @@ export default {
         })
       }
     },
-    handleBatchAddToList () {
+    handleBatchAddToList() {
       const params = this.isListMode ? this.multipleSelection : this.largeImgs
       this.handleBatchAdd(params)
       // this.multipleSelection = this.largeImgs = this.largeImgSelected = []
     },
-    handleSelectedLargeImg (data) {
+    handleSelectedLargeImg(data) {
       if (!this.largeImgSelected.includes(data.neid)) {
         this.largeImgSelected.push(data.neid)
         this.largeImgs.push(data)
@@ -1250,7 +1246,7 @@ export default {
         this.largeImgs.splice(index, 1)
       }
     },
-    handleBatchAdd (multiRow) {
+    handleBatchAdd(multiRow) {
       if (this.directoryType === '') {
         this.$refs.searchDialog.close()
         this.handleDirectoryTypeSelected('LENOVO')
@@ -1262,12 +1258,12 @@ export default {
         this.$message.success('成功添加【' + multiRow.length + '】条数据到清单！')
       }
     },
-    handleSave (neid) {
+    handleSave(neid) {
       this.$refs[`adminManage${neid}`].handleSave()
       console.log('this.$refs[`adminManage${neid}`]', this.$refs[`adminManage${neid}`])
       this.curNeid = ''
     },
-    handleAdd (row, needFilter) {
+    handleAdd(row, needFilter) {
       let isIn = false
       this.toCreateAlbum.list.forEach(item => {
         if (item.neid === row.neid) {
@@ -1291,21 +1287,21 @@ export default {
         this.toCreateAlbum.list.push(row)
       }
     },
-    handleSelectDesc (row, column, event) {
+    handleSelectDesc(row, column, event) {
       this.toCreateAlbum.toAddRow.joyeaDesc = row.desc
       this.toCreateAlbum.list.push(this.toCreateAlbum.toAddRow)
       this.toCreateAlbum.toAddRow = {}
       this.toCreateAlbum.toSelectDesc = []
       this.toCreateAlbum.descSelectDialogVisible = false
     },
-    handleCustomDesc () {
+    handleCustomDesc() {
       this.toCreateAlbum.toAddRow.joyeaDesc = ''
       this.toCreateAlbum.list.push(this.toCreateAlbum.toAddRow)
       this.toCreateAlbum.toAddRow = {}
       this.toCreateAlbum.toSelectDesc = []
       this.toCreateAlbum.descSelectDialogVisible = false
     },
-    handleCollect (index, row) {
+    handleCollect(index, row) {
       api({
         action: 'srcCollect',
         method: row.collect ? 'unCollect' : 'collect',
@@ -1326,7 +1322,7 @@ export default {
         }
       })
     },
-    handleModify (index, row, cg) {
+    handleModify(index, row, cg) {
       // 点击修改 判断是否已经保存所有操作
       for (const i of this.toCreateAlbum.list) {
         if (i.isModify && i.path !== row.path) {
@@ -1350,20 +1346,20 @@ export default {
       }
       return false
     },
-    handleDelete (index, row) {
+    handleDelete(index, row) {
       this.toCreateAlbum.list.splice(index, 1)
     },
-    genPreviewUrl (neid) {
+    genPreviewUrl(neid) {
       return genSrcPreviewSrc(neid)
     },
-    handleSaveList () {
+    handleSaveList() {
       this.$prompt(this.toCreateAlbum.idEditMode ? '当前是编辑模式，重命名清单名称！' : '请输入要保存的清单的名称',
-        this.toCreateAlbum.idEditMode ? '编辑提示' : '保存提示',
-        {
-          confirmButtonText: this.toCreateAlbum.idEditMode ? '重新保存' : '保存清单',
-          cancelButtonText: '取消',
-          inputValue: this.toCreateAlbum.name
-        }
+          this.toCreateAlbum.idEditMode ? '编辑提示' : '保存提示',
+          {
+            confirmButtonText: this.toCreateAlbum.idEditMode ? '重新保存' : '保存清单',
+            cancelButtonText: '取消',
+            inputValue: this.toCreateAlbum.name
+          }
       ).then(action => {
         const listName = action.value
         this.loading.saveList = true
@@ -1395,7 +1391,7 @@ export default {
         })
       })
     },
-    handleClearList () {
+    handleClearList() {
       this.$alert('当前列表还没有保存，确定清空吗？', '清空提示', {
         confirmButtonText: '确定',
         callback: action => {
@@ -1403,11 +1399,11 @@ export default {
         }
       })
     },
-    handleOpenDir (directoryType, path) {
+    handleOpenDir(directoryType, path) {
       this.directoryType = directoryType
       this.handleListLenovoDir(path)
     },
-    handleDownloadSrc (isList, row) {
+    handleDownloadSrc(isList, row) {
       const _this = this
       const toDownloadList = []
       let totalBytes = 0
@@ -1437,15 +1433,15 @@ export default {
       const totalMb = totalKb / 1024
       const warnMb = 300
       this.$confirm(
-        '您已选中【 ' + toDownloadList.length + ' 】个文件，' + (totalMb > warnMb
-          ? ('待准备文件列表大小为【 ' + totalMb.toFixed(2) + 'MB 】,文件较大，建议您分批次准备。')
-          : ('待准备文件列表大小为【 ' + (totalMb > 1 ? totalMb.toFixed(2) + 'MB' : totalKb.toFixed(2) + 'KB') + ' 】。')) + '准备完成后会在右上角提示您下载!',
-        '提示',
-        {
-          confirmButtonText: '准备',
-          cancelButtonText: '取消',
-          type: totalMb > warnMb ? 'danger' : 'primary'
-        }).then(() => {
+          '您已选中【 ' + toDownloadList.length + ' 】个文件，' + (totalMb > warnMb
+              ? ('待准备文件列表大小为【 ' + totalMb.toFixed(2) + 'MB 】,文件较大，建议您分批次准备。')
+              : ('待准备文件列表大小为【 ' + (totalMb > 1 ? totalMb.toFixed(2) + 'MB' : totalKb.toFixed(2) + 'KB') + ' 】。')) + '准备完成后会在右上角提示您下载!',
+          '提示',
+          {
+            confirmButtonText: '准备',
+            cancelButtonText: '取消',
+            type: totalMb > warnMb ? 'danger' : 'primary'
+          }).then(() => {
         this.loading.downloadLoading = true
         prepareDownloadFile(toDownloadList).then(resp => {
           const taskId = resp.data
@@ -1477,7 +1473,7 @@ export default {
         })
       })
     },
-    sortFilter (value) {
+    sortFilter(value) {
       if (value.type === 'sort') {
         // if(this.sortRegular.sort.sortName === value.sortName) {
         //     this.sortRegular.sort = {}
@@ -1497,7 +1493,7 @@ export default {
         filter: this.filterRegular.filterName
       })
     },
-    filterTerm (value) {
+    filterTerm(value) {
       // if(this.filterRegular.filterName === value.name) {
       //     this.filterRegular = {}
       // }else {
@@ -1509,7 +1505,7 @@ export default {
         filter: this.filterRegular.filterName
       })
     },
-    handleClickDirPath (item, index) {
+    handleClickDirPath(item, index) {
       this.isListMode = true
       let toReachPath = ''
       for (let i = 0; i <= index; i++) {
@@ -1523,21 +1519,21 @@ export default {
       }
       this.handleListLenovoDir(toReachPath === '' ? '/' : toReachPath, filterParams)
     },
-    handleDirectoryTypeSelected (type) {
+    handleDirectoryTypeSelected(type) {
       this.directoryType = type
       this.handleGoRootPath()
       const table = document.querySelector('#toSortTable .el-table__body-wrapper tbody')
       const self = this
       if (table) {
         Sortable.create(table, {
-          onEnd ({ newIndex, oldIndex }) {
+          onEnd({newIndex, oldIndex}) {
             const targetRow = self.toCreateAlbum.list.splice(oldIndex, 1)[0]
             self.toCreateAlbum.list.splice(newIndex, 0, targetRow)
           }
         })
       }
     },
-    handleListLenovoDir (path, filterParams) {
+    handleListLenovoDir(path, filterParams) {
       this.dir.loadingDir = true
       if (this.directoryType.length === 0) {
         return
@@ -1549,7 +1545,7 @@ export default {
           filter: this.filterRegular.filterName
         }
       }
-      const { orderBy, sort, filter } = filterParams
+      const {orderBy, sort, filter} = filterParams
       this.toReachPath = path
       getFileMetadata(this.directoryType, path, '', orderBy, sort, filter).then(response => {
         if (response.code === '0') {
@@ -1593,7 +1589,7 @@ export default {
       })
     },
 
-    handleAddAdmin (row) {
+    handleAddAdmin(row) {
       if (this.curNeid !== row.neid) {
         this.curNeid = row.neid
       } else {
@@ -1601,11 +1597,10 @@ export default {
       }
     },
 
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.multipleSelection = val
     },
-
-    handleClickDirItem (row, column, cell) {
+    handleClickDirItem(row, column, cell) {
       if (column && column.label === '管理员') return
       this.visible.searchDialogVisible = false
       if (row.is_dir) {
@@ -1620,18 +1615,18 @@ export default {
         this.handleGoToPreview(row)
       }
     },
-    handleClickSearch (row, column, event) {
+    handleClickSearch(row, column, event) {
       if (row.is_dir) {
         this.directoryType = 'LENOVO'
         this.handleClickDirItem(row)
       }
     },
-    handleGetTopSearchKey () {
+    handleGetTopSearchKey() {
       getTopSearchKey().then(resp => {
         this.topSearchKey = resp.data
       })
     },
-    handleFilterCurDirWordList () {
+    handleFilterCurDirWordList() {
       this.handleGetMyWordList()
       this.dir.tableData.forEach(item => {
         if (item.mime_type && item.mime_type.startsWith('word')) {
@@ -1642,7 +1637,7 @@ export default {
         }
       })
     },
-    handleAddWordListRow (row) {
+    handleAddWordListRow(row) {
       const existedList = this.wordListSelected.filter(function (item) {
         return item.id === row.id
       })
@@ -1655,12 +1650,12 @@ export default {
         this.wordListSelected.push(row)
       }
     },
-    handleDeleteWordListRow (row) {
+    handleDeleteWordListRow(row) {
       this.wordListSelected = this.wordListSelected.filter(function (item) {
         return item.id !== row.id
       })
     },
-    handleSaveWordToDir () {
+    handleSaveWordToDir() {
       addWordToDir(this.curDirNeid, this.wordListSelected).then(resp => {
         if (resp.code === 2000) {
           this.visible.addWordDialogVisible = false
@@ -1673,10 +1668,10 @@ export default {
         }
       })
     },
-    handleRefreshDir () {
+    handleRefreshDir() {
       this.handleClickDirPath(undefined, this.dir.currentPath.length - 1)
     },
-    handleGetMyWordList () {
+    handleGetMyWordList() {
       this.wordListLoading = true
       getMyWordList(this.wordListSearchText, this.wordListPageSize, this.wordListPageNum - 1).then(resp => {
         this.wordListOption = resp.data.data
@@ -1687,7 +1682,7 @@ export default {
         this.wordListLoading = false
       })
     },
-    handleGoRootPath () {
+    handleGoRootPath() {
       this.isListMode = true
       const filterParams = {
         orderBy: 'name',
@@ -1700,7 +1695,7 @@ export default {
         this.handleListLenovoDir('/营销素材展示', filterParams)
       }
     },
-    handleBackMenuPath () {
+    handleBackMenuPath() {
       this.isListMode = true
       if (this.dir.currentPath.length === 0) {
         this.directoryType = ''
@@ -1710,7 +1705,7 @@ export default {
         this.handleClickDirPath(undefined, this.dir.currentPath.length - 2)
       }
     },
-    handleAddSrcToPrivateDir (item) {
+    handleAddSrcToPrivateDir(item) {
       newPrivateDirSrc(this.curDirNeid, item.path).then(resp => {
         if (resp.code === '0') {
           this.visible.addSrcVisible = false
@@ -1722,7 +1717,7 @@ export default {
         }
       })
     },
-    batchAddSrcToPrivateDir (multiRow) {
+    batchAddSrcToPrivateDir(multiRow) {
       batchNewPrivateDirSrc(this.curDirNeid, multiRow.map(item => item.path)).then(resp => {
         if (resp.code === '0') {
           this.visible.addSrcVisible = false
@@ -1733,12 +1728,12 @@ export default {
         }
       })
     },
-    handleUpdateAlias (index, row) {
+    handleUpdateAlias(index, row) {
       this.$prompt('请输入要修改的文件名', '修改提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputValue: row.file_name
-      }).then(({ value }) => {
+      }).then(({value}) => {
         if (!value || value.length <= 0) {
           this.$message.error('名字不能未空！')
           return
@@ -1757,7 +1752,7 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     const redirectPath = window.localStorage.getItem('redirectPath')
     if (redirectPath) {
       const redirectObj = JSON.parse(redirectPath)
@@ -1803,7 +1798,7 @@ export default {
       localStorage.setItem('nextx_token', nextPlusToken)
     }
   },
-  unmounted () {
+  unmounted() {
   }
 }
 </script>
@@ -1812,328 +1807,366 @@ export default {
 @import "../../../style/vars";
 
 .px10_divider {
-    padding: 10px;
+  padding: 10px;
 }
 
 .input-with-select .el-input-group__prepend {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .el-row {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .el-col {
-    border-radius: 4px;
+  border-radius: 4px;
 }
 
 .bg-purple-dark {
-    background: #99a9bf;
+  background: #99a9bf;
 }
 
 .bg-purple {
-    padding: 5px;
+  padding: 5px;
 }
 
 .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
+  border-radius: 4px;
+  min-height: 36px;
 }
 
 .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
+  padding: 10px 0;
+  background-color: #f9fafc;
 }
 
 .no_display {
-    display: none;
+  display: none;
 }
 
 .qdbj_list_tit {
-    padding: 1px;
-    background-color: #CFCFCF;
-    font-weight: bold;
-    border-radius: 5px 5px 0 0;
-    padding: 0 10px;
-    line-height: 40px;
-    box-sizing: border-box;
+  padding: 1px;
+  background-color: #CFCFCF;
+  font-weight: bold;
+  border-radius: 5px 5px 0 0;
+  padding: 0 10px;
+  line-height: 40px;
+  box-sizing: border-box;
 }
 
 .load_more_bt {
-    margin-top: 5px;
-    /*width: 100%;*/
-    .grey-btn {
-        background-color: #CFCFCF;
-    }
+  margin-top: 5px;
+  /*width: 100%;*/
+  .grey-btn {
+    background-color: #CFCFCF;
+  }
 }
+
 .qd_list_btns {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    .el-button {
-        border: none;
-        font-size: 17px;
-        padding: 8px 16px;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .el-button {
+    border: none;
+    font-size: 17px;
+    padding: 8px 16px;
+  }
 }
 
 .adminContentHead {
-    font-size: 12px;
-    color: gray;
-    margin: 10px auto;
-    line-height: 30px;
-    background-color: #ffffff;
-    .el-col {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        align-self: flex-end;
-        span {
-            flex: none;
-        }
+  font-size: 12px;
+  color: gray;
+  margin: 10px auto;
+  line-height: 30px;
+  background-color: #ffffff;
+
+  .el-col {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    align-self: flex-end;
+
+    span {
+      flex: none;
     }
-    .el-col:nth-of-type(2) {
-        justify-content: flex-end;
-    }
+  }
+
+  .el-col:nth-of-type(2) {
+    justify-content: flex-end;
+  }
 }
 
 .large-img-mode-box {
-    display: flex;
-    flex-wrap: wrap;
-    .large-img-item {
-        position: relative;
-        width: calc(20% - 10px);
-        flex-shrink: 0;
-        padding: 30px 10px 10px 10px;
-        background-color: rgba(0,0,0,0.1);
-        margin: 0 10px 10px 0;
-        border-radius: 5px;
-        box-sizing: border-box;
-        &::after {}
-        .el-checkbox {
-            position: absolute;
-            top: 5px;
-            left: 10px
-        }
-        .el-icon-circle-plus {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            color: #F6891F;
-        }
+  display: flex;
+  flex-wrap: wrap;
+
+  .large-img-item {
+    position: relative;
+    width: calc(20% - 10px);
+    flex-shrink: 0;
+    padding: 30px 10px 10px 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 0 10px 10px 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    &::after {
     }
+
+    .el-checkbox {
+      position: absolute;
+      top: 5px;
+      left: 10px
+    }
+
+    .el-icon-circle-plus {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      color: #F6891F;
+    }
+  }
 }
 
 .common-btn-style {
-    background-color: rgba(244, 245, 247, 1);
-    display: inline-flex;
-    align-items: center;
-    padding: 0 10px;
-    margin-right: 10px;
-    border-radius: 15px;
-    line-height: 30px;
+  background-color: rgba(244, 245, 247, 1);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+  line-height: 30px;
 }
 
 .content_div {
-    flex-direction: column;
-    /*height: 100vh;*/
-    /*overflow: hidden;*/
-    .qingdan_table {
-        /*flex: 1;*/
-        /*overflow: auto;*/
-        /*max-height: calc(100% - 200px);*/
-    }
+  flex-direction: column;
+  /*height: 100vh;*/
+  /*overflow: hidden;*/
+  .qingdan_table {
+    /*flex: 1;*/
+    /*overflow: auto;*/
+    /*max-height: calc(100% - 200px);*/
+  }
 }
 
 .box-card {
-    width: 220px;
-    height: 220px;
+  width: 220px;
+  height: 220px;
 }
 
 .menu-content {
-    margin: 20px auto;
-    height: 225px;
-    width: 225px;
-    background-image: linear-gradient(to bottom right, #ffffff, #c7c7c7);
-    text-align: center;
-    box-shadow: 4px 4px 2px #888888;
+  margin: 20px auto;
+  height: 225px;
+  width: 225px;
+  background-image: linear-gradient(to bottom right, #ffffff, #c7c7c7);
+  text-align: center;
+  box-shadow: 4px 4px 2px #888888;
 }
 
 .el-icon-folder-opened {
-    color: #fec04a;
+  color: #fec04a;
 }
 
 .el-col-lg-4-8 {
-    width: 20%;
+  width: 20%;
 }
 
 .main-tools {
-    padding: 10px $--main-padding 0 $--main-padding;
-    background: #E9E9E9;
+  padding: 10px $--main-padding 0 $--main-padding;
+  background: #E9E9E9;
 }
 
 .directory-tools {
-    display: flex;
-    background-color: #ffffff;
-    .el-button {
-      border: none;
-      font-size: 17px;
-    }
+  display: flex;
+  background-color: #ffffff;
+
+  .el-button {
+    border: none;
+    font-size: 17px;
+  }
 }
 
 .flex {
-    display: flex;
+  display: flex;
 }
+
 .aic {
-    align-items: center;
+  align-items: center;
 }
+
 .jcc {
-    justify-content: center;
+  justify-content: center;
 }
+
 .jcb {
-    justify-content: space-between;
+  justify-content: space-between;
 }
+
 .color_back {
-    color: #F6891F;
+  color: #F6891F;
 }
+
 .ml19 {
-    margin-left: 19px;
+  margin-left: 19px;
 }
+
 ::v-deep.el-button .el-icon-plus {
-    font-weight: bold!important;
+  font-weight: bold !important;
 }
+
 ::v-deep.el-dropdown-menu__item {
-    background-color: white!important;
-    color: #606266!important;
+  background-color: white !important;
+  color: #606266 !important;
 }
+
 .el-button {
-    display: flex;
-    align-items: center;
-    border-radius: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 0;
 }
+
 .search-button {
-    border-radius: 3px;
+  border-radius: 3px;
 }
 
 .file-icon {
-    .iconfont-color {
-        font-size: 30px;
-    }
+  .iconfont-color {
+    font-size: 30px;
+  }
 }
 
 .content_main {
-    box-sizing: border-box;
-    background-color: #F4F5F7;
-    padding: 16px 40px;
+  box-sizing: border-box;
+  background-color: #F4F5F7;
+  padding: 16px 40px;
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 160px);
+  overflow: hidden;
+
+  .left-area {
+    width: 14%;
+    float: left;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px 0 0 0;
+    height: calc(100% - 20px);
     display: flex;
-    justify-content: center;
-    height: calc(100vh - 160px);
+    flex-direction: column;
     overflow: hidden;
-    .left-area {
-        width: 14%;
-        float: left;
-        padding: 10px;
-        background-color: #ffffff;
-        border-radius: 5px 0 0 0;
-        height: calc(100% - 20px);
-        display: flex;
-        flex-direction: column;
+
+    .directory-tree {
+      overflow: auto;
+    }
+  }
+
+  .center-area {
+    float: left;
+    width: calc(69.5% - 30px);
+    padding: 10px;
+    margin-right: 20px;
+    border-left: 1px solid #e6e6e6;
+    background-color: #ffffff;
+    border-radius: 0 5px 0 0;
+
+    height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .el-table {
+      overflow: auto;
+
+      &:before {
+        display: none;
+      }
+    }
+
+    ::v-deep thead tr th {
+      border-top: 1px solid #EBEEF5;
+      padding: 4px 0;
+      position: relative;
+
+      .cell {
+        border-right: 1px solid #EBEEF5;
+      }
+    }
+
+    ::v-deep thead tr th:nth-last-of-type(2) {
+      .cell {
+        border-right: none !important;
+      }
+    }
+
+  }
+
+  .right-area {
+    float: right;
+    width: 16.5%;
+    height: 700px;
+
+    .content_div {
+      height: 100%;
+    }
+
+    .right-table-btn {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      /*max-height: calc(100vh - 242px);*/
+      height: 100%;
+      padding-bottom: 10px;
+      overflow: hidden;
+      border-radius: 0 0 5px 5px;
+
+      .el-table {
+        flex: 1;
         overflow: hidden;
-        .directory-tree {
-            overflow: auto;
-        }
-    }
-    .center-area {
-        float: left;
-        width: calc(69.5% - 30px);
-        padding: 10px;
-        margin-right: 20px;
-        border-left: 1px solid #e6e6e6;
-        background-color: #ffffff;
-        border-radius: 0 5px 0 0;
 
-        height: calc(100% - 20px);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        .el-table {
-            overflow: auto;
-            &:before {
-                display: none;
-            }
+        &::before {
+          display: none;
         }
 
-        ::v-deep thead tr th{
-            border-top: 1px solid #EBEEF5;
-            padding: 4px 0;
-            position: relative;
-            .cell {
-                border-right: 1px solid #EBEEF5;
-            }
-        }
-        ::v-deep thead tr th:nth-last-of-type(2) {
-            .cell {
-                border-right: none!important;
-            }
-        }
-
-    }
-    .right-area {
-        float: right;
-        width: 16.5%;
-        height: 700px;
-        .content_div {
-          height: 100%;
-        }
-        .right-table-btn {
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            /*max-height: calc(100vh - 242px);*/
-            height: 100%;
-            padding-bottom: 10px;
-            overflow: hidden;
-            border-radius: 0 0 5px 5px;
-            .el-table {
-                flex: 1;
-                overflow: hidden;
-                &::before {
-                    display: none;
-                }
-              ::v-deep.el-table--scrollable-y .el-table__body-wrapper {
-                  &::-webkit-scrollbar {
-                    width: 8px;
-                  }
-                  &::-webkit-scrollbar-thumb {
-                    border-radius: 8px;
-                    -webkit-box-shadow: inset 0 0 8px #CFCFCF;
-                  }
-                  &::-webkit-scrollbar-track {
-                    -webkit-box-shadow: inset 0 0 5px #CFCFCF;
-                    border-radius: 8px;
-                  }
-                }
-            }
-        }
-    }
-    /*}*/
-
-    .better-scroll {
-        &::-webkit-scrollbar {
+        ::v-deep.el-table--scrollable-y .el-table__body-wrapper {
+          &::-webkit-scrollbar {
             width: 8px;
-        }
-        &::-webkit-scrollbar-thumb {
+          }
+
+          &::-webkit-scrollbar-thumb {
             border-radius: 8px;
             -webkit-box-shadow: inset 0 0 8px #CFCFCF;
-        }
-        &::-webkit-scrollbar-track {
+          }
+
+          &::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 5px #CFCFCF;
             border-radius: 8px;
+          }
         }
+      }
     }
+  }
+
+  /*}*/
+
+  .better-scroll {
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      -webkit-box-shadow: inset 0 0 8px #CFCFCF;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 5px #CFCFCF;
+      border-radius: 8px;
+    }
+  }
 }
 </style>
