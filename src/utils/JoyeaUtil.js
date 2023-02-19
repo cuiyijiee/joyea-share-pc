@@ -1,15 +1,16 @@
+
 export function getDocumentImage (mimeType) {
-  let result = 'document.png'
+  let result = require("../assets/fileTypePng/unknown.png")
   if (mimeType.startsWith('video')) {
-    result = 'video.png'
+    result = require("../assets/fileTypePng/video.png")
   } else if (mimeType.endsWith('pdf')) {
-    result = 'pdf.png'
+    result = require("../assets/fileTypePng/pdf.png")
   } else if (mimeType.endsWith('ppt') || mimeType.endsWith('pptx')) {
-    result = 'ppt.png'
+    result = require("../assets/fileTypePng/ppt.png")
   } else if (mimeType.endsWith('doc')) {
-    result = 'docm.png'
+    result = require("../assets/fileTypePng/word.png")
   } else if (mimeType.endsWith('xlsx')) {
-    result = 'xlsx.png'
+    result = require("../assets/fileTypePng/execl.png")
   }
   return result
 }

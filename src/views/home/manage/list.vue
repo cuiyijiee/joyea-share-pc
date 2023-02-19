@@ -32,7 +32,7 @@
                     <el-row>
                         <el-col :md="8" :xs="24" v-for="(img,fileIndex) in album.list" :key="fileIndex">
                             <el-card style="padding: 2px;margin: 5px;text-align:center;height: 273px;">
-                                <img v-if="img.mime_type.startsWith('video')" src="video.png"
+                                <img v-if="img.mime_type.startsWith('video')" :src="handleGetDocumentImage(img.mime_type)"
                                      @click="handleGoToPreview(img)" class="album_img">
                                 <img v-else-if="img.mime_type.startsWith('doc')"
                                      :src="handleGetDocumentImage(img.mime_type)"
@@ -40,7 +40,7 @@
                                 <img v-else-if="img.mime_type.startsWith('image')" :src="img.url"
                                      class="album_img" :onerror="defaultImg" :preview="album.name"
                                      :preview-text="'解说词：' + (img.desc.length === 0 ? '暂未设置解说词' :img.desc)">
-                                <img v-else src="unknown.png" @click="handleGoToPreview(img)" class="album_img">
+                                <img v-else :src="handleGetDocumentImage(img.mime_type)" @click="handleGoToPreview(img)" class="album_img">
                                 <div style="height: 20px;margin-top: 10px">
                                     <el-tooltip class="item" effect="dark"
                                                 :content="img.desc.length === 0 ? '暂未设置解说词' : img.desc"

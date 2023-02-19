@@ -420,8 +420,9 @@
               <el-checkbox
                   @change="handleSelectedLargeImg(item)"
                   :value="largeImgSelected.includes(item.neid)"/>
-              <i @click="handleAdd(item,true)"
-                 class="el-icon-circle-plus"/>
+              <img @click="handleAdd(item,true)"
+                   src="../../../assets/icon_add_hover.svg"
+                   style="width: 22px; height: 22px"/>
               <el-image
                   :onerror="defaultImg"
                   :preview-src-list="[].concat(genPreviewUrl(item.neid))"
@@ -460,13 +461,9 @@
                   class-name="preview_cell"
                   label="预览">
                 <template v-slot="scope">
-                  <!--<el-tooltip :content="scope.row.path.substr(scope.row.path.lastIndexOf('/')+1)"
-                              class="item"
-                              effect="dark"
-                              placement="top">-->
                   <img v-if="scope.row.mime_type.startsWith('video')"
                        class="preview_img"
-                       src="video.png"
+                       :src="handleGetDocumentImage(scope.row.mime_type)"
                        @click="handleGoToPreview(scope.row)">
                   <img v-else-if="scope.row.mime_type.startsWith('doc')"
                        :src="handleGetDocumentImage(scope.row.mime_type)"
@@ -480,10 +477,9 @@
                        preview="build_image_list">
                   <img v-else
                        class="preview_img"
-                       :src="unknown.png"
+                       :src="handleGetDocumentImage(scope.row.mime_type)"
                        @click="handleGoToPreview(scope.row)">
                   <div style="width: 150px">{{ scope.row.path.substr(scope.row.path.lastIndexOf('/') + 1) }}</div>
-                  <!--</el-tooltip>-->
                 </template>
               </el-table-column>
               <el-table-column align="center"
@@ -1909,11 +1905,15 @@ export default {
     position: relative;
     width: calc(20% - 10px);
     flex-shrink: 0;
-    padding: 30px 10px 10px 10px;
+    padding: 30px 12px 10px 12px;
     background-color: rgba(0, 0, 0, 0.1);
     margin: 0 10px 10px 0;
     border-radius: 5px;
     box-sizing: border-box;
+
+    .el-image {
+      border-radius: 4px;
+    }
 
     &::after {
     }
@@ -1921,10 +1921,12 @@ export default {
     .el-checkbox {
       position: absolute;
       top: 5px;
-      left: 10px
+      left: 10px;
+      width: 16px;
+      height: 16px;
     }
 
-    .el-icon-circle-plus {
+    img {
       position: absolute;
       top: 5px;
       right: 10px;
@@ -2073,7 +2075,6 @@ export default {
     border-left: 1px solid #e6e6e6;
     background-color: #ffffff;
     border-radius: 0 5px 0 0;
-
     height: calc(100% - 20px);
     display: flex;
     flex-direction: column;
@@ -2102,7 +2103,6 @@ export default {
         border-right: none !important;
       }
     }
-
   }
 
   .right-area {
@@ -2152,7 +2152,6 @@ export default {
   }
 
   /*}*/
-
   .better-scroll {
     &::-webkit-scrollbar {
       width: 8px;
