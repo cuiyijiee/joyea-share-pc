@@ -5,13 +5,13 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/vue3-essential',
     'standard'
   ],
+  parser: 'babel-eslint',
   overrides: [
   ],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: 2020,
   },
   plugins: [
     'vue'
@@ -42,11 +42,5 @@ module.exports = {
     //   "registeredComponentsOnly": false,
     //   "ignores": []
     // }],
-    'vue/no-parsing-error': [
-      2,
-      {
-        'x-invalid-end-tag': false
-      }
-    ]
   }
 }

@@ -40,7 +40,7 @@
                   @row-click="handleClickItem">
 
           <el-table-column label="路径">
-            <template v-slot="scope">
+            <template slot-scope="scope">
               <i v-if="scope.row.is_dir"
                  class="el-icon-folder-opened"></i>
               <i v-else-if="scope.row.mime_type.startsWith('video')"
