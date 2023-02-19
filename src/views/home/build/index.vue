@@ -428,8 +428,9 @@
               <el-checkbox
                 @change="handleSelectedLargeImg(item)"
                 :value="largeImgSelected.includes(item.neid)"/>
-              <i @click="handleAdd(item,true)"
-                 class="el-icon-circle-plus"/>
+              <img @click="handleAdd(item,true)"
+                src="../../../assets/icon_add_hover.svg"
+                style="width: 22px; height: 22px"/>
               <el-image
                 :onerror="defaultImg"
                 :preview-src-list="[].concat(genPreviewUrl(item.neid))"
@@ -1908,18 +1909,23 @@ export default {
         position: relative;
         width: calc(20% - 10px);
         flex-shrink: 0;
-        padding: 30px 10px 10px 10px;
+        padding: 30px 12px 10px 12px;
         background-color: rgba(0,0,0,0.1);
         margin: 0 10px 10px 0;
         border-radius: 5px;
         box-sizing: border-box;
+        .el-image {
+          border-radius: 4px;
+        }
         &::after {}
         .el-checkbox {
             position: absolute;
             top: 5px;
-            left: 10px
+            left: 10px;
+            width: 16px;
+            height: 16px;
         }
-        .el-icon-circle-plus {
+        img {
             position: absolute;
             top: 5px;
             right: 10px;
