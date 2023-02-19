@@ -590,7 +590,7 @@
       </div>
     </el-dialog>
     <el-dialog :title="toPlayVideo.title"
-               v-model:visible="visible.videoDialogVisible"
+               :visible.sync="visible.videoDialogVisible"
                @close="handleCloseVideo"
                @opened="initVideoPlayer()">
       <video id="myVideo"
@@ -617,7 +617,7 @@
     >
     </search-result-dialog>
     <el-dialog :close-on-click-modal="false"
-               v-model:visible="visible.addWordDialogVisible"
+               :visible.sync="visible.addWordDialogVisible"
                title="小白板管理"
                @open="handleFilterCurDirWordList">
       <div style="text-align: right">
