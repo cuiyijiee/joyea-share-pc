@@ -1,0 +1,15 @@
+<svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon_edit" clip-path="url(#clip0_671_8415)">
+<path id="Vector (Stroke)" d="M2.66699 16.5C2.66699 23.8638 8.63653 29.8333 16.0003 29.8333C23.3641 29.8333 29.3337 23.8638 29.3337 16.5C29.3337 9.13616 23.3641 3.16663 16.0003 3.16663C8.63653 3.16663 2.66699 9.13616 2.66699 16.5Z" stroke="#F8A14C" stroke-linejoin="round"/>
+<g id="Frame 108">
+<path id="Vector" d="M10.4425 20.781L12.7405 20.7811L21.1668 12.3547L18.8687 10.0566L10.4424 18.483L10.4425 20.781Z" stroke="#F69F4A" stroke-linejoin="round"/>
+<path id="Vector_2" d="M16.5703 12.355L18.8684 14.6531" stroke="#F69F4A" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 48" d="M10.5 22.5H22" stroke="#F69F4A" stroke-linecap="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_671_8415">
+<rect width="32" height="32" fill="white" transform="translate(0 0.5)"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,0 +1,9 @@
+build/
+dist/
+node_modules/
+*.svg
+*.config.js
+*.*rc.js
+*.html
+src/assets/font/
+shims-vue.d.ts

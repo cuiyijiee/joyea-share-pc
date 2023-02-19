@@ -83,7 +83,7 @@
                     <el-dropdown trigger="click">
                         <div>
                             <el-button circle icon="iconfont el-icon-icon_me_20_20px" size="mini"
-                                       style="background-color: #eb7708 "
+                                       style="background-color: #F6891F "
                                        type="warning"></el-button>
                             <span class="el-dropdown-link userinfo-inner">{{ userInfo.name }}<i
                                 class="el-icon-arrow-down el-icon--right"/></span>
@@ -341,7 +341,7 @@ export default {
 
     .is-active {
         border: 0 !important;
-        background: #eb7708;
+        background: #F6891F;
         color: #ffffff;
     }
 

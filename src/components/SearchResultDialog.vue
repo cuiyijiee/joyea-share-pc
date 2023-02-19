@@ -3,7 +3,7 @@
         <el-dialog :close-on-click-modal="false"
                    :close-on-press-escape="false"
                    :title="'【' + search.keyword + '】的搜索结果'"
-                   :visible.sync="visible.searchDialogVisible"
+                   v-model:visible="visible.searchDialogVisible"
                    class="search-dialog"
                    @close="">
             <el-tabs v-model="search.resultShowType" class="search-result-type-switch"
@@ -53,7 +53,7 @@
                     <el-table-column type="selection" width="55"
                                      :selectable="(row) => {return !row.is_dir}"></el-table-column>
                     <el-table-column label="文件名" show-overflow-tooltip>
-                        <template slot-scope="scope">
+                        <template v-slot="scope">
                             <div>
                                 <div class="file-name-block">
                   <span class="file-icon">
@@ -80,7 +80,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="预览" width="150">
-                        <template slot-scope="scope">
+                        <template v-slot="scope">
                             <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
                                       :onerror="defaultImg"
                                       :preview-src-list="[].concat(genPreviewUrl(scope.row.neid))"
@@ -91,7 +91,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="文件类型" width="220">
-                        <template slot-scope="scope">
+                        <template v-slot="scope">
                             <div>
                 <span class="file-type-show">
                     {{ formatFileShowType(scope.row) }}
@@ -130,12 +130,12 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="引用次数" width="100">
-                        <template slot-scope="scope">
+                        <template v-slot="scope">
                             <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="下载次数" width="100">
-                        <template slot-scope="scope">
+                        <template v-slot="scope">
                             <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
                         </template>
                     </el-table-column>
@@ -158,187 +158,187 @@
 
 <script>
 
-import {addRedirectPath, ftsSearch} from "@/api";
-import genSrcPreviewSrc, {formatFileShowType} from "@/utils";
-import VideoPreviewDialog from "@/components/VideoPreviewDialog";
+import { addRedirectPath, ftsSearch } from '@/api'
+import genSrcPreviewSrc, { formatFileShowType } from '@/utils'
+import VideoPreviewDialog from '@/components/VideoPreviewDialog'
 import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 
 export default {
-    name: "SearchResultDialog",
-    components: {
-        VideoPreviewDialog,
-        ElImageViewer
-    },
-    props: {
-        directoryType: {
-            default: "",
-            type: String
-        }
-    },
-    data() {
-        return {
-            defaultOpenDelay: 1000,
-            imageViewVisible: false,
-            imageViewUrl: [],
-            markReg: /<mark>|<\/mark>/g,
-            search: {
-                type: '',
-                keyword: '',
-                hasNext: false,
-                nextOffset: 0,
-                realOrderType: "0",
-
-                currentIndex: 0,
-                defaultLimit: 30,
-                resultShowType: "0"
-            },
-            searchResult: [],
-            searchShowResult: [],
-            visible: {
-                searchDialogVisible: false
-            },
-            loading: {
-                searchMore: false
-            },
-            defaultImg: 'this.src="' + require('@assets/error.png') + '"', //默认图地址
-            multipleSelection: [],
-            sortType: 0,
-            sortOrder: 0
-        }
-    },
-    methods: {
-        formatFileShowType,
-        handleGoToPreview(fileItem) {
-            if (fileItem.is_dir) {
-                this.handleGotoDir(fileItem);
-            } else if (fileItem.mime_type && fileItem.mime_type.startsWith("video")) {
-                this.$refs.VideoPreviewDialog.playVideo(fileItem)
-            } else if (fileItem.mime_type && fileItem.mime_type.startsWith("image")) {
-                this.imageViewUrl = [genSrcPreviewSrc(fileItem.neid)]
-                this.imageViewVisible = true;
-            } else if (fileItem.mime_type.startsWith("doc")) {
-                window.open(genSrcPreviewSrc(fileItem.neid));
-            } else {
-                this.$message.error("暂不支持的预览类型！")
-            }
-        },
-        handleGotoDir(fileItem) {
-            this.visible.searchDialogVisible = false;
-            this.$emit("goToDir", fileItem);
-        },
-        handleGetCurRedirectPath(fileItem) {
-            let _this = this;
-            let currentFullPath = fileItem.path;
-            if (currentFullPath.length === 0 && this.directoryType === "SELF") {
-                currentFullPath = "/"
-            }
-            addRedirectPath(currentFullPath, this.directoryType).then(resp => {
-                let redirectPath = window.location.protocol + "//"
-                    + window.location.host + "/api/redirectPath?id=" + resp.id;
-                let input = document.createElement("input");
-                input.value = redirectPath;
-                document.body.appendChild(input);
-                input.select();
-                input.setSelectionRange(0, input.value.length);
-                document.execCommand('Copy');
-                document.body.removeChild(input);
-                _this.$message.success("获取成功，已复制到剪贴板！");
-            })
-        },
-        genPreviewUrl(neid) {
-            return genSrcPreviewSrc(neid);
-        },
-        handleAdd(fileItem) {
-            this.$emit("handleAdd", fileItem)
-        },
-        handleAddSrcToPrivateDir(fileItem) {
-            this.$emit("addSrcToPrivateDir", fileItem);
-        },
-        handleStartSearch() {
-            this.loading.searchMore = true;
-
-            if (this.sortType === 0) {
-                this.search.realOrderType = "0"
-            } else if (this.sortType === 1) {
-                if (this.sortOrder === 0) {
-                    this.search.realOrderType = "1"
-                } else if (this.sortOrder === 1) {
-                    this.search.realOrderType = "2"
-                }
-            }
-            //console.log("sort type: " + this.sortType + ", sort order: " + this.sortOrder + ",real sort " + this.search.realOrderType);
-            ftsSearch(this.search.keyword, this.search.nextOffset, this.search.defaultLimit,
-                this.search.resultShowType, this.search.realOrderType).then(response => {
-                if (response.code === "0") {
-                    this.search.hasNext = response.obj["has_more"];
-                    this.search.nextOffset = response.obj["next_offset"];
-                    response.obj.content.forEach(item => {
-                        item.joyeaDesc = "";
-                        item.isModify = false;
-                        this.searchResult.push(item);
-                    })
-                } else {
-                    this.$notify.error({
-                        title: '搜索出错',
-                        message: '搜索过程出现错误：' + response.msg
-                    });
-                }
-            }).finally(() => {
-                this.loading.searchMore = false;
-            })
-        },
-        handleFilterSearchResult() {
-            this.search.nextOffset = 0;
-            this.searchResult = [];
-            this.handleStartSearch();
-        },
-        handleSearch(searchKey) {
-            this.search.keyword = searchKey;
-            this.search.nextOffset = 0;
-            this.search.resultShowType = "0";
-            this.searchResult = [];
-            this.searchShowResult = [];
-            this.visible.searchDialogVisible = true;
-            this.handleStartSearch();
-        },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        handleBatchAddToList() {
-            this.$emit("handleBatchAdd", this.multipleSelection);
-        },
-        handleBatchAddToPrivate() {
-            this.$emit("batchAddSrcToPrivateDir", this.multipleSelection);
-        },
-        handleSortTypeSelected(val) {
-            this.sortType = val;
-            this.search.nextOffset = 0;
-            this.searchResult = [];
-            this.handleStartSearch();
-        },
-        handleSortOrderSelected(val) {
-            this.sortOrder = val;
-            this.search.nextOffset = 0;
-            this.searchResult = [];
-            this.handleStartSearch();
-        },
-        close() {
-            this.visible.searchDialogVisible = false;
-        }
-    },
-    watch: {
-        "search.keyword": {
-            immediate: true,
-            handler(v1, v2) {
-                if (v1 !== '' || v1 !== v2) {
-                    this.$nextTick(() => {
-                        this.searchResult = [];
-                        this.searchShowResult = [];
-                    });
-                }
-            }
-        }
+  name: 'SearchResultDialog',
+  components: {
+    VideoPreviewDialog,
+    ElImageViewer
+  },
+  props: {
+    directoryType: {
+      default: '',
+      type: String
     }
+  },
+  data () {
+    return {
+      defaultOpenDelay: 1000,
+      imageViewVisible: false,
+      imageViewUrl: [],
+      markReg: /<mark>|<\/mark>/g,
+      search: {
+        type: '',
+        keyword: '',
+        hasNext: false,
+        nextOffset: 0,
+        realOrderType: '0',
+
+        currentIndex: 0,
+        defaultLimit: 30,
+        resultShowType: '0'
+      },
+      searchResult: [],
+      searchShowResult: [],
+      visible: {
+        searchDialogVisible: false
+      },
+      loading: {
+        searchMore: false
+      },
+      defaultImg: 'this.src="' + require('@assets/error.png') + '"', // 默认图地址
+      multipleSelection: [],
+      sortType: 0,
+      sortOrder: 0
+    }
+  },
+  methods: {
+    formatFileShowType,
+    handleGoToPreview (fileItem) {
+      if (fileItem.is_dir) {
+        this.handleGotoDir(fileItem)
+      } else if (fileItem.mime_type && fileItem.mime_type.startsWith('video')) {
+        this.$refs.VideoPreviewDialog.playVideo(fileItem)
+      } else if (fileItem.mime_type && fileItem.mime_type.startsWith('image')) {
+        this.imageViewUrl = [genSrcPreviewSrc(fileItem.neid)]
+        this.imageViewVisible = true
+      } else if (fileItem.mime_type.startsWith('doc')) {
+        window.open(genSrcPreviewSrc(fileItem.neid))
+      } else {
+        this.$message.error('暂不支持的预览类型！')
+      }
+    },
+    handleGotoDir (fileItem) {
+      this.visible.searchDialogVisible = false
+      this.$emit('goToDir', fileItem)
+    },
+    handleGetCurRedirectPath (fileItem) {
+      const _this = this
+      let currentFullPath = fileItem.path
+      if (currentFullPath.length === 0 && this.directoryType === 'SELF') {
+        currentFullPath = '/'
+      }
+      addRedirectPath(currentFullPath, this.directoryType).then(resp => {
+        const redirectPath = window.location.protocol + '//' +
+                    window.location.host + '/api/redirectPath?id=' + resp.id
+        const input = document.createElement('input')
+        input.value = redirectPath
+        document.body.appendChild(input)
+        input.select()
+        input.setSelectionRange(0, input.value.length)
+        document.execCommand('Copy')
+        document.body.removeChild(input)
+        _this.$message.success('获取成功，已复制到剪贴板！')
+      })
+    },
+    genPreviewUrl (neid) {
+      return genSrcPreviewSrc(neid)
+    },
+    handleAdd (fileItem) {
+      this.$emit('handleAdd', fileItem)
+    },
+    handleAddSrcToPrivateDir (fileItem) {
+      this.$emit('addSrcToPrivateDir', fileItem)
+    },
+    handleStartSearch () {
+      this.loading.searchMore = true
+
+      if (this.sortType === 0) {
+        this.search.realOrderType = '0'
+      } else if (this.sortType === 1) {
+        if (this.sortOrder === 0) {
+          this.search.realOrderType = '1'
+        } else if (this.sortOrder === 1) {
+          this.search.realOrderType = '2'
+        }
+      }
+      // console.log("sort type: " + this.sortType + ", sort order: " + this.sortOrder + ",real sort " + this.search.realOrderType);
+      ftsSearch(this.search.keyword, this.search.nextOffset, this.search.defaultLimit,
+        this.search.resultShowType, this.search.realOrderType).then(response => {
+        if (response.code === '0') {
+          this.search.hasNext = response.obj.has_more
+          this.search.nextOffset = response.obj.next_offset
+          response.obj.content.forEach(item => {
+            item.joyeaDesc = ''
+            item.isModify = false
+            this.searchResult.push(item)
+          })
+        } else {
+          this.$notify.error({
+            title: '搜索出错',
+            message: '搜索过程出现错误：' + response.msg
+          })
+        }
+      }).finally(() => {
+        this.loading.searchMore = false
+      })
+    },
+    handleFilterSearchResult () {
+      this.search.nextOffset = 0
+      this.searchResult = []
+      this.handleStartSearch()
+    },
+    handleSearch (searchKey) {
+      this.search.keyword = searchKey
+      this.search.nextOffset = 0
+      this.search.resultShowType = '0'
+      this.searchResult = []
+      this.searchShowResult = []
+      this.visible.searchDialogVisible = true
+      this.handleStartSearch()
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    handleBatchAddToList () {
+      this.$emit('handleBatchAdd', this.multipleSelection)
+    },
+    handleBatchAddToPrivate () {
+      this.$emit('batchAddSrcToPrivateDir', this.multipleSelection)
+    },
+    handleSortTypeSelected (val) {
+      this.sortType = val
+      this.search.nextOffset = 0
+      this.searchResult = []
+      this.handleStartSearch()
+    },
+    handleSortOrderSelected (val) {
+      this.sortOrder = val
+      this.search.nextOffset = 0
+      this.searchResult = []
+      this.handleStartSearch()
+    },
+    close () {
+      this.visible.searchDialogVisible = false
+    }
+  },
+  watch: {
+    'search.keyword': {
+      immediate: true,
+      handler (v1, v2) {
+        if (v1 !== '' || v1 !== v2) {
+          this.$nextTick(() => {
+            this.searchResult = []
+            this.searchShowResult = []
+          })
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -384,7 +384,6 @@ export default {
     margin: 0 20px 0 20px;
 }
 
-
 .search-result-type-switch {
     height: 40px;
 }
@@ -422,7 +421,7 @@ export default {
 }
 
 .file-type-icon:hover {
-    color: #EB7708;
+    color: #F6891F;
 }
 
 .file-type-hide {
@@ -442,7 +441,7 @@ export default {
 }
 
 .el-table__body tr:hover > td .file-name {
-    color: #EB7708;
+    color: #F6891F;
 }
 
 .sort-icon {

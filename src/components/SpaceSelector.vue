@@ -7,18 +7,18 @@
 
 <script>
 export default {
-    name: "SpaceSelector",
-    data() {
-        return {
-            selfSpaceBg:require("@assets/self-space-bg.png"),
-            lenovoSpaceBg:require("@assets/lenovo-space-bg.png"),
-        }
-    },
-    methods: {
-        handleSelectDirectoryType(type) {
-            this.$emit("onDirectoryTypeSelected", type);
-        }
+  name: 'SpaceSelector',
+  data () {
+    return {
+      selfSpaceBg: require('@assets/self-space-bg.png'),
+      lenovoSpaceBg: require('@assets/lenovo-space-bg.png')
     }
+  },
+  methods: {
+    handleSelectDirectoryType (type) {
+      this.$emit('onDirectoryTypeSelected', type)
+    }
+  }
 }
 </script>
 
