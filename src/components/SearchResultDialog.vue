@@ -54,8 +54,7 @@
                            :selectable="(row) => {return !row.is_dir}"></el-table-column>
           <el-table-column label="文件名" show-overflow-tooltip>
             <template v-slot="scope">
-              <div>
-                <div class="file-name-block">
+                <div class="flex">
                   <span class="file-icon">
                     <i v-if="scope.row.is_dir" class="iconfont-color icon-icon_folder"></i>
                     <i v-else-if="scope.row.mime_type.startsWith('doc')"
@@ -66,17 +65,16 @@
                        class="iconfont-color icon-icon_vedio"></i>
                     <i v-else class="el-icon-question"></i>
                   </span>
-                  <span class="file-name" @click="handleGoToPreview(scope.row)">
-                                        <b>{{ scope.row.path.substr(scope.row.path.lastIndexOf("/") + 1) }}</b>
+                    <span class="file-name" @click="handleGoToPreview(scope.row)">
+                                        {{ scope.row.path.substr(scope.row.path.lastIndexOf("/") + 1) }}
                                     </span>
-                  <div v-if="scope.row.desc" class="file-desc">
+                </div>
+                <div v-if="scope.row.desc" class="file-desc">
                     <el-tag v-for="(tag,index) in scope.row.desc.split(' ')" size="mini"
                             style="margin-right: 2px" :key="index"
                             type="info">{{ tag.replace(markReg, "") }}
                     </el-tag>
-                  </div>
                 </div>
-              </div>
             </template>
           </el-table-column>
           <el-table-column label="预览" width="150">
@@ -86,7 +84,7 @@
                         @click="handleGoToPreview(scope.row)"
                         :src="genPreviewUrl(scope.row.neid)"
                         class="preview_img"
-                        style="height: 90px;width: 120px">
+                        style="height: 50px;width: 67px">
               </el-image>
             </template>
           </el-table-column>
@@ -354,7 +352,7 @@ export default {
 :deep(.el-dialog) {
 
   margin-top: 8vh !important;
-  width: 75% !important;
+  width: 1127px !important;
 
   .el-dialog__header {
     background-color: #EAE8EB;
@@ -406,6 +404,10 @@ export default {
   width: 300px;
 }
 
+.flex {
+    display: flex;
+}
+
 .file-icon {
   .iconfont-color {
     font-size: 30px;
@@ -414,7 +416,11 @@ export default {
 
 .file-name {
   margin-left: 30px;
-  font-size: 15px;
+  color: #181818;
+  font-size: 14px;
+  font-family: Microsoft YaHei UI-Regular, Microsoft YaHei UI;
+  font-weight: 400;
+  vertical-align: center;
 }
 
 .file-desc {
@@ -449,6 +455,11 @@ export default {
 
 .el-table__body tr:hover > td .file-name {
   color: #F6891F;
+}
+
+// 去除表格底部的横线
+::v-deep .el-table::before {
+    height: 0;
 }
 
 .sort-icon {

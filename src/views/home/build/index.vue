@@ -241,23 +241,23 @@
             <template v-slot="scope">
               <div style="">
                 <div class="flex">
-<!--                  <span class="file-icon">-->
-<!--                    <i v-if="scope.row.is_dir"-->
-<!--                       class="iconfont-color icon-icon_folder"></i>-->
-<!--                    <i v-else-if="scope.row.mime_type.startsWith('doc')"-->
-<!--                       class="iconfont-color icon-icon_file"></i>-->
-<!--                    <i v-else-if="scope.row.mime_type.startsWith('image')"-->
-<!--                       class="iconfont-color icon-icon_pic"></i>-->
-<!--                    <i v-else-if="scope.row.mime_type.startsWith('video')"-->
-<!--                       class="iconfont-color icon-icon_vedio"></i>-->
-<!--                    <i v-else-->
-<!--                       class="el-icon-question"></i>-->
-<!--                  </span>-->
+                  <span class="file-icon">
+                    <i v-if="scope.row.is_dir"
+                       class="iconfont-color icon-icon_folder"></i>
+                    <i v-else-if="scope.row.mime_type.startsWith('doc')"
+                       class="iconfont-color icon-icon_file"></i>
+                    <i v-else-if="scope.row.mime_type.startsWith('image')"
+                       class="iconfont-color icon-icon_pic"></i>
+                    <i v-else-if="scope.row.mime_type.startsWith('video')"
+                       class="iconfont-color icon-icon_vedio"></i>
+                    <i v-else
+                       class="el-icon-question"></i>
+                  </span>
                   <span v-if="scope.row.mime_type && scope.row.mime_type.startsWith('word')"
-                        style="vertical-align:center;color: #333333">
+                        class="main-file-name">
                   {{ ' ' + scope.row.path }}</span>
                   <span v-else
-                        style="vertical-align:center;color: #333333">
+                        class="main-file-name">
                   {{ ' ' + scope.row.file_name }}</span>
                 </div>
 
@@ -2041,6 +2041,14 @@ export default {
   .iconfont-color {
     font-size: 30px;
   }
+}
+
+.main-file-name {
+    color: #181818;
+    font-size: 14px;
+    font-family: Microsoft YaHei UI-Regular, Microsoft YaHei UI;
+    font-weight: 400;
+    vertical-align: center;
 }
 
 .content_main {
