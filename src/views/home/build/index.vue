@@ -241,18 +241,18 @@
             <template v-slot="scope">
               <div style="">
                 <div class="flex">
-                  <span class="file-icon">
-                    <i v-if="scope.row.is_dir"
-                       class="iconfont-color icon-icon_folder"></i>
-                    <i v-else-if="scope.row.mime_type.startsWith('doc')"
-                       class="iconfont-color icon-icon_file"></i>
-                    <i v-else-if="scope.row.mime_type.startsWith('image')"
-                       class="iconfont-color icon-icon_pic"></i>
-                    <i v-else-if="scope.row.mime_type.startsWith('video')"
-                       class="iconfont-color icon-icon_vedio"></i>
-                    <i v-else
-                       class="el-icon-question"></i>
-                  </span>
+<!--                  <span class="file-icon">-->
+<!--                    <i v-if="scope.row.is_dir"-->
+<!--                       class="iconfont-color icon-icon_folder"></i>-->
+<!--                    <i v-else-if="scope.row.mime_type.startsWith('doc')"-->
+<!--                       class="iconfont-color icon-icon_file"></i>-->
+<!--                    <i v-else-if="scope.row.mime_type.startsWith('image')"-->
+<!--                       class="iconfont-color icon-icon_pic"></i>-->
+<!--                    <i v-else-if="scope.row.mime_type.startsWith('video')"-->
+<!--                       class="iconfont-color icon-icon_vedio"></i>-->
+<!--                    <i v-else-->
+<!--                       class="el-icon-question"></i>-->
+<!--                  </span>-->
                   <span v-if="scope.row.mime_type && scope.row.mime_type.startsWith('word')"
                         style="vertical-align:center;color: #333333">
                   {{ ' ' + scope.row.path }}</span>
@@ -504,7 +504,7 @@
                          icon="el-icon-folder-add"
                          size="mini"
                          type="primary"
-                         @click.stop="handleSaveList">保存清单
+                         @click.stop="handleSaveList">保存
               </el-button>
               <!--</el-col>
                                     <el-col :span="9">-->
@@ -513,7 +513,7 @@
                          icon="el-icon-suitcase"
                          size="mini"
                          type="info"
-                         @click.stop="handleDownloadSrc(true)">下载准备
+                         @click.stop="handleDownloadSrc(true)">下载
               </el-button>
               <!--</el-col>
                                     <el-col :span="6">-->

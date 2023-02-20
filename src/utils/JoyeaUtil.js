@@ -7,9 +7,9 @@ export function getDocumentImage (mimeType) {
     result = require("../assets/fileTypePng/pdf.png")
   } else if (mimeType.endsWith('ppt') || mimeType.endsWith('pptx')) {
     result = require("../assets/fileTypePng/ppt.png")
-  } else if (mimeType.endsWith('doc')) {
+  } else if (mimeType.endsWith('doc') || mimeType.endsWith('docx')) {
     result = require("../assets/fileTypePng/word.png")
-  } else if (mimeType.endsWith('xlsx')) {
+  } else if (mimeType.endsWith('xls') || mimeType.endsWith('xlsx')) {
     result = require("../assets/fileTypePng/execl.png")
   }
   return result
