@@ -1589,7 +1589,7 @@ export default {
       if (this.curNeid !== row.neid) {
         this.curNeid = row.neid
       } else {
-
+        this.curNeid = ''
       }
     },
 
@@ -1598,6 +1598,7 @@ export default {
     },
     handleClickDirItem(row, column, cell) {
       if (column && column.label === '管理员') return
+      this.curNeid = ''
       this.visible.searchDialogVisible = false
       if (row.is_dir) {
         const filterParams = {
