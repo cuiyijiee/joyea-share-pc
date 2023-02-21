@@ -288,7 +288,7 @@
                         @click="handleGoToPreview(scope.row)"
                         :src="genPreviewUrl(scope.row.neid)"
                         class="preview_img"
-                        :style="{'height: 90px;width: 120px': scope.row.mime_type && scope.row.mime_type.startsWith('image')}">
+                        style="height: 60px;width: 90px;">
               </el-image>
             </template>
           </el-table-column>
@@ -331,21 +331,12 @@
                       class="flex">
                   <span v-if="scope.row.neid === curNeid"
                         style="margin-right: 5px">
-                    <!--<el-button @click.stop="handleSave(scope.row.neid)"
-                               icon="el-icon-check"
-                               circle
-                               size="small"
-                               type="primary"></el-button>-->
                     <img src="../../../assets/icon_add_hover.svg"
                          style="width: 32px; height: 32px"
                          @click.stop="handleSave(scope.row.neid)"/>
                   </span>
                   <span v-else-if="scope.row.is_dir && curDirNeid === '0'"
                         style="margin-right: 5px">
-                    <!--<el-button icon="el-icon-user"
-                               circle
-                               @click.stop="curNeid = scope.row.neid"
-                               size="small"></el-button>-->
                     <img
                         src="../../../assets/icon_user_hover.svg"
                         style="width: 32px; height: 32px"
@@ -353,10 +344,6 @@
                   </span>
                   <span v-if="scope.row.neid === curNeid"
                         style="margin-right: 5px">
-                    <!--<el-button  icon="el-icon-close"
-                                circle
-                                @click.stop="curNeid = ''"
-                                size="small"></el-button>-->
                     <img src="../../../assets/icon_close_hover.svg"
                          style="width: 32px; height: 32px"
                          @click.stop="curNeid = ''"/>
@@ -370,10 +357,6 @@
                 </span>
                 <span v-if="hasBtnShowPermission(scope.row,'TRANSCODE')"
                       style="margin-right: 5px">
-                  <!--<el-button circle
-                             icon="el-icon-link"
-                             size="small"
-                             @click.stop="handleAddTranscodeVideo(scope.$index, scope.row)"/>-->
                   <img
                       src="../../../assets/icon_link_hover.svg"
                       style="width: 32px; height: 32px"
@@ -381,25 +364,12 @@
                 </span>
                 <span v-if="hasBtnShowPermission(scope.row,'RENAME_SRC')"
                       style="margin-right: 5px">
-                  <!--<el-button circle
-                             icon="el-icon-edit"
-                             size="small"
-                             @click.stop="handleUpdateAlias(scope.$index, scope.row)">
-                  </el-button>-->
                   <img
                       src="../../../assets/el-icon-edit.svg"
                       style="width: 32px; height: 32px"
                       @click.stop="handleUpdateAlias(scope.$index, scope.row)"/>
                 </span>
                 <span style="margin-right: 5px">
-                  <!--<el-button
-                    v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
-                    circle
-                    type="info"
-                    size="small"
-                    icon="el-icon-delete"
-                    @click.stop="handleRemoveSrc(scope.$index, scope.row)">
-                  </el-button>-->
                   <img
                       v-if="hasBtnShowPermission(scope.row,'PRIVATE_DIR_REMOVE_SRC')"
                       src="../../../assets/icon_delete_hover.svg"
@@ -436,12 +406,6 @@
                     description="暂无数据"></el-empty>
         </div>
       </div>
-
-      <!--                    </el-col>-->
-      <!--                    <el-col :span="15" class="bg-purple">-->
-
-      <!--                    </el-col>-->
-
       <div class="right-area">
         <div class="content_div flex">
           <div class="qdbj_list_tit"
@@ -462,24 +426,17 @@
                   class-name="preview_cell"
                   label="预览">
                 <template v-slot="scope">
-                  <img v-if="scope.row.mime_type.startsWith('video')"
-                       class="preview_img"
-                       :src="handleGetDocumentImage(scope.row.mime_type)"
-                       @click="handleGoToPreview(scope.row)">
-                  <img v-else-if="scope.row.mime_type.startsWith('doc')"
-                       :src="handleGetDocumentImage(scope.row.mime_type)"
-                       class="preview_img"
-                       @click="handleGoToPreview(scope.row)">
-                  <img v-else-if="scope.row.mime_type.startsWith('image')"
+                  <el-image v-if="scope.row.mime_type.startsWith('image')"
                        :onerror="defaultImg"
                        :preview-text="scope.row.path"
                        :src="genPreviewUrl(scope.row.neid)"
                        class="preview_img"
-                       preview="build_image_list">
-                  <img v-else
+                       style="border-radius:5px;width: 150px; height: 90px;" fit="fill"
+                       preview="build_image_list"/>
+                  <el-image v-else
                        class="preview_img"
                        :src="handleGetDocumentImage(scope.row.mime_type)"
-                       @click="handleGoToPreview(scope.row)">
+                       @click="handleGoToPreview(scope.row)"/>
                   <div style="width: 150px">{{ scope.row.path.substr(scope.row.path.lastIndexOf('/') + 1) }}</div>
                 </template>
               </el-table-column>
@@ -499,7 +456,6 @@
             </el-table>
             <div :class="{no_display:toCreateAlbum.list.length === 0}"
                  class="load_more_bt qd_list_btns">
-              <!--<el-col :span="9">-->
               <el-button :loading="loading.saveList"
                          class="load_more_bt"
                          icon="el-icon-folder-add"
@@ -507,8 +463,6 @@
                          type="primary"
                          @click.stop="handleSaveList">保存
               </el-button>
-              <!--</el-col>
-                                    <el-col :span="9">-->
               <el-button v-loading="loading.downloadLoading"
                          class="load_more_bt grey-btn"
                          icon="el-icon-suitcase"
@@ -516,24 +470,17 @@
                          type="info"
                          @click.stop="handleDownloadSrc(true)">下载
               </el-button>
-              <!--</el-col>
-                                    <el-col :span="6">-->
               <el-button class="load_more_bt grey-btn"
                          icon="el-icon-delete"
                          size="mini"
                          type="info"
                          @click.stop="handleClearList">清空
               </el-button>
-              <!--</el-col>-->
             </div>
           </div>
 
         </div>
       </div>
-      <!--右边清单操作-->
-      <!--                <el-col :span="4" class="bg-purple">-->
-      <!--                </el-col>-->
-      <!--            </el-row>-->
     </div>
 
     <el-dialog ref="addDialog"

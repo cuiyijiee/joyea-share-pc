@@ -48,7 +48,7 @@
           </span>
         </div>
         <el-table v-loading="loading.search" :data="searchResult" @selection-change="handleSelectionChange"
-                  empty-text="暂没有搜索数据" height="500" style="width: 100%" ref="multipleTable">
+                  empty-text="暂没有搜索数据" height="500" class="better-scroll" style="width: 100%" ref="multipleTable">
           <!--多选框，屏蔽文件夹，使其不可选中-->
           <el-table-column type="selection" width="55"
                            :selectable="(row) => {return !row.is_dir}"></el-table-column>
@@ -457,9 +457,9 @@ export default {
   color: #F6891F;
 }
 
-// 去除表格底部的横线
-::v-deep .el-table::before {
-    height: 0;
+
+:deep(.el-table__cell) {
+    border-bottom: 0 solid #FFFFFF !important;
 }
 
 .sort-icon {
@@ -501,5 +501,21 @@ export default {
   100% {
     -webkit-transform: rotate(360deg);
   }
+}
+
+.better-scroll {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        -webkit-box-shadow: inset 0 0 8px #CFCFCF;
+    }
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 5px #CFCFCF;
+        border-radius: 8px;
+    }
 }
 </style>
