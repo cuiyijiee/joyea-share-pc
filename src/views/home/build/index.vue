@@ -33,7 +33,8 @@
     <div v-if="directoryType.length === 0">
       <space-selector @onDirectoryTypeSelected="handleDirectoryTypeSelected"/>
     </div>
-    <div v-else-if="curDirNeid === '541796009' && toCreateAlbum.list.length === 0"
+<!--    <div v-else-if="curDirNeid === '541796009' && toCreateAlbum.list.length === 0"-->
+    <div v-else-if="curDirNeid === '541796009'"
          style="height:1080px;padding: 0 40px;background: #d1d1d1;">
       <div v-loading="dir.loadingDir || loading.search"
            element-loading-background="rgba(209, 209, 209)"
