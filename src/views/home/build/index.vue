@@ -399,7 +399,7 @@
                   :preview-src-list="[].concat(genPreviewUrl(item.neid))"
                   :src="genPreviewUrl(item.neid)">
               </el-image>
-              <div style="font-size: 12px">{{ item.file_name }}</div>
+              <div style="font-size: 11px">{{ item.file_name }}</div>
             </div>
           </div>
           <el-empty v-else
@@ -1208,27 +1208,17 @@ export default {
       this.curNeid = ''
     },
     handleAdd(row, needFilter) {
-      let isIn = false
-      this.toCreateAlbum.list.forEach(item => {
+      let existIndex = -1
+      this.toCreateAlbum.list.forEach((item,index) => {
         if (item.neid === row.neid) {
-          isIn = true
+          existIndex = index;
         }
-      })
-      if (isIn && needFilter) {
-        this.$confirm('编辑列表中已经存在该记录，是否继续添加?', '提示', {
-          confirmButtonText: '继续添加',
-          cancelButtonText: '取消添加',
-          type: 'warning'
-        }).then(() => {
-          this.toCreateAlbum.list.push(row)
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消添加'
-          })
-        })
-      } else {
-        this.toCreateAlbum.list.push(row)
+      });
+      if(existIndex >= 0) {
+        this.toCreateAlbum.list.splice(existIndex,1);
+        this.toCreateAlbum.list.push(row);
+      }else{
+        this.toCreateAlbum.list.push(row);
       }
     },
     handleSelectDesc(row, column, event) {

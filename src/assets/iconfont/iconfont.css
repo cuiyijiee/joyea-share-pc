@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3388350 */
-  src: url('iconfont.woff2?t=1661766125550') format('woff2'),
-       url('iconfont.woff?t=1661766125550') format('woff'),
-       url('iconfont.ttf?t=1661766125550') format('truetype');
+  src: url('iconfont.woff2?t=1677413681449') format('woff2'),
+       url('iconfont.woff?t=1677413681449') format('woff'),
+       url('iconfont.ttf?t=1677413681449') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,182 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-a-icon_fileinformation_pic:before {
+  content: "\e652";
+}
+
+.el-icon-a-icon_getshortchain1:before {
+  content: "\e653";
+}
+
+.el-icon-a-icon_thumbnailmode:before {
+  content: "\e654";
+}
+
+.el-icon-a-icon_listmode:before {
+  content: "\e655";
+}
+
+.el-icon-a-icon_managenext:before {
+  content: "\e656";
+}
+
+.el-icon-icon_loading1:before {
+  content: "\e657";
+}
+
+.el-icon-icon_jump:before {
+  content: "\e658";
+}
+
+.el-icon-Checkbox_checked1:before {
+  content: "\e630";
+}
+
+.el-icon-Checkbox_default:before {
+  content: "\e631";
+}
+
+.el-icon-Checkbox_hover1:before {
+  content: "\e632";
+}
+
+.el-icon-Checkbox_disabled:before {
+  content: "\e633";
+}
+
+.el-icon-a-icon_addtolist1:before {
+  content: "\e634";
+}
+
+.el-icon-Checkbox_indeterminate1:before {
+  content: "\e635";
+}
+
+.el-icon-icon_arrow_left_20_20:before {
+  content: "\e636";
+}
+
+.el-icon-icon_close_default1:before {
+  content: "\e637";
+}
+
+.el-icon-icon_arrow_left_24_24:before {
+  content: "\e638";
+}
+
+.el-icon-a-icon_addfile:before {
+  content: "\e639";
+}
+
+.el-icon-icon_arrow_right_20_20:before {
+  content: "\e63a";
+}
+
+.el-icon-icon_cancel:before {
+  content: "\e63b";
+}
+
+.el-icon-icon_arrow_down_20_20:before {
+  content: "\e63c";
+}
+
+.el-icon-icon_arrow_down_24_24:before {
+  content: "\e63d";
+}
+
+.el-icon-a-icon_addtomarketsegments1:before {
+  content: "\e63e";
+}
+
+.el-icon-a-icon_adddirectory:before {
+  content: "\e63f";
+}
+
+.el-icon-a-icon_fileinformation_vedio:before {
+  content: "\e640";
+}
+
+.el-icon-a-icon_deleteall:before {
+  content: "\e641";
+}
+
+.el-icon-icon_close_hover1:before {
+  content: "\e642";
+}
+
+.el-icon-icon_arrow_up_24_24:before {
+  content: "\e643";
+}
+
+.el-icon-a-icon_fileinformation_folder:before {
+  content: "\e644";
+}
+
+.el-icon-icon_download:before {
+  content: "\e645";
+}
+
+.el-icon-a-icon_fileinformation_document:before {
+  content: "\e646";
+}
+
+.el-icon-icon_save:before {
+  content: "\e647";
+}
+
+.el-icon-icon_back:before {
+  content: "\e648";
+}
+
+.el-icon-icon_arrow_up_20_20:before {
+  content: "\e649";
+}
+
+.el-icon-icon_sort_20_20:before {
+  content: "\e64a";
+}
+
+.el-icon-icon_arrow_right_24_24:before {
+  content: "\e64b";
+}
+
+.el-icon-icon_sort_16_16:before {
+  content: "\e64c";
+}
+
+.el-icon-icon_search:before {
+  content: "\e64d";
+}
+
+.el-icon-icon_upload:before {
+  content: "\e64e";
+}
+
+.el-icon-a-icon_fileinformation_xiaobaiban:before {
+  content: "\e64f";
+}
+
+.el-icon-icon_filter_16_16:before {
+  content: "\e650";
+}
+
+.el-icon-icon_filter_20_20:before {
+  content: "\e651";
+}
+
+.el-icon-icon_delete:before {
+  content: "\e62d";
+}
+
+.el-icon-icon_add:before {
+  content: "\e62e";
+}
+
+.el-icon-icon_yes:before {
+  content: "\e62f";
 }
 
 .el-icon-icon_vedio:before {
