@@ -1199,6 +1199,19 @@ export default {
         this.handleDirectoryTypeSelected('LENOVO')
       }
       if (multiRow instanceof Array && multiRow.length > 0) {
+        let exist = false;
+        multiRow.forEach(item => {
+          let currentItemExist = this.toCreateAlbum.list.map(item => {
+            return item.neid
+          }).includes(item.neid);
+          if(currentItemExist) {
+            exist = true;
+          }
+        })
+        if(exist) {
+          this.$message.error('所选素材在清单列表中已存在！');
+          return;
+        }
         multiRow.forEach(item => {
           this.handleAdd(item, true)
         })
@@ -1218,8 +1231,9 @@ export default {
         }
       });
       if(existIndex >= 0) {
-        this.toCreateAlbum.list.splice(existIndex,1);
-        this.toCreateAlbum.list.push(row);
+        // this.toCreateAlbum.list.splice(existIndex,1);
+        // this.toCreateAlbum.list.push(row);
+          this.$message.error('所选素材在清单列表中已存在！');
       }else{
         this.toCreateAlbum.list.push(row);
       }
