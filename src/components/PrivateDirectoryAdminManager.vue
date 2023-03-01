@@ -85,6 +85,14 @@
         created() {
             this.handleGetAllAdmin();
             this.handleListAllUser();
+        },
+        mounted() {
+            this.$nextTick(()=> {
+                let dom = document.querySelectorAll('.el-cascader .el-input__inner')
+                dom.forEach(item=> {
+                    item.style.backgroundColor = 'transparent'
+                })
+            })
         }
     }
 </script>
