@@ -792,7 +792,7 @@ export default {
           case 'PRIVATE_DIR_REMOVE_SRC':
             hasPermission = this.directoryType === 'SELF' &&
                 (this.userInfo.isAdmin || this.curDirAdminUser.filter(item => this.userInfo.email === item.joyeaId).length > 0) &&
-                !fileItem.mime_type.startsWith('word')
+                !(fileItem.mime_type && fileItem.mime_type.startsWith('word'))
             break
             // case "PRIVATE_DIR_DOWNLOAD":
             //     hasPermission = this.directoryType === "SELF" && fileItem.is_dir
@@ -830,7 +830,7 @@ export default {
       } catch (e) {
         hasPermission = false
       }
-      // console.log(mode + " - " + hasPermission + " - " + JSON.stringify(fileItem));
+      console.log(mode + " - " + this.userInfo.isAdmin + " - " + this.directoryType + " - " + hasPermission + " - " + JSON.stringify(fileItem));
       return hasPermission
     },
     handleGetCurRedirectPath() {
