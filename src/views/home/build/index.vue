@@ -281,7 +281,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="预览" width="200">
+          <!--todo 需求变更，一级目录隐藏此列-->
+          <el-table-column
+                  v-if="(directoryType === 'SELF' && dir.currentPath.length > 0) || (directoryType !== 'SELF' && dir.currentPath.length > 1)"
+                  label="预览" width="200">
             <template v-slot="scope">
               <el-image v-if="scope.row.mime_type && scope.row.mime_type.startsWith('image')"
                         :onerror="defaultImg"
@@ -2097,7 +2100,6 @@ export default {
       }
     }
   }
-
   /*}*/
   .better-scroll {
     &::-webkit-scrollbar {
