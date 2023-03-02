@@ -334,7 +334,7 @@
                       class="flex">
                   <span v-if="scope.row.neid === curNeid"
                         style="margin-right: 5px">
-                    <img src="../../../assets/icon_add_hover.svg"
+                    <img src="../../../assets/icon_check_hover.svg"
                          style="width: 32px; height: 32px"
                          @click.stop="handleSave(scope.row.neid)"/>
                   </span>
