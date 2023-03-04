@@ -80,12 +80,9 @@
                        size="mini"
                        type="primary"
                        class="btn-icon-class"
+                       icon="iconfont el-icon-a-icon_managenext"
                        @click="visible.addWordDialogVisible = !visible.addWordDialogVisible">
-              <span class="flex aic">
-                <img style="color: #fff; width: 16px; height: 16px; margin-right: 5px"
-                     src="../../../assets/icon_manage_next.svg"/>
-                管理小白板
-              </span>
+              管理小白板
             </el-button>
             <add-src-to-private-dir v-if="hasBtnShowPermission(null,'NEW_PRIVATE_DIR')"
                                     :curDirNeid="curDirNeid"
