@@ -36,6 +36,7 @@
         <el-table v-loading="dir.loadingDir"
                   :data="dir.tableData"
                   empty-text="没有可选目录啦!"
+                  height="400"
                   @selection-change="handleSelectionChange"
                   @row-click="handleClickItem">
 
@@ -199,6 +200,6 @@ export default {
 .el-button {
     border-radius: 0;
     border: none;
-    font-size: 17px;
+    font-size: 16px;
 }
 </style>
