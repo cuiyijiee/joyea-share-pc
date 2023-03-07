@@ -3,15 +3,15 @@
     <div class="block">
 
       <div v-if="!editable">
-        <el-tag v-for="item in value" size="mini"
-                :key="item[0] + '/' + item[1]"
-                type="info" effect="dark" style="background-color: #f4f4f5;border-color: #f4f4f5;color: #909399">
+        <div v-for="item in value" :key="item[0] + '/' + item[1]">
+            <el-tag  size="mini" type="info" effect="dark" style="background-color: #f4f4f5;border-color: #f4f4f5;color: #909399">
           {{
-            item[0] + '/' + allUser.filter(user => {
-              return user.id === item[1]
-            })[0].joyeaName
-          }}
+                    item[0] + '/' + allUser.filter(user => {
+                        return user.id === item[1]
+                    })[0].joyeaName
+                }}
         </el-tag>
+        </div>
       </div>
       <el-cascader v-else v-model="value" placeholder="请搜索添加文件管理员" size="small"
                    :options="options" :disabled="!editable" @click.stop="console.log('123')"
