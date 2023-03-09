@@ -8,9 +8,8 @@
                         <img v-if="record.srcType.startsWith('image')"
                              preview="dir_image_list" :preview-text="record.srcNeid"
                              :src="record.srcPreviewUrl"
-                             class="image" style="height: 400px;" fit="contain"/>
-                        <img v-else :src="getDocumentImage(record.srcType)" class="image" style="height: 400px"
-                             fit="contain"/>
+                             class="image" style="height: 400px;object-fit: contain"/>
+                        <img v-else :src="getDocumentImage(record.srcType)" class="image" style="height: 400px;object-fit: contain;"/>
                     </div>
                     <div style="padding: 14px;">
                         <span></span>

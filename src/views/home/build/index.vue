@@ -321,7 +321,7 @@
             <template v-slot="scope">
               <span>{{ scope.row.is_dir ? '-' : scope.row.download_num }}</span>
             </template>
-          </el-table-column>
+          </el-table-column>w
           <el-table-column align="left"
                            label="操作"
                            width="200">
