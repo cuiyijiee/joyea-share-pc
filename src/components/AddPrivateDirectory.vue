@@ -75,6 +75,6 @@ export default {
 .el-button {
     border-radius: 0;
     border: none;
-    font-size: 17px;
+    font-size: 16px;
 }
 </style>
