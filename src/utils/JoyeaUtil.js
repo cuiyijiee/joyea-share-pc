@@ -81,20 +81,20 @@ export function convertItem (item) {
 }
 
 export function getQueryParam (key) {
-  if (!key) {
-    return false
-  }
+    if (!key) {
+      return false
+    }
 
-  let value = ''
-  const paramStr = window.location.search ? window.location.search.substr(1) : ''
+    let value = ''
+    const paramStr = window.location.search ? window.location.search.substr(1) : ''
 
-  if (paramStr) {
-    paramStr.split('&').forEach(function (param) {
-      const arr = param.split('=')
-      if (arr[0] == key) {
-        value = arr[1]
-      }
-    })
-  }
-  return value
+    if (paramStr) {
+      paramStr.split('&').forEach(function (param) {
+        const arr = param.split('=')
+        if (arr[0] == key) {
+          value = arr[1]
+        }
+      })
+    }
+    return value
 }

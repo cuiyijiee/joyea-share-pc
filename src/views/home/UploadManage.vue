@@ -5,10 +5,14 @@
       <el-col :span="8" v-for="(record, index) in recordList" :key="index">
         <el-card style="padding: 10px;margin: 10px">
           <div @click="handleGoToPreview(record)">
-            <el-image
-              preview="dir_image_list" :preview-text="record.srcNeid"
+            <el-image v-if="record.srcType.startsWith('image')"
+                preview="dir_image_list" :preview-text="record.srcNeid"
+                :src="record.srcType.startsWith('image') ? record.srcPreviewUrl:getDocumentImage(record.srcType)"
+                class="image" fit="contain"/>
+            <el-image v-else
               :src="record.srcType.startsWith('image') ? record.srcPreviewUrl:getDocumentImage(record.srcType)"
-              class="image" fit="contain"/>
+              class="image" fit="contain">
+            </el-image>
           </div>
           <div style="padding: 14px;">
             <span></span>
@@ -29,8 +33,8 @@
     <el-dialog :visible.sync="manageDialogVisible" title="审核详情">
       <div v-if="manageDialogVisible">
         <el-image
-          :src="toManageRecord.srcType.startsWith('image') ? toManageRecord.srcPreviewUrl : getDocumentImage(toManageRecord.srcType)"
-          class="image" style="height: 400px" fit="contain"></el-image>
+            :src="toManageRecord.srcType.startsWith('image') ? toManageRecord.srcPreviewUrl : getDocumentImage(toManageRecord.srcType)"
+            class="image" style="height: 400px" fit="contain"></el-image>
       </div>
       <el-form ref="form" label-width="80px">
         <el-form-item label="文件名">
@@ -75,17 +79,17 @@
 </template>
 <script>
 
-import { findUploadRecord, uploadRecordManage } from '../../api'
+import {findUploadRecord, uploadRecordManage} from '../../api'
 import genSrcPreviewSrc from '../../utils'
-import { mapGetters } from 'vuex'
-import { getDocumentImage, convertItem, extname } from '../../utils/JoyeaUtil'
+import {mapGetters} from 'vuex'
+import {getDocumentImage, convertItem, extname} from '../../utils/JoyeaUtil'
 import LenovoDirSelector from '../../components/LenovoDirSelector'
 import videojs from 'video.js'
 
 export default {
   name: 'UploadManage',
-  components: { LenovoDirSelector },
-  data () {
+  components: {LenovoDirSelector},
+  data() {
     return {
       manageDialogVisible: false,
       recordList: [],
@@ -107,14 +111,14 @@ export default {
     })
   },
   methods: {
-    handleAllowRecord () {
+    handleAllowRecord() {
       if (!this.toManageRecord.srcName || !this.toManageRecord.uploadPath) {
         this.$message.error('请先完善上传文件的文件名和上传路径！')
       } else {
         uploadRecordManage(this.toManageRecord.id, true, null,
-          this.toManageRecord.uploadPath, this.toManageRecord.uploadPathNeid,
-          this.toManageRecord.srcName + '.' + this.toManageRecord.suffix,
-          this.toManageRecord.needCount, this.integral
+            this.toManageRecord.uploadPath, this.toManageRecord.uploadPathNeid,
+            this.toManageRecord.srcName + '.' + this.toManageRecord.suffix,
+            this.toManageRecord.needCount, this.integral
         ).then(resp => {
           if (resp.data) {
             this.$message.success('审核成功！')
@@ -124,14 +128,14 @@ export default {
         })
       }
     },
-    handleStartAllow (record, needCount) {
+    handleStartAllow(record, needCount) {
       this.integral = 1
       this.toManageRecord = record
       this.toManageRecord.suffix = extname(this.toManageRecord.tempSrcName)
       this.toManageRecord.needCount = needCount
       this.manageDialogVisible = true
     },
-    handleGoToPreview (row) {
+    handleGoToPreview(row) {
       row = convertItem(row)
       let previewType = 'pic'    // if video is av
       if (row.mime_type.startsWith('doc')) {
@@ -149,17 +153,17 @@ export default {
         this.$message.error('暂不支持的预览类型！')
       }
     },
-    handlePlayVideo (url, title) {
+    handlePlayVideo(url, title) {
       this.visible.videoDialogVisible = true
       this.toPlayVideo.url = url
       this.toPlayVideo.title = title
     },
-    handleCloseVideo () {
+    handleCloseVideo() {
       if (this.player != null) {
         this.player.pause()
       }
     },
-    playVideo () {
+    playVideo() {
       let _this = this
       if (this.player == null) {
         videojs(document.getElementById('myVideo'), {
@@ -172,15 +176,15 @@ export default {
           inactivityTimeout: false,
           controlBar: { // 设置控制条组件
             children: [
-              { name: 'playToggle' }, // 播放按钮
-              { name: 'currentTimeDisplay' }, // 当前已播放时间
-              { name: 'progressControl' }, // 播放进度条
-              { name: 'durationDisplay' }, // 总时间
+              {name: 'playToggle'}, // 播放按钮
+              {name: 'currentTimeDisplay'}, // 当前已播放时间
+              {name: 'progressControl'}, // 播放进度条
+              {name: 'durationDisplay'}, // 总时间
               {
                 name: 'volumePanel', // 音量控制
                 inline: false, // 不使用水平方式
               },
-              { name: 'FullscreenToggle' } // 全屏
+              {name: 'FullscreenToggle'} // 全屏
             ]
           },
           sources: [ // 视频源
@@ -205,16 +209,16 @@ export default {
     },
     genSrcPreviewSrc,
     getDocumentImage,
-    handleSelectUploadPath (path) {
+    handleSelectUploadPath(path) {
       this.selectPathVisible = false
       this.toManageRecord.uploadPath = '/' + path.path.join('/')
       this.toManageRecord.uploadPathNeid = path.neid
     },
-    handleRefuseUpload (record) {
+    handleRefuseUpload(record) {
       this.$prompt('给点建议吧！', '拒绝提示', {
         confirmButtonText: '拒绝',
         cancelButtonText: '我再想想',
-      }).then(({ value }) => {
+      }).then(({value}) => {
         uploadRecordManage(record.id, false, value).then(resp => {
           if (resp.data) {
             this.$message.success('审核成功！')
@@ -223,7 +227,7 @@ export default {
         })
       })
     },
-    getUnCheckRecord () {
+    getUnCheckRecord() {
       findUploadRecord(1, 9999).then(resp => {
         resp.data.record.map(record => {
           record.uploaderName = resp.data.user[record.uploader]
@@ -233,7 +237,7 @@ export default {
       })
     }
   },
-  created () {
+  created() {
     this.getUnCheckRecord()
   }
 }
