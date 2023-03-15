@@ -34,7 +34,7 @@
       <div v-if="manageDialogVisible">
         <el-image
             :src="toManageRecord.srcType.startsWith('image') ? toManageRecord.srcPreviewUrl : getDocumentImage(toManageRecord.srcType)"
-            class="dialog-image" style="height: 400px" fit="contain"></el-image>
+            class="dialog-image" fit="contain"></el-image>
       </div>
       <el-form ref="form" label-width="80px">
         <el-form-item label="文件名">
