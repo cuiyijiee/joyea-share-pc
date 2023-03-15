@@ -30,7 +30,7 @@
       <div v-if="manageDialogVisible">
         <el-image
           :src="toManageRecord.srcType.startsWith('image') ? toManageRecord.srcPreviewUrl : getDocumentImage(toManageRecord.srcType)"
-          class="image" style="height: 400px" fit="contain"></el-image>
+          class="dialog-image" fit="contain"></el-image>
       </div>
       <el-form ref="form" label-width="80px">
         <el-form-item label="文件名">
@@ -258,6 +258,17 @@ export default {
 .image {
   width: 100%;
   height: calc(((100vw / 3 - 140px) - 20px) * 2 / 3);
+  border-radius: 10px;
+  background-color: #f1f3f5;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.dialog-image {
+  width: 100%;
+  height: calc(((100vw / 3 - 140px) - 20px) * 2 / 3);
+  margin: 0 0 20px 0;
   border-radius: 10px;
   background-color: #f1f3f5;
   display: block;
