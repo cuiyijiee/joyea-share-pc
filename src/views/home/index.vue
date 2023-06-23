@@ -138,7 +138,7 @@ export default {
             return store.getters.barVisible;
         },
         ...mapGetters({
-            'userInfo': 'userInfo/userInfo'
+            userInfo: 'userInfo/userInfo'
         })
     },
     methods: {
@@ -192,9 +192,9 @@ export default {
                 _this.downloadTask.reverse();
             })
             timer = setInterval(function () {
-                getTodayDownload(this.userInfo.email).then(response => {
+                getTodayDownload(_this.userInfo.email).then(response => {
                     _this.downloadTask = [];
-                    response.data.forEach(task => {
+                    response.list.forEach(task => {
                         _this.downloadTask.push({
                             id: task.id,
                             startTime: task.createdAt,

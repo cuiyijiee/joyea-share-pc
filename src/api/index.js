@@ -117,6 +117,14 @@ export function getTodayDownload(userId) {
     })
 }
 
+export function queryFileAlready(neid) {
+    return service.post("apiv2/download/file/already", {
+        neid
+    }).then(resp => {
+        return resp.data;
+    })
+}
+
 export function getMyWordList(search, pageSize, pageNum) {
     return service.post("api/v1/esunyun/myword", {
         search: search, pageSize: pageSize, pageNum: pageNum
