@@ -646,8 +646,8 @@ import api, {
   getMyWordList,
   getTopSearchKey,
   newPrivateDirSrc,
-  prepareDownloadFile,
-  queryDownload,
+    newDownloadTask,
+    downloadTaskStatus,
   removePrivateDir,
   removePrivateDirSrc,
   updateSrcAlias
@@ -1076,77 +1076,6 @@ export default {
         }
       })
     },
-    handleDownloadPrivateDir (index, row) {
-      getFileMetadata(this.directoryType, row.path, '').then(response => {
-        if (!response.obj.content) {
-          this.$message.error('当前文件夹可供下载文件为空！')
-          return
-        }
-        response.obj.content = response.obj.content.filter(item => !item.is_dir && item.mime_type !== 'word')
-        if (response.obj.content.length > 0) {
-          const _this = this
-          const toDownloadList = []
-          let totalBytes = 0
-          let index = 0
-          response.obj.content.forEach(src => {
-            totalBytes += src.bytes
-            toDownloadList.push({
-              index: index += 1,
-              filename: src.file_name,
-              neid: src.neid,
-              path_type: 'ent',
-              rev: '',
-              path: ''
-            })
-          })
-          const totalKb = totalBytes / 1024
-          const totalMb = totalKb / 1024
-          const warnMb = 300
-          this.$confirm(
-            '您已选中【 ' + toDownloadList.length + ' 】个文件，' + (totalMb > warnMb
-              ? ('待准备文件列表大小为【 ' + totalMb.toFixed(2) + 'MB 】,文件较大，建议您分批次准备。')
-              : ('待准备文件列表大小为【 ' + (totalMb > 1 ? totalMb.toFixed(2) + 'MB' : totalKb.toFixed(2) + 'KB') + ' 】。')) + '准备完成后会在右上角提示您下载!',
-            '提示',
-            {
-              confirmButtonText: '准备',
-              cancelButtonText: '取消',
-              type: totalMb > warnMb ? 'danger' : 'primary'
-            }).then(() => {
-            this.loading.downloadLoading = true
-            prepareDownloadFile(toDownloadList).then(resp => {
-              const taskId = resp.data
-              this.$store.dispatch('downloadStatus/setVisible', true)
-              this.$notify.success({
-                title: '提示',
-                message: '成功创建下载任务'
-              })
-              let timer = 0
-              timer = setInterval(function () {
-                queryDownload(taskId).then(resp => {
-                  if (resp.data && resp.data.status) {
-                    _this.$notify.success({
-                      title: '任务下载提示',
-                      message: '您有一个下载任务【' + getFileNameWithoutExtension(resp.data.firstSrcName) + '.zip】已准备好！'
-                    })
-                    clearInterval(timer)
-                    _this.$store.dispatch('downloadStatus/setVisible', false)
-                  }
-                })
-              }, 2 * 1000)
-            }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消下载'
-              })
-            }).finally(() => {
-              this.loading.downloadLoading = false
-            })
-          })
-        } else {
-          this.$message.error('当前文件夹可供下载文件为空！')
-        }
-      })
-    },
     handleRemoveSrc (index, row) {
       if (row.is_dir) {
         this.$confirm('即将删除文件夹【' + row.file_name + '】', '提示', {
@@ -1406,8 +1335,17 @@ export default {
           type: totalMb > warnMb ? 'danger' : 'primary'
         }).then(() => {
         this.loading.downloadLoading = true
-        prepareDownloadFile(toDownloadList).then(resp => {
-          const taskId = resp.data
+          newDownloadTask(
+              this.userInfo.email,
+            toDownloadList.map(item => {
+              return {
+                fileIndex: item.index,
+                fileNeid:item.neid,
+                fileName: item.filename
+              }
+            })
+        ).then(resp => {
+          const taskId = resp.obj;
           this.$store.dispatch('downloadStatus/setVisible', true)
           this.$notify.success({
             title: '提示',
@@ -1415,11 +1353,11 @@ export default {
           })
           let timer = 0
           timer = setInterval(function () {
-            queryDownload(taskId).then(resp => {
-              if (resp.data && resp.data.status) {
+            downloadTaskStatus(taskId).then(resp => {
+              if (resp.obj && resp.obj.finishTime) {
                 _this.$notify.success({
                   title: '任务下载提示',
-                  message: '您有一个下载任务【' + getFileNameWithoutExtension(resp.data.firstSrcName) + '.zip】已准备好！'
+                  message: '您有一个下载任务【' + getFileNameWithoutExtension(resp.obj.taskName) + '.zip】已准备好！'
                 })
                 clearInterval(timer)
                 _this.$store.dispatch('downloadStatus/setVisible', false)

@@ -92,24 +92,27 @@ export function uploadFile(file, fileDesc) {
     })
 }
 
-export function prepareDownloadFile(fileList) {
-    return service.post("api/v1/download/prepare", {
-        src: fileList
+export function newDownloadTask(userId,fileList) {
+    return service.post("apiv2/download/task/new", {
+        userId:userId,
+        downloadTaskItems: fileList
     }).then(resp => {
         return resp.data;
     })
 }
 
-export function queryDownload(downloadTaskId) {
-    return service.post("api/v1/download/query", {
-        id: downloadTaskId
+export function downloadTaskStatus(taskId) {
+    return service.post("apiv2/download/task/status", {
+        taskId: taskId
     }).then(resp => {
         return resp.data;
     })
 }
 
-export function getTodayDownload() {
-    return service.post("api/v1/download/today", {}).then(resp => {
+export function getTodayDownload(userId) {
+    return service.post("apiv2/download/task/today", {
+        userId
+    }).then(resp => {
         return resp.data;
     })
 }

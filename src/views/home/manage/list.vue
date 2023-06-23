@@ -73,8 +73,8 @@
 
 <script>
 
-import api, {prepareDownloadFile, queryDownload, recordAlbumDownload} from "../../../api"
-import {getDocumentImage} from "../../../utils/JoyeaUtil";
+import api, {newDownloadTask, downloadTaskStatus, recordAlbumDownload} from "../../../api"
+import {getDocumentImage, getFileNameWithoutExtension} from "../../../utils/JoyeaUtil";
 import genSrcPreviewUrl from "../../../utils";
 import videojs from "video.js";
 import {mapGetters} from "vuex";
@@ -289,8 +289,17 @@ export default {
                 recordAlbumDownload(row.id).then(resp => {
                     console.log("record album " + row.id + " download success:" + resp)
                 });
-                prepareDownloadFile(toDownloadList).then(response => {
-                    let taskId = response.data;
+                newDownloadTask(this.userInfo.email,
+                    toDownloadList.map(item => {
+                            return {
+                                fileIndex: item.index,
+                                fileNeid:item.neid,
+                                fileName: item.filename
+                            }
+                        }
+                    )
+                ).then(response => {
+                    let taskId = response.obj;
                     console.log("获取到下载ID：" + taskId);
                     this.$store.dispatch('downloadStatus/setVisible', true);
                     this.$notify.success({
@@ -299,11 +308,11 @@ export default {
                     });
                     let timer = 0;
                     timer = setInterval(function () {
-                        queryDownload(taskId).then(response => {
-                            if (response.data) {
+                        downloadTaskStatus(taskId).then(response => {
+                            if (response.obj && response.obj.finishTime) {
                                 _this.$notify.success({
-                                    title: "任务下载提示",
-                                    message: "您有一个任务【" + taskId + "】任务下载成功！"
+                                    title: '任务下载提示',
+                                    message: '您有一个下载任务【' + getFileNameWithoutExtension(response.obj.taskName) + '.zip】已准备好！'
                                 });
                                 clearInterval(timer);
                                 _this.$store.dispatch('downloadStatus/setVisible', false);

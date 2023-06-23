@@ -165,12 +165,6 @@ export default {
         jumpToTranscode() {
             this.$router.replace("/transcode/index?_=" + (new Date()).getTime());
         },
-        handleOpen() {
-        },
-        handleClose() {
-        },
-        handleSelect: function (a, b) {
-        },
         logout: function () {
             let _this = this;
             this.$confirm('确认退出吗?', '提示', {}).then(() => {
@@ -184,28 +178,28 @@ export default {
         },
         handleOpenDownload() {
             let _this = this;
-            getTodayDownload().then(response => {
+            getTodayDownload(this.userInfo.email).then(response => {
                 _this.downloadTask = [];
-                response.data.forEach(task => {
+                response.list.forEach(task => {
                     _this.downloadTask.push({
                         id: task.id,
-                        startTime: task.startTime,
-                        firstSrcName: task.firstSrcName.substr(0, task.firstSrcName.lastIndexOf(".")),
-                        status: task.status,
+                        startTime: task.createdAt,
+                        firstSrcName: task.taskName.substr(0, task.taskName.lastIndexOf(".")),
+                        status: task.finishTime !== null,
                         opened: _this.handleQueryRecord(task.id)
                     });
                 });
                 _this.downloadTask.reverse();
             })
             timer = setInterval(function () {
-                getTodayDownload().then(response => {
+                getTodayDownload(this.userInfo.email).then(response => {
                     _this.downloadTask = [];
                     response.data.forEach(task => {
                         _this.downloadTask.push({
                             id: task.id,
-                            startTime: task.startTime,
-                            firstSrcName: task.firstSrcName.substr(0, task.firstSrcName.lastIndexOf(".")),
-                            status: task.status,
+                            startTime: task.createdAt,
+                            firstSrcName: task.taskName.substr(0, task.taskName.lastIndexOf(".")),
+                            status: task.finishTime !== null,
                             opened: _this.handleQueryRecord(task.id)
                         });
                     });
@@ -235,7 +229,7 @@ export default {
         handleDownload(row) {
             if (row.status) {
                 this.handleAddRecord(row.id);
-                window.open(window.location.protocol + "//" + window.location.host + "/download/" + row.id + "/" + row.firstSrcName);
+                window.open(window.location.protocol + "//" + window.location.host + "/apiv2/download/task/file?taskId=" + row.id);
             }
         },
         genTodayDownloadTaskKey() {
