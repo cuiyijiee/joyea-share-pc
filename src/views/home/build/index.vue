@@ -353,7 +353,8 @@
                          @click.stop="curEditAdminNeid = ''"/>
                   </span>
                 </span>
-                <el-tooltip class="item" effect="dark" content="加入清单" placement="top-start">
+                <el-tooltip v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')"
+                    class="item" effect="dark" content="加入清单" placement="top">
                   <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')"
                          style="margin-right: 5px">
                     <img style="width: 32px; height: 32px"
@@ -361,7 +362,8 @@
                          @click.stop="handleAdd(scope.row)"/>
                   </span>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="下载" placement="top-start">
+                <el-tooltip v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')"
+                    class="item" effect="dark" content="下载" placement="top">
                   <span v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')"
                         style="margin-right: 5px">
                     <img style="width: 32px; height: 32px"
