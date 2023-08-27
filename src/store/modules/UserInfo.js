@@ -1,5 +1,5 @@
 const state = {
-    session: "",
+    token: "",
     name: "",
     email: "",
     isAdmin:false
@@ -8,7 +8,7 @@ const state = {
 const getters = {
     userInfo: function (state) {
         return {
-            session:state.session,
+            token:state.token,
             name:state.name,
             email:state.email,
             isAdmin:state.isAdmin
@@ -18,13 +18,13 @@ const getters = {
 
 const mutations = {
     refreshSession(state, newToken) {
-        state.session = newToken
+        state.token = newToken
     },
     cleanSession(state) {
-        state.session = ""
+        state.token = ""
     },
     updateUserInfo(state, userInfo) {
-        state.session =  userInfo.session;
+        state.token =  userInfo.token;
         state.name =  userInfo.name;
         state.email =  userInfo.email;
         state.isAdmin = userInfo.isAdmin

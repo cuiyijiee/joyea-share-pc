@@ -142,7 +142,7 @@ export default {
       } else if (row.mime_type.startsWith('video')) {
         previewType = 'av'
       }
-      let url = genSrcPreviewSrc(row.neid, row.hash, row.rev, previewType, this.userInfo.session)
+      let url = genSrcPreviewSrc(row.neid, row.hash, row.rev, previewType, this.userInfo.token)
       if (row.mime_type.startsWith('video')) {
         this.handlePlayVideo(url, '视频预览',)
       } else if (row.mime_type.startsWith('image')) {
@@ -230,7 +230,7 @@ export default {
       findUploadRecord(1, 9999).then(resp => {
         resp.data.record.map(record => {
           record.uploaderName = resp.data.user[record.uploader]
-          record.srcPreviewUrl = this.genSrcPreviewSrc(record.srcNeid, record.srcHash, record.srcRev, 'pic', this.userInfo.session)
+          record.srcPreviewUrl = this.genSrcPreviewSrc(record.srcNeid, record.srcHash, record.srcRev, 'pic', this.userInfo.token)
         })
         this.recordList = resp.data.record
       })

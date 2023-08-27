@@ -8,7 +8,6 @@
 </template>
 <script>
 import {mapActions, mapGetters} from "vuex"
-import {check} from "./api";
 import {getQueryParam} from "@/utils/JoyeaUtil";
 
 export default {
@@ -17,31 +16,6 @@ export default {
         ...mapActions('userInfo', [
             'refreshSessionFunc'
         ]),
-        _checkLogin() {
-            let _this = this;
-            check().then(resp => {
-                if (resp.code === 4001) {
-                    if (this.$route.name !== "login") {
-                        _this.$message.error("登录信息已过期，请重新登陆！");
-                        _this.$router.push("/login");
-                    }
-                } else {
-                    _this.refreshSessionFunc(resp.data);
-                }
-            }).catch(e => {
-                _this.$message.error("与服务器断开链接，请联系管理员：" + e);
-                _this.$router.push("/login");
-            })
-        },
-        checkLogin() {
-            let _this = this;
-            this._checkLogin();
-            setInterval(() => {
-                if (_this.$route.path !== '/login') {
-                    _this._checkLogin()
-                }
-            }, 2000)
-        }
     },
     created() {
         let nextPlusToken = getQueryParam("access_token");
@@ -63,22 +37,14 @@ export default {
             event.preventDefault();
         };
         if (this.$route.path !== '/login') {        //不在登陆界面
-            if (this.userInfo.session) {
+            if (this.userInfo.token) {
             } else {
-                if (this.userInfo.session.length === 0) {
+                if (this.userInfo.token.length === 0) {
                     this.$router.push("/login");
                 }
             }
         } else {                                    //登陆界面
-            // if (this.userInfo && this.userInfo.session && this.userInfo.session.length !== 0) {
-            //     this.$router.replace({
-            //         name: "/",
-            //         params: {checked: true}
-            //     });
-            // }
         }
-        this.checkLogin();
-
     },
     computed: {
         ...mapGetters({

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import api, {check} from "../../api";
+    import api from "../../api";
     import genSrcPreviewUrl from "../../utils/index"
     import VueLoadImage from 'vue-load-image'
     import {mapGetters} from "vuex";
@@ -61,46 +61,31 @@
             let _this = this;
             let albumId = this.$route.query.albumId;
             if (albumId) {
-                check().then(resp => {
-                    if (resp.code === 4001) {
-                        this.$router.push({
-                            name: "login",
-                            query: {
-                                ref: btoa(JSON.stringify({
-                                    fromShare: true,
-                                    albumId: albumId
-                                }))
-                            }
+                api({
+                    action: "album",
+                    method: "shareList",
+                    album_id: parseInt(albumId)
+                }).then(response => {
+                    if (response.result) {
+                        let imgUrl = [];
+                        let previewType = 'pic';    // if video is av
+                        response.album.src.forEach(src => {
+                            imgUrl.push({
+                                url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.token),
+                                desc: src.desc
+                            })
                         });
-                        this.loading = false;
+                        _this.album.list = imgUrl;
+                        _this.album.name = response.album.album_name;
+                        _this.album.id = response.album.album_id;
                     } else {
-                        api({
-                            action: "album",
-                            method: "shareList",
-                            album_id: parseInt(albumId)
-                        }).then(response => {
-                            if (response.result) {
-                                let imgUrl = [];
-                                let previewType = 'pic';    // if video is av
-                                response.album.src.forEach(src => {
-                                    imgUrl.push({
-                                        url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.session),
-                                        desc: src.desc
-                                    })
-                                });
-                                _this.album.list = imgUrl;
-                                _this.album.name = response.album.album_name;
-                                _this.album.id = response.album.album_id;
-                            } else {
-                                this.$notify.error({
-                                    duration: 0,
-                                    title: "提示",
-                                    message: "获取分享信息失败：" + response.msg
-                                })
-                            }
-                            this.loading = false;
+                        this.$notify.error({
+                            duration: 0,
+                            title: "提示",
+                            message: "获取分享信息失败：" + response.msg
                         })
                     }
+                    this.loading = false;
                 })
             } else {
                 this.$message.error("分享链接无效，已跳转至登录界面");

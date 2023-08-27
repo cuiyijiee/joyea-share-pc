@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import {check, getTodayDownload, logout} from "../../api/index";
+import {getTodayDownload} from "../../api/index";
 import getNowFormatDate from "../../utils/time"
 import store from '@/store'
 import {mapActions, mapGetters} from "vuex";
@@ -168,10 +168,8 @@ export default {
         logout: function () {
             let _this = this;
             this.$confirm('确认退出吗?', '提示', {}).then(() => {
-                logout().then(resp => {
-                    _this.clearUserSessionFunc().then(() => {
-                        _this.$router.push('/login');
-                    })
+                _this.clearUserSessionFunc().then(() => {
+                    _this.$router.push('/login');
                 })
             }).catch(() => {
             });
@@ -248,16 +246,16 @@ export default {
     },
     mounted() {
         this.currentPath = this.$router.currentRoute.fullPath;
-        if (!this.$route.params.checked) {
-            check().then(resp => {
-                if (resp.code === 4001) {
-                    this.$router.push("/login");
-                    this.$message.error("登录信息已过期，请重新登陆！")
-                } else {
-
-                }
-            })
-        }
+        // if (!this.$route.params.checked) {
+        //     check().then(resp => {
+        //         if (resp.code === 4001) {
+        //             this.$router.push("/login");
+        //             this.$message.error("登录信息已过期，请重新登陆！")
+        //         } else {
+        //
+        //         }
+        //     })
+        // }
         document.oncontextmenu = function (event) {
             event.preventDefault();
         };

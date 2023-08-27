@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {uploadFile} from "../../../api";
+import {uploadFile} from "@/api";
 
 export default {
   name: "UploadIndex",

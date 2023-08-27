@@ -170,7 +170,7 @@ export default {
             } else if (row.mime_type.startsWith("video")) {
                 previewType = 'av'
             }
-            let url = genSrcPreviewUrl(row.neid, row.hash, row.rev, previewType, this.userInfo.session);
+            let url = genSrcPreviewUrl(row.neid, row.hash, row.rev, previewType, this.userInfo.token);
             if (row.mime_type.startsWith("video")) {
                 this.handlePlayVideo(url, row.path.substr(row.path.lastIndexOf("/") + 1),);
             } else if (row.mime_type.startsWith("doc")) {
@@ -197,7 +197,7 @@ export default {
                         let imgUrl = [];
                         list.src.forEach(src => {
                             imgUrl.push({
-                                url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.session),
+                                url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.token),
                                 desc: src.desc,
                                 path: src.path,
                                 neid: src.neid,

@@ -10,20 +10,12 @@ import Share from '../views/home/share'
 import UploadManage from "../views/home/UploadManage";
 import UploadIndex from "../views/home/upload/index";
 import Transcode from  "../views/home/tanscode";
-import Test from "../views/Test"
 
 Vue.use(Router);
 
 export default new Router({
     base: process.env.BASE_URL,
     routes: [
-        {
-            path: '/test',
-            name: 'test',
-            desc: '测试',
-            component: Test,
-            hidden: true
-        },
         {
             path: '/login',
             name: 'login',
@@ -97,15 +89,5 @@ export default new Router({
                 {path: '/transcode/index', component: Transcode, name: 'transcode', desc: '转码视频管理'},
             ]
         }
-        // {
-        //     path: '/',
-        //     name: '我的收藏',
-        //     component: Home,
-        //     icon: 'el-icon-star-off',
-        //     noChild: true,
-        //     children: [
-        //         {path: '/manage/collection', component: Collection, name: 'collection', desc: '收藏'},
-        //     ]
-        // }
     ]
 })

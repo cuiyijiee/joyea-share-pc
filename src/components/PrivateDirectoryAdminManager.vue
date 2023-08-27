@@ -6,9 +6,7 @@
         <div v-for="item in value" :key="item[0] + '/' + item[1]">
             <el-tag  size="mini" type="info" effect="dark" style="background-color: #f4f4f5;border-color: #f4f4f5;color: #909399">
           {{
-                    item[0] + '/' + allUser.filter(user => {
-                        return user.id === item[1]
-                    })[0].joyeaName
+                    item[0] + '/' + getNameById(item[1])
                 }}
         </el-tag>
         </div>
@@ -36,6 +34,16 @@ export default {
     }
   },
   methods: {
+      getNameById(id){
+          const  targetUser = this.allUser.filter(user => {
+              return user.id === id
+          })[0];
+          if(targetUser) {
+              return targetUser.joyeaName
+          }else{
+              return "";
+          }
+      },
     handleSave () {
       // if (!this.editable) {
       //     this.editable = true;

@@ -1,12 +1,35 @@
 import axios from 'axios'
-
+import store from "@/store";
+import constants from "@/constants";
+import router from "@/router";
+import {Message} from "element-ui";
 
 // 创建axios实例
 const service = axios.create({
-    //baseURL: process.env.BASE_API, // api 的 base_url
-    //baseURL: process.env.NODE_ENV === 'production' ? '' : '',
     timeout: 60 * 60 * 1000 // 请求超时时间
 });
+
+service.interceptors.request.use(config => {
+    if (store.state.userInfo.token) {
+        config.headers['X-TOKEN'] = store.state.userInfo.token;
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
+
+service.interceptors.response.use(config => {
+    if (config.data) {
+        switch (config.data.code) {
+            case constants.USER_NOT_AUTH_CODE:
+                Message.error("用户信息过期，请重新登录！");
+                router.push('/login');
+        }
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+})
 
 export default function api(params) {
     return service.post('api', params).then(res => {
@@ -14,22 +37,10 @@ export default function api(params) {
     })
 }
 
-export function login(user, pwd) {
-    return service.post('api/v1/user/login', {
-        user: user, pwd: pwd
+export function loginV2(user, pwd) {
+    return service.post('apiv2/user/login', {
+        username: user, password: pwd
     }).then(res => {
-        return res.data;
-    })
-}
-
-export function logout() {
-    return service.post('api/v1/user/logout', {}).then(res => {
-        return res.data;
-    })
-}
-
-export function check() {
-    return service.post('api/v1/user/check', {}).then(res => {
         return res.data;
     })
 }
@@ -67,7 +78,6 @@ export function uploadRecordManage(recordId, allow, refuseReason, uploadPath, up
         needCount: needCount,
         integral: integral
     };
-    console.log(data);
     return service.post('api/v1/upload/manage', data).then(res => {
         return res.data;
     })
@@ -244,14 +254,6 @@ export function updateSrcAlias(parentDirId, neid, alias) {
     })
 }
 
-export function listPrivateDir(parentDirId) {
-    return service.post("apiv2/privateDir/list", {
-        parentDirId: parentDirId,
-    }).then(resp => {
-        return resp.data;
-    })
-}
-
 export function renamePrivateDir(dirId, newDirName) {
     return service.post("apiv2/privateDir/rename", {
         dirId: dirId, newDirName: newDirName,
@@ -271,14 +273,6 @@ export function listJoyeaUser(joyeaName) {
 export function updatePrivateDirectoryAdmin(dirId, admins) {
     return service.post("apiv2/privateDir/updateAdmin", {
         dirId: dirId, admins: admins,
-    }).then(resp => {
-        return resp.data;
-    })
-}
-
-export function listPrivateDirectoryAdmin(dirId) {
-    return service.post("apiv2/privateDir/listAdmin", {
-        dirId: dirId
     }).then(resp => {
         return resp.data;
     })

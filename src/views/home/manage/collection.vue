@@ -66,7 +66,7 @@
                         response.list.forEach(src => {
                             this.collectList.push({
                                 id: src.id,
-                                url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.session),
+                                url: genSrcPreviewUrl(src.neid, src.hash, src.rev, previewType, this.userInfo.token),
                                 path: src.path
                             })
                         })

@@ -18,7 +18,7 @@
     </el-form>
 </template>
 <script>
-import {login} from "../../api";
+import {loginV2} from "../../api";
 import {mapActions} from "vuex"
 import {getQueryParam} from "@/utils/JoyeaUtil";
 
@@ -53,20 +53,20 @@ export default {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
                     _this.loginLoading = true;
-                    login(_this.loginForm.user, btoa(_this.loginForm.pwd)).then(resp => {
+                    loginV2(_this.loginForm.user, btoa(_this.loginForm.pwd)).then(resp => {
                         _this.loginLoading = false;
-                        if (resp.code === 2000) {
-                            _this.$message.success("登陆成功,【" + resp.data.userName + "】欢迎您回来！");
+                        if (resp.code === '0') {
+                            _this.$message.success("登陆成功,【" + resp.obj.joyeaName + "】欢迎您回来！");
                             if (_this.loginForm.rememberPwd) {
                                 localStorage.setItem("u", btoa(JSON.stringify(_this.loginForm)))
                             } else {
                                 localStorage.removeItem("u")
                             }
                             _this.updateUserInfoFunc({
-                                session: resp.data['session'],
-                                name: resp.data['userName'],
+                                token: resp.obj['token'],
+                                name: resp.obj['joyeaName'],
                                 email: this.loginForm.user,
-                                isAdmin: resp.data['isAdmin']
+                                isAdmin: resp.obj['admin']
                             }).then(() => {
                                 if (_this.$route.query.ref) {
                                     let refInfo = JSON.parse(atob(_this.$route.query.ref));
