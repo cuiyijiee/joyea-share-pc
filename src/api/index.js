@@ -45,16 +45,8 @@ export function loginV2(user, pwd) {
     })
 }
 
-export function recordAlbumDownload(albumId) {
-    return service.post('api/v1/album/download/record', {
-        albumId: albumId
-    }).then(res => {
-        return res.data;
-    })
-}
-
 export function getTopSearchKey() {
-    return service.post('api/v1/search/key/top', {}).then(res => {
+    return service.get('apiv2/lenovo/topSearch').then(res => {
         return res.data;
     })
 }
@@ -102,8 +94,9 @@ export function uploadFile(file, fileDesc) {
     })
 }
 
-export function newDownloadTask(userId,fileList) {
+export function newDownloadTask(userId,fileList,albumId) {
     return service.post("apiv2/download/task/new", {
+        albumId: albumId,
         userId:userId,
         downloadTaskItems: fileList
     }).then(resp => {
@@ -136,7 +129,7 @@ export function queryFileAlready(neid) {
 }
 
 export function getMyWordList(search, pageSize, pageNum) {
-    return service.post("api/v1/esunyun/myword", {
+    return service.post("apiv2/esunyun/myword", {
         search: search, pageSize: pageSize, pageNum: pageNum
     }).then(resp => {
         return resp.data;

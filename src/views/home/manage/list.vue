@@ -13,17 +13,6 @@
                     <div slot="header" class="clearfix">
                         <span style="color: #fff;font-weight:bold;">{{ album.name }}</span>
                         <span style="float: right">
-<!--                         <el-popover-->
-                            <!--                                 placement="bottom"-->
-                            <!--                                 title="分享链接"-->
-                            <!--                                 width="200"-->
-                            <!--                                 trigger="hover"-->
-                            <!--                                 :content="album.shared ? domain + '/#/share?albumId=' + album.id:'未分享,点击分享后可见'"-->
-                            <!--                                 style="margin-right: 5px">-->
-                            <!--                             <el-button slot="reference" :type="album.shared ? 'warning':''" icon="el-icon-share" circle-->
-                            <!--                                        size="mini"-->
-                            <!--                                        @click="handleShare(index)"/>-->
-                            <!--                         </el-popover>-->
                         <el-button icon="el-icon-delete" circle size="mini" @click="handleDelete(index)"/>
                         <el-button icon="el-icon-download" circle size="mini" @click="handleDownloadSrc(true,album)"/>
                         <el-button icon="el-icon-edit" circle size="mini" @click="handleEdit(index)"/>
@@ -73,8 +62,8 @@
 
 <script>
 
-import api, {newDownloadTask, downloadTaskStatus, recordAlbumDownload} from "../../../api"
-import {getDocumentImage, getFileNameWithoutExtension} from "../../../utils/JoyeaUtil";
+import api, {newDownloadTask, downloadTaskStatus} from "../../../api"
+import {getDocumentImage, getFileNameWithoutExtension} from '@/utils/JoyeaUtil';
 import genSrcPreviewUrl from "../../../utils";
 import videojs from "video.js";
 import {mapGetters} from "vuex";
@@ -286,9 +275,6 @@ export default {
                     type: totalMb > warnMb ? "danger" : "primary"
                 }).then(() => {
                 //this.loading.fullscreenLoading = true;
-                recordAlbumDownload(row.id).then(resp => {
-                    console.log("record album " + row.id + " download success:" + resp)
-                });
                 newDownloadTask(this.userInfo.email,
                     toDownloadList.map(item => {
                             return {
@@ -297,7 +283,8 @@ export default {
                                 fileName: item.filename
                             }
                         }
-                    )
+                    ),
+                   row.id
                 ).then(response => {
                     let taskId = response.obj;
                     console.log("获取到下载ID：" + taskId);

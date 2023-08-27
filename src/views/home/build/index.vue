@@ -1369,7 +1369,8 @@ export default {
                 fileNeid: item.neid,
                 fileName: item.filename
               }
-            })
+            }),
+          null
         ).then(resp => {
           const taskId = resp.obj;
           this.$store.dispatch('downloadStatus/setVisible', true)
@@ -1558,7 +1559,7 @@ export default {
     },
     handleGetTopSearchKey() {
       getTopSearchKey().then(resp => {
-        this.topSearchKey = resp.data
+        this.topSearchKey = resp.obj
       })
     },
     handleFilterCurDirWordList() {
@@ -1609,8 +1610,8 @@ export default {
     handleGetMyWordList() {
       this.wordListLoading = true
       getMyWordList(this.wordListSearchText, this.wordListPageSize, this.wordListPageNum - 1).then(resp => {
-        this.wordListOption = resp.data.data
-        this.wordListTotal = resp.data.total
+        this.wordListOption = resp.obj
+        this.wordListTotal = resp.total
         // this.wordListPageSize = resp.data.pageSize;
         this.wordListPageNum = resp.data.pageNum + 1
       }).finally(() => {
