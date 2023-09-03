@@ -307,13 +307,13 @@
                   :file-item="scope.row"/>
             </template>
           </el-table-column>
-          <el-table-column align="left"
-                           width="80"
-                           label="引用次数">
-            <template v-slot="scope">
-              <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>
-            </template>
-          </el-table-column>
+<!--          <el-table-column align="left"-->
+<!--                           width="80"-->
+<!--                           label="引用次数">-->
+<!--            <template v-slot="scope">-->
+<!--              <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <el-table-column align="left"
                            width="80"
                            label="下载次数">
@@ -324,7 +324,7 @@
           w
           <el-table-column align="left"
                            label="操作"
-                           width="120">
+                           width="160">
             <template v-slot="scope">
               <div class="flex">
                 <RenamePrivateDirectory
