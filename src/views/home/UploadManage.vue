@@ -228,11 +228,10 @@ export default {
     },
     getUnCheckRecord() {
       findUploadRecord(1, 9999).then(resp => {
-        resp.data.record.map(record => {
-          record.uploaderName = resp.data.user[record.uploader]
+        resp.obj.records.map(record => {
           record.srcPreviewUrl = this.genSrcPreviewSrc(record.srcNeid, record.srcHash, record.srcRev, 'pic', this.userInfo.token)
         })
-        this.recordList = resp.data.record
+        this.recordList = resp.obj.records
       })
     }
   },

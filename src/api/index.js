@@ -52,7 +52,7 @@ export function getTopSearchKey() {
 }
 
 export function findUploadRecord(curPage, pageSize) {
-    return service.post('api/v1/upload/get', {
+    return service.post('apiv2/upload/get', {
         curPage, pageSize
     }).then(res => {
         return res.data;
@@ -136,8 +136,8 @@ export function getMyWordList(search, pageSize, pageNum) {
     })
 }
 
-export function addWordToDir(neid, wordList) {
-    return service.post("api/v1/word/add", {
+export function updateDirWord(neid, wordList) {
+    return service.post("apiv2/directory/updateDirWord", {
         neid: neid, word: wordList
     }).then(resp => {
         return resp.data;

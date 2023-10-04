@@ -656,7 +656,7 @@
 import api, {
   addRedirectPath,
   addTranscodeVideo,
-  addWordToDir,
+  updateDirWord,
   batchNewPrivateDirSrc,
   ftsSearch,
   getFileMetadata,
@@ -1019,32 +1019,6 @@ export default {
       })
       this.visible.listDetailDialogVisible = false
     },
-    handleSeeListDetail(row) {
-      this.visible.listDetailDialogVisible = true
-      this.loading.listDetailLoading = true
-      this.listDetail = []
-      this.selectListItem = []
-      this.selectListId = row.album_id
-      this.selectListName = row.album_name
-      const _this = this
-      api({
-        action: 'listDetail',
-        albumId: row.album_id
-      }).then(response => {
-        if (response.result) {
-          response.list.forEach(item => {
-            this.listDetail.push(item)
-          })
-        } else {
-          _this.$notify.error({
-            title: '查看出错',
-            message: '查看过程出现错误：' + response.msg
-          })
-          console.log(response.msg)
-        }
-        this.loading.listDetailLoading = false
-      })
-    },
     handleSearch(searchKey) {
       if (searchKey !== undefined && typeof (searchKey) === 'string') {
         this.search.key = searchKey
@@ -1054,35 +1028,6 @@ export default {
         return
       }
       this.$refs.searchDialog.handleSearch(this.search.key)
-    },
-    handleLoadMore() {
-      const _this = this
-      if (_this.loadMoreForm.key.trim().length !== 0) {
-        _this.loading.searchMore = true
-        ftsSearch(_this.loadMoreForm.key, this.loadMoreForm.nextOffset).then(response => {
-          if (response.code === '0') {
-            _this.search.hasNext = response.obj.has_more
-            if (_this.search.hasNext) {
-              _this.loadMoreForm.key = _this.search.key
-              _this.loadMoreForm.nextOffset = response.obj.next_offset
-            }
-            // _this.searchResult = [];
-            response.obj.content.forEach(item => {
-              item.joyeaDesc = ''
-              item.isModify = false
-              _this.searchResult.push(item)
-            })
-          } else {
-            _this.$notify.error({
-              title: '搜索出错',
-              message: '搜索过程出现错误：' + response.msg
-            })
-            console.log(response.msg)
-          }
-        }).finally(() => {
-          _this.loading.searchMore = false
-        })
-      }
     },
     handleAddTranscodeVideo(index, row) {
       addTranscodeVideo(row.neid).then(resp => {
@@ -1189,8 +1134,6 @@ export default {
         }
       })
       if (existIndex >= 0) {
-        // this.toCreateAlbum.list.splice(existIndex,1);
-        // this.toCreateAlbum.list.push(row);
         this.$message.error('所选素材在清单列表中已存在！')
       } else {
         this.toCreateAlbum.list.push(row)
@@ -1403,17 +1346,9 @@ export default {
     },
     sortFilter(value) {
       if (value.type === 'sort') {
-        // if(this.sortRegular.sort.sortName === value.sortName) {
-        //     this.sortRegular.sort = {}
-        // }else {
         this.sortRegular.sort = value
-        // }
       } else {
-        // if(this.sortRegular.regular === value.regularName) {
-        //     this.sortRegular.regular = {}
-        // }else {
         this.sortRegular.regular = value
-        // }
       }
       this.handleListLenovoDir(this.toReachPath, {
         orderBy: 'name',
@@ -1422,11 +1357,7 @@ export default {
       })
     },
     filterTerm(value) {
-      // if(this.filterRegular.filterName === value.name) {
-      //     this.filterRegular = {}
-      // }else {
       this.filterRegular = value
-      // }
       this.handleListLenovoDir(this.toReachPath, {
         orderBy: 'name',
         sort: this.sortRegular.sort.sortName,
@@ -1592,7 +1523,7 @@ export default {
       })
     },
     handleSaveWordToDir() {
-      addWordToDir(this.curDirNeid, this.wordListSelected).then(resp => {
+      updateDirWord(this.curDirNeid, this.wordListSelected).then(resp => {
         if (resp.code === 2000) {
           this.visible.addWordDialogVisible = false
           this.handleRefreshDir()
