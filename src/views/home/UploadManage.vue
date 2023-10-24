@@ -78,10 +78,10 @@
   </div>
 </template>
 <script>
-import {findUploadRecord, uploadRecordManage} from '../../api'
+import {findUploadRecord, uploadRecordManage} from '@/api'
 import genSrcPreviewSrc from '../../utils'
 import {mapGetters} from 'vuex'
-import {getDocumentImage, convertItem, extname} from '../../utils/JoyeaUtil'
+import {getDocumentImage, convertItem, extname} from '@/utils/JoyeaUtil'
 import LenovoDirSelector from '../../components/LenovoDirSelector'
 import videojs from 'video.js'
 
