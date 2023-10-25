@@ -88,6 +88,14 @@
                         type="info">{{ tag.replace(markReg, "") }}
                 </el-tag>
               </div>
+              <div v-else-if="scope.row.tags">
+                <el-tag v-for="(tag,index) in scope.row.tags"
+                        size="mini"
+                        style="margin-right: 2px"
+                        :key="index"
+                        type="info">{{ tag.name.replace(markReg, '') }}
+                </el-tag>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="预览" width="150">
