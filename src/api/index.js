@@ -89,7 +89,7 @@ export function uploadFile(file, fileDesc) {
         }
     };
 
-    return service.post('upload', formData, config).then(res => {
+    return service.post('apiv2/upload/upload', formData, config).then(res => {
         return res.data;
     })
 }
