@@ -1,8 +1,7 @@
+yarn.lock
+package-lock.json
+/dist
+dist.zip
 node_modules
 .idea
-yarn-error.log
-package-lock.json
-dist
-dist.zip
-yarn.lock
 .DS_Store

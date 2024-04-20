@@ -88,6 +88,14 @@
                         type="info">{{ tag.replace(markReg, "") }}
                 </el-tag>
               </div>
+              <div v-else-if="scope.row.tags">
+                <el-tag v-for="(tag,index) in scope.row.tags"
+                        size="mini"
+                        style="margin-right: 2px"
+                        :key="index"
+                        type="info">{{ tag.name.replace(markReg, '') }}
+                </el-tag>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="预览" width="150">
@@ -135,6 +143,13 @@
                     <div slot="content">加入细分市场</div>
                     <el-icon class="iconfont el-icon-a-icon_addtomarketsegments file-type-icon"
                              @click.native="handleAddSrcToPrivateDir(scope.row)"></el-icon>
+                  </el-tooltip>
+                  <el-tooltip v-if="!scope.row.is_dir && !scope.row.mime_type.startsWith('word')"
+                              :open-delay="defaultOpenDelay"
+                              placement="top">
+                    <div slot="content">下载</div>
+                    <el-icon class="iconfont el-icon-icon_xiazailiebiao_20_20px file-type-icon"
+                             @click.native="handleDownload(scope.row)"></el-icon>
                   </el-tooltip>
                 </span>
               </div>
@@ -194,7 +209,7 @@
 
 <script>
 
-import {addRedirectPath, ftsSearch} from '@/api'
+import { addRedirectPath, ftsSearch, queryFileAlready } from '@/api'
 import genSrcPreviewSrc, {formatFileShowType} from '@/utils'
 import VideoPreviewDialog from '@/components/VideoPreviewDialog'
 import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
@@ -312,6 +327,15 @@ export default {
     },
     handleAddSrcToPrivateDir(fileItem) {
       this.$emit('addSrcToPrivateDir', fileItem)
+    },
+    handleDownload(row){
+      queryFileAlready(row.neid).then(response => {
+        if (response.obj) {
+          window.open(window.location.protocol + "//" + window.location.host + "/apiv2/download/file/download?neid=" + row.neid);
+        } else {
+          this.$message.warning("文件正在同步中，请稍候重试！");
+        }
+      })
     },
     handleStartSearch() {
       this.loading.searchMore = true
