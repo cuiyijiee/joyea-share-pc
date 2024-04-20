@@ -307,13 +307,6 @@
                   :file-item="scope.row"/>
             </template>
           </el-table-column>
-<!--          <el-table-column align="left"-->
-<!--                           width="80"-->
-<!--                           label="引用次数">-->
-<!--            <template v-slot="scope">-->
-<!--              <span>{{ scope.row.is_dir ? '-' : scope.row.ref_num }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column align="left"
                            width="80"
                            label="下载次数">
@@ -1161,27 +1154,6 @@ export default {
       this.toCreateAlbum.toAddRow = {}
       this.toCreateAlbum.toSelectDesc = []
       this.toCreateAlbum.descSelectDialogVisible = false
-    },
-    handleCollect(index, row) {
-      api({
-        action: 'srcCollect',
-        method: row.collect ? 'unCollect' : 'collect',
-        neid: row.neid,
-        path: row.path,
-        type: row.mime_type,
-        size: row.size
-      }).then(response => {
-        if (response.result) {
-          row.collect = !row.collect
-          this.$notify.success({
-            type: 'success',
-            title: '提示',
-            message: row.collect ? '收藏成功:' + row.path.substr(row.path.lastIndexOf('/') + 1) : '取消收藏成功:' + row.path.substr(row.path.lastIndexOf('/') + 1)
-          })
-        } else {
-          console.log(response.msg)
-        }
-      })
     },
     handleModify(index, row, cg) {
       // 点击修改 判断是否已经保存所有操作

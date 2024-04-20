@@ -6,7 +6,6 @@ import Login from '../views/login/index'
 import Build from '../views/home/build'
 import Redirect from '../views/home/redirect'
 import List from '../views/home/manage/list'
-import Share from '../views/home/share'
 import UploadManage from "../views/home/UploadManage";
 import UploadIndex from "../views/home/upload/index";
 import Transcode from  "../views/home/tanscode";
@@ -28,13 +27,6 @@ export default new Router({
             name: 'redirect',
             desc: '跳转',
             component: Redirect,
-            hidden: true
-        },
-        {
-            path: '/share',
-            name: 'share',
-            desc: '分享',
-            component: Share,
             hidden: true
         },
         {
